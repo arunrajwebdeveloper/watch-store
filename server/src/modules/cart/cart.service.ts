@@ -29,7 +29,8 @@ export class CartService {
       );
 
       if (existingItem) {
-        existingItem.quantity += dto.quantity;
+        // existingItem.quantity += dto.quantity;
+        existingItem.quantity += 1;
       } else {
         cart.items.push({ product: productObjectId, quantity: dto.quantity });
       }
