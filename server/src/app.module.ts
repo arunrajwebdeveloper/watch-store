@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './modules/users/users.module';
 import * as dotenv from 'dotenv';
 import { ProductsModule } from './modules/products/products.module';
+import { CartModule } from './modules/cart/cart.module';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ if (!mongoUri) {
     AuthModule,
     UsersModule,
     ProductsModule,
+    CartModule,
   ],
 })
 export class AppModule {}
