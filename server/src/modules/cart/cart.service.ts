@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Cart, CartDocument } from './cart.schema';
 import { AddToCartDto } from './dto/add-to-cart.dto';
+import { UpdateCartDto } from './dto/update-cart.dto';
 
 @Injectable()
 export class CartService {
@@ -15,7 +16,7 @@ export class CartService {
   async addToCart(userId: string, dto: AddToCartDto) {
     let cart = await this.cartModel.findOne({ user: userId });
 
-    const productObjectId = new Types.ObjectId(dto.productId); // ✅ FIX
+    const productObjectId = new Types.ObjectId(dto.productId);
 
     if (!cart) {
       cart = new this.cartModel({
@@ -35,6 +36,18 @@ export class CartService {
     }
 
     return cart.save();
+  }
+
+  async updateQuantity(userId: string, productId: string, dto: UpdateCartDto) {
+    const cart = await this.cartModel.findOne({ user: userId });
+    if (!cart) throw new NotFoundException('Cart not found');
+
+    const item = cart.items.find((i) => i.product.toString() === productId);
+    if (!item) throw new NotFoundException('Product not in cart');
+
+    item.quantity = dto.quantity;
+    await cart.save();
+    return this.getUserCart(userId);
   }
 
   async removeFromCart(userId: string, productId: string) {
