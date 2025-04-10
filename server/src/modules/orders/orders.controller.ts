@@ -15,6 +15,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { RequestWithUser } from 'src/common/types/express-request.interface';
 import { RolesGuard } from 'src/common/guards/roles.guard';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
+import { Roles } from 'src/common/decorators/roles.decorator';
 
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
@@ -38,6 +39,7 @@ export class OrdersController {
 
   @Patch(':id/status')
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   updateStatus(
     @Param('id') orderId: string,
     @Body() dto: UpdateOrderStatusDto,
