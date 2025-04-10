@@ -40,6 +40,12 @@ export class AuthController {
     return this.authService.refreshAccessToken(refreshToken);
   }
 
+  // @Post('refresh')
+  // async refresh(@Req() req: Request) {
+  //   const refreshToken = req.cookies?.refresh_token;
+  //   return this.authService.refreshAccessToken(refreshToken);
+  // }
+
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
     res.clearCookie('refresh_token');
