@@ -7,11 +7,14 @@ import {
   Req,
   Body,
   Headers,
+  Patch,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { RequestWithUser } from 'src/common/types/express-request.interface';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
@@ -31,6 +34,15 @@ export class OrdersController {
   @Get(':orderId')
   getOrder(@Req() req: RequestWithUser, @Param('orderId') orderId: string) {
     return this.ordersService.getOrderById(req.user.userId, orderId);
+  }
+
+  @Patch(':id/status')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  updateStatus(
+    @Param('id') orderId: string,
+    @Body() dto: UpdateOrderStatusDto,
+  ) {
+    return this.ordersService.updateOrderStatus(orderId, dto.status);
   }
 
   @UseGuards()

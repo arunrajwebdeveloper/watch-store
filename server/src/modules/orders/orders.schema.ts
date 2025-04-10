@@ -7,24 +7,20 @@ export type OrderDocument = Order & Document;
 export class Order {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: Types.ObjectId;
-
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }] })
   products: Types.ObjectId[];
-
   @Prop({ required: true })
   amount: number;
-
   @Prop({ default: 'pending' }) // 'pending', 'paid', 'failed'
   status: string;
-
   @Prop()
   razorpayOrderId: string;
-
   @Prop()
   razorpayPaymentId: string;
-
   @Prop()
   razorpaySignature: string;
+  @Prop({ type: Object, required: true })
+  address: Record<string, any>;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

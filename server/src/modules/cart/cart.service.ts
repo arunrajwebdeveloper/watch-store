@@ -29,7 +29,6 @@ export class CartService {
       );
 
       if (existingItem) {
-        // existingItem.quantity += dto.quantity;
         existingItem.quantity += 1;
       } else {
         cart.items.push({ product: productObjectId, quantity: dto.quantity });
@@ -69,7 +68,6 @@ export class CartService {
     if (!cart) throw new NotFoundException('Cart not found');
 
     cart.items = [];
-
     return cart.save();
   }
 }
