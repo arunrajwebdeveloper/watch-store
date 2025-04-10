@@ -23,11 +23,6 @@ export class OrdersController {
     return this.ordersService.createOrder(req.user.userId, dto);
   }
 
-  @Post('checkout')
-  checkout(@Req() req: RequestWithUser) {
-    return this.ordersService.checkout(req.user.userId);
-  }
-
   @Get()
   getOrders(@Req() req: RequestWithUser) {
     return this.ordersService.getOrders(req.user.userId);
