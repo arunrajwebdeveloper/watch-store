@@ -3,30 +3,13 @@ import {
   IsMongoId,
   IsNumber,
   Min,
-  IsNotEmpty,
   IsObject,
   ValidateNested,
   IsEnum,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { OrderStatus } from '../enums/order-status.enum';
-
-class AddressDto {
-  @IsNotEmpty()
-  street: string;
-
-  @IsNotEmpty()
-  city: string;
-
-  @IsNotEmpty()
-  state: string;
-
-  @IsNotEmpty()
-  postalCode: string;
-
-  @IsNotEmpty()
-  country: string;
-}
+import { AddressDto } from '../../common/dto/address.dto';
 
 export class CreateOrderDto {
   @IsArray()

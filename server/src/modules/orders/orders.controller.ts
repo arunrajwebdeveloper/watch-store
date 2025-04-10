@@ -12,10 +12,10 @@ import {
 import { OrdersService } from './orders.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { RequestWithUser } from 'src/common/types/express-request.interface';
-import { RolesGuard } from 'src/common/guards/roles.guard';
+import { RequestWithUser } from 'src/modules/common/types/express-request.interface';
+import { RolesGuard } from 'src/modules/common/guards/roles.guard';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { Roles } from 'src/modules/common/decorators/roles.decorator';
 
 @Controller('orders')
 @UseGuards(JwtAuthGuard)
