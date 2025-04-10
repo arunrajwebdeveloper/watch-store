@@ -31,6 +31,8 @@ export class AuthController {
     res.cookie('refresh_token', tokens.refresh_token, {
       httpOnly: true,
       sameSite: 'strict',
+      secure: true, // 👉 Only send over HTTPS
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 👉 7 days in milliseconds
     });
     return tokens;
   }
