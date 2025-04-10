@@ -30,7 +30,7 @@ export class CartController {
     return this.cartService.addToCart(req.user.userId, dto);
   }
 
-  @Patch(':productId')
+  @Patch('update/:productId')
   updateItem(
     @Req() req: RequestWithUser,
     @Param('productId') productId: string,

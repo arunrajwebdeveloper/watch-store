@@ -27,4 +27,8 @@ export class UsersController {
   addUserDetails(@Param('id') id: string, @Body() dto: UserDetailsDto) {
     return this.usersService.addUserDetails(id, dto);
   }
+
+  // edit user
+  // delete user
+  // block user (ADMIN)
 }

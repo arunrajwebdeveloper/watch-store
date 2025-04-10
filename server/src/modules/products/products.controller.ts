@@ -39,14 +39,14 @@ export class ProductsController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  @Put(':id')
+  @Put('edit/:id')
   update(@Param('id') id: string, @Body() dto: CreateProductDto) {
     return this.productService.update(id, dto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  @Delete(':id')
+  @Delete('delete/:id')
   delete(@Param('id') id: string) {
     return this.productService.delete(id);
   }
