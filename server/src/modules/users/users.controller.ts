@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
-import { UserDetailsDto } from './dto/user-details.dto';
+import { AddressDto } from '../common/dto/address.dto';
 
 @Controller('users')
 export class UsersController {
@@ -24,7 +24,7 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Post('address/:id')
-  addAddress(@Param('id') id: string, @Body() dto: UserDetailsDto) {
+  addAddress(@Param('id') id: string, @Body() dto: AddressDto) {
     return this.usersService.addAddress(id, dto);
   }
 

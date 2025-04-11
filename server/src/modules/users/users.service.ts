@@ -7,7 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/users.schema';
 import { SignupDto } from '../auth/dto/signup.dto';
-import { UserDetailsDto } from './dto/user-details.dto';
+import { AddressDto } from '../common/dto/address.dto';
 
 @Injectable()
 export class UsersService {
@@ -34,7 +34,7 @@ export class UsersService {
     return this.userModel.findById(id).select('-password').exec();
   }
 
-  async addAddress(id: string, dto: UserDetailsDto) {
+  async addAddress(id: string, dto: AddressDto) {
     const user = await this.userModel.findByIdAndUpdate(
       id,
       { address: dto },
