@@ -20,7 +20,8 @@ export class User {
   })
   email: string;
 
-  @Prop({ required: true })
+  // {select: false} used for to avoid this key in response
+  @Prop({ required: true, select: false })
   password: string;
 
   @Prop({ required: true, enum: ['admin', 'customer'], default: 'customer' })

@@ -27,11 +27,19 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.userModel.find().select('-password').lean().exec();
+    return this.userModel.find().lean().exec();
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.userModel.findById(id).select('-password').lean().exec();
+    const user = await this.userModel
+      .findById(id)
+      // .select('-password') // used {select: false} in schema
+      .lean()
+      .exec();
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   async addAddress(id: string, dto: AddressDto) {
