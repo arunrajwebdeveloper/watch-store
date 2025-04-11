@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { OrderStatus } from '../enums/order-status.enum';
-import { AddressDto } from '../../common/dto/address.dto';
+import { AddressDto } from '../../users/dto/address.dto';
 
 export class CreateOrderDto {
   @IsArray()

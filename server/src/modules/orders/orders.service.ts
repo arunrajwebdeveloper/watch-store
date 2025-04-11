@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Order, OrderDocument } from './orders.schema';
+import { Order, OrderDocument } from './schemas/orders.schema';
 import { Model, Types } from 'mongoose';
 import { CreateOrderDto } from './dto/create-order.dto';
 import Razorpay from 'razorpay';

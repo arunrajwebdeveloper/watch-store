@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Product, ProductDocument } from './products.schema';
+import { Product, ProductDocument } from './schemas/products.schema';
 import { Model } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FilterProductDto } from './dto/filter-product.dto';
