@@ -7,7 +7,10 @@ import { UpdateCartDto } from './dto/update-cart.dto';
 
 @Injectable()
 export class CartService {
-  constructor(@InjectModel(Cart.name) private cartModel: Model<CartDocument>) {}
+  constructor(
+    @InjectModel(Cart.name)
+    private cartModel: Model<CartDocument>,
+  ) {}
 
   async getUserCart(userId: string) {
     return this.cartModel.findOne({ user: userId }).populate('items.product');

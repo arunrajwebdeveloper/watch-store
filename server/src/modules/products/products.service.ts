@@ -8,7 +8,8 @@ import { FilterProductDto } from './dto/filter-product.dto';
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectModel(Product.name) private productModel: Model<ProductDocument>,
+    @InjectModel(Product.name)
+    private productModel: Model<ProductDocument>,
   ) {}
 
   async create(dto: CreateProductDto): Promise<Product> {

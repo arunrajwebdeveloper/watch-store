@@ -12,7 +12,8 @@ export class OrdersService {
   private razorpay: Razorpay;
 
   constructor(
-    @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
+    @InjectModel(Order.name)
+    private orderModel: Model<OrderDocument>,
   ) {
     this.razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID as string,
