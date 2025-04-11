@@ -8,12 +8,15 @@ export class Cart {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   user: Types.ObjectId;
 
-  @Prop([
-    {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-      quantity: { type: Number, required: true, default: 1 },
-    },
-  ])
+  @Prop({
+    type: [
+      {
+        product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+        quantity: { type: Number, required: true, default: 1 },
+      },
+    ],
+    default: [],
+  })
   items: {
     product: Types.ObjectId;
     quantity: number;

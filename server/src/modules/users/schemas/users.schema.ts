@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types, Schema as MongooseSchema } from 'mongoose';
+import mongoose, { Document, Types, Schema as MongooseSchema } from 'mongoose';
 import { Address, AddressSchema } from './address.schema';
 
 export type UserDocument = User & Document;
@@ -32,6 +32,20 @@ export class User {
 
   @Prop({ default: null })
   avatar?: string;
+
+  @Prop({
+    type: [
+      {
+        product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+        addedAt: { type: Date, default: Date.now },
+      },
+    ],
+    default: [],
+  })
+  wishList?: {
+    product: Types.ObjectId;
+    addedAt?: Date;
+  }[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
