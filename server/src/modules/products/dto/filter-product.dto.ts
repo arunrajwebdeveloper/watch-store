@@ -11,7 +11,7 @@ export class FilterProductDto {
   size?: string;
 
   @IsOptional()
-  @IsEnum(['quartz', 'automatic'])
+  @IsEnum(['quartz', 'automatic', 'digital', 'smart'])
   movementType?: string;
 
   @IsOptional()

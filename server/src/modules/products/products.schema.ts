@@ -23,7 +23,7 @@ export class Product {
   @Prop({ required: true })
   size: string;
 
-  @Prop({ required: true, enum: ['quartz', 'automatic'] })
+  @Prop({ required: true, enum: ['quartz', 'automatic', 'digital', 'smart'] })
   movementType: string;
 
   @Prop({ type: [String], default: [] })

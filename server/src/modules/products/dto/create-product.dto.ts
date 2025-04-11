@@ -19,8 +19,8 @@ export class CreateProductDto {
   @IsString()
   size: string;
 
-  @IsEnum(['quartz', 'automatic'])
-  movementType: 'quartz' | 'automatic';
+  @IsEnum(['quartz', 'automatic', 'digital', 'smart'])
+  movementType: 'quartz' | 'automatic' | 'digital' | 'smart';
 
   images?: string[];
 }
