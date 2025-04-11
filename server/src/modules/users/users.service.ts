@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from './users.schema';
+import { User, UserDocument } from './schemas/users.schema';
 import { SignupDto } from '../auth/dto/signup.dto';
 import { UserDetailsDto } from './dto/user-details.dto';
 
@@ -27,17 +27,17 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.userModel.find().exec();
+    return this.userModel.find().select('-password').exec();
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.userModel.findById(id).exec();
+    return this.userModel.findById(id).select('-password').exec();
   }
 
-  async addUserDetails(id: string, dto: UserDetailsDto) {
+  async addAddress(id: string, dto: UserDetailsDto) {
     const user = await this.userModel.findByIdAndUpdate(
       id,
-      { details: dto },
+      { address: dto },
       { new: true },
     );
 
@@ -45,8 +45,9 @@ export class UsersService {
 
     return {
       id: user._id.toString(),
+      name: user.name,
       email: user.email,
-      details: user.details,
+      address: user.address,
     };
   }
 }

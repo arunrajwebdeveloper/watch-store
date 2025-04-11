@@ -2,12 +2,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Types } from 'mongoose';
 
 @Schema({ timestamps: true })
-export class UserDetails {
+export class Address {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
   userId: Types.ObjectId;
-
-  @Prop({ required: true })
-  name: string;
 
   @Prop({ required: true })
   contact: string;
@@ -29,9 +26,6 @@ export class UserDetails {
 
   @Prop({ required: true })
   country: string;
-
-  @Prop()
-  avatar: string;
 }
 
-export const UserDetailsSchema = SchemaFactory.createForClass(UserDetails);
+export const AddressSchema = SchemaFactory.createForClass(Address);

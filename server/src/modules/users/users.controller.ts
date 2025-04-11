@@ -23,9 +23,9 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('details/:id')
-  addUserDetails(@Param('id') id: string, @Body() dto: UserDetailsDto) {
-    return this.usersService.addUserDetails(id, dto);
+  @Post('address/:id')
+  addAddress(@Param('id') id: string, @Body() dto: UserDetailsDto) {
+    return this.usersService.addAddress(id, dto);
   }
 
   // edit user

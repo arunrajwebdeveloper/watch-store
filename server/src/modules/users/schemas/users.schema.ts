@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
-import { UserDetails, UserDetailsSchema } from './schemas/user-details.schema';
+import { Address, AddressSchema } from './address.schema';
 
 export type UserDocument = User & Document;
 
@@ -9,7 +9,15 @@ export class User {
   @Prop({ type: MongooseSchema.Types.ObjectId, auto: true })
   _id: Types.ObjectId;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+  })
   email: string;
 
   @Prop({ required: true })
@@ -18,8 +26,11 @@ export class User {
   @Prop({ required: true, enum: ['admin', 'customer'], default: 'customer' })
   role: string;
 
-  @Prop({ type: UserDetailsSchema })
-  details?: UserDetails;
+  @Prop({ type: AddressSchema })
+  address?: Address;
+
+  @Prop({ default: null })
+  avatar?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
