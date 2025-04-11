@@ -31,7 +31,7 @@ export class UsersService {
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.userModel.findById(id).populate('details').exec();
+    return this.userModel.findById(id).exec();
   }
 
   async addUserDetails(id: string, dto: UserDetailsDto) {
