@@ -17,7 +17,7 @@ import { Request, Response } from 'express';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('signup')
+  @Post('register')
   signup(@Body() dto: SignupDto) {
     return this.authService.signup(dto);
   }
