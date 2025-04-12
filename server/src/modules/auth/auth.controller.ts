@@ -41,6 +41,7 @@ export class AuthController {
       sameSite: 'lax',
       // maxAge: 1000 * 60 * 15, // 15 mins - use this
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      path: '/',
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
@@ -75,6 +76,7 @@ export class AuthController {
       sameSite: 'lax',
       // maxAge: 1000 * 60 * 15, // 15 mins - use this
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      path: '/',
     });
 
     res.cookie('refreshToken', tokens.refreshToken, {
