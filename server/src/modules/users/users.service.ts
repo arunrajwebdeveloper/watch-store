@@ -35,7 +35,7 @@ export class UsersService {
   async findById(id: string): Promise<User | null> {
     const user = await this.userModel
       .findById(id)
-      // .select('-password') // used {select: false} in schema
+      .select('-password')
       .populate('wishList.product')
       .lean()
       .exec();
