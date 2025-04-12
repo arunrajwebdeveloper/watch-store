@@ -33,22 +33,54 @@ export class AuthService {
       expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
     });
 
-    return { accessToken, refreshToken };
+    return { accessToken, refreshToken, user };
   }
+
+  // refreshToken in Body
+
+  // async refreshAccessToken(token: string) {
+  // try {
+  //   const payload = await this.jwtService.verifyAsync(token, {
+  //     secret: process.env.REFRESH_TOKEN_SECRET,
+  //   });
+  //   const newToken = await this.jwtService.signAsync(
+  //     { sub: payload.sub, role: payload.role },
+  //     {
+  //       secret: process.env.JWT_SECRET,
+  //       expiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
+  //     },
+  //   );
+  //   return { accessToken: newToken };
+  // } catch {
+  //   throw new UnauthorizedException('Invalid refresh token');
+  // }
+  // }
 
   async refreshAccessToken(token: string) {
     try {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: process.env.REFRESH_TOKEN_SECRET,
       });
-      const newToken = await this.jwtService.signAsync(
+
+      const accessToken = await this.jwtService.signAsync(
         { sub: payload.sub, role: payload.role },
         {
           secret: process.env.JWT_SECRET,
           expiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
         },
       );
-      return { accessToken: newToken };
+
+      const refreshToken = await this.jwtService.signAsync(
+        { sub: payload.sub, role: payload.role },
+        {
+          secret: process.env.REFRESH_TOKEN_SECRET,
+          expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
+        },
+      );
+
+      const user = await this.userService.findById(payload.sub);
+
+      return { accessToken, refreshToken, user };
     } catch {
       throw new UnauthorizedException('Invalid refresh token');
     }

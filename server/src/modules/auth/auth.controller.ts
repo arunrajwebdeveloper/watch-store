@@ -53,16 +53,39 @@ export class AuthController {
     return tokens;
   }
 
-  @Post('refresh')
-  async refresh(@Body('refreshToken') refreshToken: string) {
-    return this.authService.refreshAccessToken(refreshToken);
-  }
+  // refreshToken in Body
 
   // @Post('refresh')
-  // async refresh(@Req() req: Request) {
-  //   const refreshToken = req.cookies?.refresh_token;
+  // async refresh(@Body('refreshToken') refreshToken: string) {
   //   return this.authService.refreshAccessToken(refreshToken);
   // }
+
+  @Post('refresh')
+  async refresh(
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const refreshToken = req.cookies?.refreshToken;
+
+    const tokens = await this.authService.refreshAccessToken(refreshToken);
+
+    res.cookie('accessToken', tokens.accessToken, {
+      httpOnly: true,
+      secure: false, // use true in production (HTTPS)
+      sameSite: 'lax',
+      // maxAge: 1000 * 60 * 15, // 15 mins - use this
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+    });
+
+    res.cookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+    });
+
+    return tokens;
+  }
 
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
