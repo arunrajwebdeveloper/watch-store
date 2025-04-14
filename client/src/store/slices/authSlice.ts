@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "@/lib/axios";
-import { AuthState, LoginInput, RegisterInput } from "@/types";
+import { AuthState, LoginInput, RegisterInput, ResetInput } from "@/types";
 
 const initialState: AuthState = {
   user: null,
@@ -20,6 +20,14 @@ export const registerUser = createAsyncThunk(
   "auth/register",
   async (data: RegisterInput) => {
     const res = await api.post("/auth/register", data);
+    return res.data;
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  "auth/reset-password",
+  async (data: ResetInput) => {
+    const res = await api.post("/auth/reset-password", data);
     return res.data;
   }
 );
@@ -48,6 +56,10 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.isAuthenticated = true;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.isAuthenticated = true;
       })

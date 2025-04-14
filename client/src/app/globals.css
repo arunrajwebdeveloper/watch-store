@@ -3,17 +3,18 @@
   --foreground: #171717;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  font-size: 16px;
 }
 
 body {
@@ -43,8 +44,52 @@ select {
   outline: none !important;
 }
 
-@media (prefers-color-scheme: dark) {
+button:not(:disabled) {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+} */
+
+.text-md {
+  font-size: 2rem;
+  margin-bottom: 1em;
+}
+.text-sm {
+  font-size: 1rem;
+  margin-bottom: 1em;
+}
+.form-controller {
+  position: relative;
+  margin-bottom: 1rem;
+}
+input.input-element {
+  padding: 1em;
+  border: 0;
+  font-size: 1rem;
+  display: block;
+  width: 100%;
+  background-color: #eef0fa;
+  color: black;
+}
+button.btn {
+  padding: 1rem;
+  border: 0;
+  display: inline-block;
+  font-size: 1rem;
+}
+button.btn.primary {
+  background-color: blue;
+  color: #fff;
+}
+
+button.btn.secondary {
+  background-color: black;
+  color: #fff;
 }
