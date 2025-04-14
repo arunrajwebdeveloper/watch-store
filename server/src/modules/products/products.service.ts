@@ -21,6 +21,7 @@ export class ProductsService {
 
     if (filter.color) query['color'] = filter.color;
     if (filter.size) query['size'] = filter.size;
+    if (filter.gender) query['gender'] = filter.gender;
     if (filter.movementType) query['movementType'] = filter.movementType;
     if (filter.minPrice || filter.maxPrice) {
       query['currentPrice'] = {};

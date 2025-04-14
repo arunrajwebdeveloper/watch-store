@@ -13,14 +13,20 @@ export class CreateProductDto {
   @IsNumber()
   currentPrice: number;
 
+  @IsNumber()
+  weight: number;
+
   @IsString()
   color: string;
 
   @IsString()
   size: string;
 
-  @IsEnum(['quartz', 'automatic', 'digital', 'smart'])
-  movementType: 'quartz' | 'automatic' | 'digital' | 'smart';
+  @IsEnum(['analog', 'automatic', 'digital', 'smart'])
+  movementType: 'analog' | 'automatic' | 'digital' | 'smart';
+
+  @IsEnum(['male', 'female'])
+  gender: 'male' | 'female';
 
   images?: string[];
 }
