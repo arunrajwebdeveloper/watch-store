@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store";
-import { loginUser, registerUser } from "../store/slices/authSlice";
+import { AppDispatch } from "@/store";
+import { loginUser, registerUser } from "@/store/slices/authSlice";
 
 export default function AuthForm() {
   const [form, setForm] = useState({ email: "", password: "", name: "" });

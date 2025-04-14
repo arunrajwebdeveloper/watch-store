@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import api from "../../lib/axios";
-import { AuthState, LoginInput, RegisterInput } from "../../types";
+import api from "@/lib/axios";
+import { AuthState, LoginInput, RegisterInput } from "@/types";
 
 const initialState: AuthState = {
   user: null,
