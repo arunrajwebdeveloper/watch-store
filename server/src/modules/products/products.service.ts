@@ -20,6 +20,10 @@ export class ProductsService {
     return this.productModel.create(dto);
   }
 
+  async getLatestProducts(limit: number) {
+    return this.productModel.find().sort({ createdAt: -1 }).limit(limit).exec();
+  }
+
   async getFilterOptions() {
     try {
       const filterFields = [

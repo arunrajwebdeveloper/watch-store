@@ -17,6 +17,7 @@ const ProductDetailsPage = async ({ params }: Props) => {
 
   return (
     <div>
+      <Link href="/products">Go to products</Link>
       <h4>{product.brand}</h4>
       <div>{product.model}</div>
       <div>{product.currentPrice}</div>

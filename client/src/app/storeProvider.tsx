@@ -2,7 +2,7 @@
 
 import { store } from "@/store";
 import { Provider } from "react-redux";
-import ClientProvider from "./ClientProvider";
+import ClientProvider from "./clientProvider";
 
 export default function StoreProvider({
   children,

@@ -32,10 +32,10 @@ function Header() {
             {user && (
               <div>
                 <div>{user?.name}</div>
-                <div>{user?.email}</div>
+                {/* <div>{user?.email}</div> */}
               </div>
             )}
-            {isAuthenticated && <button onClick={handleLogout}>Logout</button>}
+            {isAuthenticated && <a onClick={handleLogout}>Logout</a>}
           </div>
         </div>
       </div>

@@ -25,6 +25,13 @@ export class ProductsController {
     return this.productService.findAll(filter);
   }
 
+  @Get('recent-products')
+  getLatestProducts(@Query('limit') limit?: string) {
+    const parsedLimit = parseInt(limit || '', 10);
+    const finalLimit = !isNaN(parsedLimit) && parsedLimit > 0 ? parsedLimit : 6;
+    return this.productService.getLatestProducts(finalLimit);
+  }
+
   @Get('filter-options')
   getFilterOptions() {
     return this.productService.getFilterOptions();
