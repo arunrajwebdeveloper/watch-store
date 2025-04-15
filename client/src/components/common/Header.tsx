@@ -2,12 +2,14 @@
 
 import React from "react";
 import { logoutUser } from "@/store/slices/authSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store";
+import { useAppSelector, useAppDispatch } from "@/store";
 import Link from "next/link";
 
 function Header() {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
+
+  const user = useAppSelector((state) => state.auth.user);
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
@@ -21,8 +23,19 @@ function Header() {
           <Link href="/">
             <h2 className="main-logo">WatchStore</h2>
           </Link>
+          <div className="header-menu">
+            <nav className="header-nav">
+              <Link href="/products">Products</Link>
+            </nav>
+          </div>
           <div className="header-actions-block">
-            <button onClick={handleLogout}>Logout</button>
+            {user && (
+              <div>
+                <div>{user?.name}</div>
+                <div>{user?.email}</div>
+              </div>
+            )}
+            {isAuthenticated && <button onClick={handleLogout}>Logout</button>}
           </div>
         </div>
       </div>

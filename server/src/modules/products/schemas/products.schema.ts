@@ -34,6 +34,9 @@ export class Product {
 
   @Prop({ type: [String], default: [] })
   images: string[];
+
+  @Prop()
+  variantGroupId: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

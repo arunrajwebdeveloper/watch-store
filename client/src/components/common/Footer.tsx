@@ -1,7 +1,11 @@
 import React from "react";
 
 function Footer() {
-  return <div>Footer</div>;
+  return (
+    <footer>
+      <span>copyright@2025</span>
+    </footer>
+  );
 }
 
 export default Footer;

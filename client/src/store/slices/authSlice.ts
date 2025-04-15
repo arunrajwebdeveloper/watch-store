@@ -33,7 +33,7 @@ export const resetPassword = createAsyncThunk(
 );
 
 export const refreshUser = createAsyncThunk("auth/refresh", async () => {
-  const res = await api.get("/auth/refresh"); // re-issues token in cookie
+  const res = await api.post("/auth/refresh"); // re-issues token in cookie
   return res.data;
 });
 
@@ -61,7 +61,7 @@ const authSlice = createSlice({
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
         state.user = action.payload.user;
-        state.isAuthenticated = true;
+        state.isAuthenticated = false;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;

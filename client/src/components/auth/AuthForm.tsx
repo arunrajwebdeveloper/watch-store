@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store";
+import { useAppDispatch } from "@/store";
 import {
   loginUser,
   registerUser,
@@ -16,7 +15,7 @@ type PropType = {
 
 export default function AuthForm({ name }: PropType) {
   const [form, setForm] = useState({ email: "", password: "", name: "" });
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const isLogin = name === "login";

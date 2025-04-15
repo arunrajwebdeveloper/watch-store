@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product, ProductDocument } from './schemas/products.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FilterProductDto } from './dto/filter-product.dto';
 
@@ -19,6 +19,7 @@ export class ProductsService {
   async findAll(filter: FilterProductDto) {
     const query = {};
 
+    if (filter.brand) query['brand'] = filter.brand;
     if (filter.color) query['color'] = filter.color;
     if (filter.size) query['size'] = filter.size;
     if (filter.gender) query['gender'] = filter.gender;
@@ -54,7 +55,26 @@ export class ProductsService {
   async findById(id: string) {
     const product = await this.productModel.findById(id);
     if (!product) throw new NotFoundException('Product not found');
-    return product;
+
+    let variants: (typeof product)[] = [];
+
+    if (product.variantGroupId) {
+      const allVariants = await this.productModel.find({
+        variantGroupId: product.variantGroupId,
+      });
+
+      variants = allVariants.sort((a, b) => {
+        const aId = a._id as Types.ObjectId;
+        const bId = b._id as Types.ObjectId;
+        const currentId = product._id as Types.ObjectId;
+
+        if (aId.equals(currentId)) return -1;
+        if (bId.equals(currentId)) return 1;
+        return 0;
+      });
+    }
+
+    return { product, variants };
   }
 
   async update(id: string, dto: CreateProductDto) {

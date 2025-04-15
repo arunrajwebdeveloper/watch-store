@@ -4,6 +4,10 @@ import { Type } from 'class-transformer';
 export class FilterProductDto {
   @IsOptional()
   @IsString()
+  brand?: string;
+
+  @IsOptional()
+  @IsString()
   color?: string;
 
   @IsOptional()
@@ -41,4 +45,8 @@ export class FilterProductDto {
   @IsOptional()
   @Type(() => Number)
   limit?: number;
+
+  @IsOptional()
+  @IsString()
+  variantGroupId?: string;
 }
