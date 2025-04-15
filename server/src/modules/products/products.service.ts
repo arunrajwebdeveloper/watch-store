@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product, ProductDocument } from './schemas/products.schema';
 import { Model, Types } from 'mongoose';
@@ -14,6 +18,33 @@ export class ProductsService {
 
   async create(dto: CreateProductDto): Promise<Product> {
     return this.productModel.create(dto);
+  }
+
+  async getFilterOptions() {
+    try {
+      const filterFields = [
+        { title: 'Brands', field: 'brand' },
+        { title: 'Colors', field: 'color' },
+        { title: 'Price', field: 'currentPrice' },
+        { title: 'Size', field: 'size' },
+        { title: 'Movement Type', field: 'movementType' },
+        { title: 'Gender', field: 'gender' },
+      ];
+
+      const results = await Promise.all(
+        filterFields.map((f) => this.productModel.distinct(f.field)),
+      );
+
+      const filters = filterFields.map((f, idx) => ({
+        title: f.title,
+        items: results[idx],
+      }));
+
+      return { filters };
+    } catch (error) {
+      console.error('Error getting filter options:', error);
+      throw new InternalServerErrorException('Failed to load filter options');
+    }
   }
 
   async findAll(filter: FilterProductDto) {

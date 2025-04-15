@@ -25,6 +25,11 @@ export class ProductsController {
     return this.productService.findAll(filter);
   }
 
+  @Get('filter-options')
+  getFilterOptions() {
+    return this.productService.getFilterOptions();
+  }
+
   @Get(':id')
   getOne(@Param('id') id: string) {
     return this.productService.findById(id);

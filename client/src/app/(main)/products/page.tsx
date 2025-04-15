@@ -37,11 +37,12 @@ const ProductListPage = async ({ searchParams }: Props) => {
                 <h4>{product.brand}</h4>
                 <div>{product.model}</div>
                 <div>{product.currentPrice}</div>
-                {product.images.map((img: string, i: number) => {
-                  return (
-                    <img key={`product-image-${i}`} src={img} height={100} />
-                  );
-                })}
+                <img
+                  src={product.images[0]}
+                  height={100}
+                  alt={"product-image " + product._id}
+                  style={{ objectFit: "contain" }}
+                />
               </Link>
             </li>
           );

@@ -27,7 +27,7 @@ const ProductDetailsPage = async ({ params }: Props) => {
             src={img}
             height={100}
             width={100}
-            objectFit="contain"
+            style={{ objectFit: "contain" }}
             alt={`product-image-${product.model}`}
           />
         );
