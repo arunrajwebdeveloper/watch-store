@@ -3,13 +3,8 @@ import GridItem from "@/components/home/GridItem";
 import "@/styles/home/home.style.css";
 import Grid from "@/components/home/Grid";
 import ProductScroller from "@/components/products/ProductScroller";
-import api from "@/lib/axios";
-import ProductCard from "@/components/products/ProductCard";
 
 export default async function HomePage() {
-  const res = await api.get(`/products/recent-products?limit=${6}`);
-  const recentProducts = res.data;
-
   return (
     <div>
       <Banner
@@ -33,27 +28,10 @@ export default async function HomePage() {
         />
       </Grid>
 
-      <ProductScroller title="Latest collections">
-        {recentProducts?.map((product: any) => {
-          const {
-            images,
-            _id: productId,
-            brand,
-            model,
-            currentPrice,
-          } = product;
-          return (
-            <ProductCard
-              key={`product-item-${brand}-${model}`}
-              image={images[0]}
-              url={`/products/${productId}`}
-              brand={brand}
-              model={model}
-              price={`INR ${currentPrice}`}
-            />
-          );
-        })}
-      </ProductScroller>
+      <ProductScroller
+        title="Panerai watch Collections"
+        filter={{ brand: "Panerai" }}
+      />
 
       <Grid>
         <GridItem
@@ -69,6 +47,11 @@ export default async function HomePage() {
           buttonText="View watches"
         />
       </Grid>
+
+      <ProductScroller
+        title="Casio Watch Collections"
+        filter={{ brand: "Casio" }}
+      />
     </div>
   );
 }

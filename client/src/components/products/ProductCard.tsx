@@ -8,13 +8,15 @@ type Props = {
   brand: string;
   model: string;
   price: string;
+  size: number;
 };
 
 function ProductCard(props: Props) {
-  const { image, url, brand, model, price } = props;
+  const { image, url, brand, model, price, size } = props;
   return (
     <div className="product-card">
       <Link href={url}>
+        <span className="watch-size">{`${size}mm`}</span>
         <Image
           src={image}
           alt={`${brand}-${model}`}

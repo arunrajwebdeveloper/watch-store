@@ -2,8 +2,14 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer>
-      <span>copyright@2025</span>
+    <footer className="main-footer">
+      <div className="container-fluid">
+        <div className="footer-block">
+          <span className="footer-copyright">
+            WatchStore. All rights reserved &copy;2025
+          </span>
+        </div>
+      </div>
     </footer>
   );
 }

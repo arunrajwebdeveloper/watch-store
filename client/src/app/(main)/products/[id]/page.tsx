@@ -9,7 +9,7 @@ type Props = {
   };
 };
 
-const ProductDetailsPage = async ({ params }: Props) => {
+const ProductByIdPage = async ({ params }: Props) => {
   const { id } = params;
 
   const res = await api.get(`/products/${id}`);
@@ -92,4 +92,4 @@ const ProductDetailsPage = async ({ params }: Props) => {
   );
 };
 
-export default ProductDetailsPage;
+export default ProductByIdPage;

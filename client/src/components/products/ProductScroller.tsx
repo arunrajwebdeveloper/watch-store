@@ -1,11 +1,22 @@
 import React from "react";
+import api from "@/lib/axios";
+import ProductCard from "./ProductCard";
 
-type ProductScrollerProps = Readonly<{
-  title: string | null;
-  children: React.ReactNode;
-}>;
+type Props = {
+  filter?: {
+    brand?: string;
+    movementType?: string;
+    limit?: number;
+  };
+  title: string;
+};
 
-function ProductScroller({ children, title = null }: ProductScrollerProps) {
+async function ProductScroller({ filter = {}, title }: Props) {
+  const response = await api.get(`/products`, {
+    params: filter,
+  });
+  const { data: products } = response.data;
+
   return (
     <div className="product-scroller-section">
       {title && (
@@ -13,7 +24,29 @@ function ProductScroller({ children, title = null }: ProductScrollerProps) {
           <h2>{title}</h2>
         </div>
       )}
-      <div className="product-scroller">{children}</div>
+      <div className="product-scroller">
+        {products?.map((product: any) => {
+          const {
+            images,
+            _id: productId,
+            brand,
+            model,
+            currentPrice,
+            size,
+          } = product;
+          return (
+            <ProductCard
+              key={`product-scroller-item-${brand}-${model}`}
+              image={images[0]}
+              url={`/products/${productId}`}
+              brand={brand}
+              model={model}
+              price={`INR ${currentPrice}`}
+              size={size}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
