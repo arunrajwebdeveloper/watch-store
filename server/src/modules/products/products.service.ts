@@ -24,6 +24,14 @@ export class ProductsService {
     return this.productModel.find().sort({ createdAt: -1 }).limit(limit).exec();
   }
 
+  // async getProductByBrand(brand: string) {
+  //   return this.productModel
+  //     .aggregate([
+  //       { $match: { brand: { $regex: brand, $options: 'i' } } }, // Case-Insensitive Matching
+  //     ])
+  //     .exec();
+  // }
+
   async getFilterOptions() {
     try {
       const filterFields = [
@@ -54,11 +62,17 @@ export class ProductsService {
   async findAll(filter: FilterProductDto) {
     const query = {};
 
-    if (filter.brand) query['brand'] = filter.brand;
-    if (filter.color) query['color'] = filter.color;
+    if (filter.brand)
+      query['brand'] = { $regex: new RegExp(`^${filter.brand}$`, 'i') };
+    if (filter.color)
+      query['color'] = { $regex: new RegExp(`^${filter.color}$`, 'i') };
     if (filter.size) query['size'] = filter.size;
-    if (filter.gender) query['gender'] = filter.gender;
-    if (filter.movementType) query['movementType'] = filter.movementType;
+    if (filter.gender)
+      query['gender'] = { $regex: new RegExp(`^${filter.gender}$`, 'i') };
+    if (filter.movementType)
+      query['movementType'] = {
+        $regex: new RegExp(`^${filter.movementType}$`, 'i'),
+      };
     if (filter.minPrice || filter.maxPrice) {
       query['currentPrice'] = {};
       if (filter.minPrice) query['currentPrice']['$gte'] = filter.minPrice;

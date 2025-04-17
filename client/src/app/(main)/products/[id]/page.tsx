@@ -10,7 +10,7 @@ type Props = {
 };
 
 const ProductByIdPage = async ({ params }: Props) => {
-  const { id } = params;
+  const { id } = await params;
 
   const res = await api.get(`/products/${id}`);
   const { product, variants } = res.data;

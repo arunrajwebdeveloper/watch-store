@@ -1,6 +1,7 @@
 import React from "react";
 import api from "@/lib/axios";
 import Link from "next/link";
+import ProductGrid from "@/components/products/ProductGrid";
 
 type Props = {
   searchParams: {
@@ -26,40 +27,47 @@ const ProductListPage = async ({ searchParams }: Props) => {
   });
   const { data: products, page, lastPage, total } = res.data;
 
-  return (
-    <div>
-      <h3>Product list</h3>
-      <ul>
-        {products.map((product: any) => {
-          return (
-            <li key={product._id}>
-              <Link href={`/products/${product._id}`}>
-                <h4>{product.brand}</h4>
-                <div>{product.model}</div>
-                <div>{product.currentPrice}</div>
-                <img
-                  src={product.images[0]}
-                  height={100}
-                  alt={"product-image " + product._id}
-                  style={{ objectFit: "contain" }}
-                />
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+  const filterResponse = await api.get("/products/filter-options");
+  const { filters } = filterResponse.data;
 
-      {/* Simple pagination navigation */}
-      <div style={{ marginTop: "20px" }}>
-        {page > 1 && (
-          <Link href={`/products?page=${Number(page) - 1}`}>Previous</Link>
-        )}
-        <span style={{ margin: "0 10px" }}>
-          Page {page} of {lastPage}
-        </span>
-        {page < lastPage && (
-          <Link href={`/products?page=${Number(page) + 1}`}>Next</Link>
-        )}
+  return (
+    <div className="product-listing-page">
+      <div className="listing-page__header">
+        <h2 className="page-header-title">Watches</h2>
+      </div>
+      <div className="listing-page-layout">
+        <div className="layout-sidebar">
+          <h2>Filters</h2>
+          <div>
+            {filters?.map((filter: any) => {
+              return (
+                <div key={`filter-item-${filter.title}`}>
+                  <h4>{filter.title}</h4>
+                  <ul>
+                    {filter.items.map((item: any) => (
+                      <li key={`${filter.title}-items`}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="layout-content">
+          <ProductGrid products={products} />
+          {/* Simple pagination navigation */}
+          <div style={{ marginTop: "20px" }}>
+            {page > 1 && (
+              <Link href={`/products?page=${Number(page) - 1}`}>Previous</Link>
+            )}
+            <span style={{ margin: "0 10px" }}>
+              Page {page} of {lastPage}
+            </span>
+            {page < lastPage && (
+              <Link href={`/products?page=${Number(page) + 1}`}>Next</Link>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

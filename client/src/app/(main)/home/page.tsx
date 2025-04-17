@@ -30,7 +30,7 @@ export default async function HomePage() {
 
       <ProductScroller
         title="Panerai watch Collections"
-        filter={{ brand: "Panerai" }}
+        filter={{ brand: "panerai" }}
       />
 
       <Grid>
@@ -50,7 +50,7 @@ export default async function HomePage() {
 
       <ProductScroller
         title="Casio Watch Collections"
-        filter={{ brand: "Casio" }}
+        filter={{ brand: "casio" }}
       />
     </div>
   );
