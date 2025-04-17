@@ -13,7 +13,7 @@ function Header() {
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
-    window.location.href = "/login";
+    // window.location.href = "/login";
   };
 
   return (
