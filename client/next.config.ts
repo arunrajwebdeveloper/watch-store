@@ -3,7 +3,20 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ["www.casio.com", "cdn1.ethoswatches.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "www.casio.com", // e.g., "images.unsplash.com"
+        port: "",
+        pathname: "/**", // allow all paths
+      },
+      {
+        protocol: "https",
+        hostname: "cdn1.ethoswatches.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
   },
 
   async headers() {

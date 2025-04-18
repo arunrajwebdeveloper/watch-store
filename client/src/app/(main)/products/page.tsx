@@ -1,7 +1,10 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import api from "@/lib/axios";
-import Link from "next/link";
 import ProductGrid from "@/components/products/ProductGrid";
+import ProductPagination from "@/components/products/ProductPagination";
+import Dropdown from "@/components/common/Dropdown";
 
 type Props = {
   searchParams: {
@@ -19,53 +22,81 @@ type Props = {
   };
 };
 
-const ProductListPage = async ({ searchParams }: Props) => {
-  const res = await api.get("/products", {
-    params: {
-      ...searchParams,
-    },
-  });
-  const { data: products, page, lastPage, total } = res.data;
+type Product = {
+  // Define based on your backend response
+};
 
-  const filterResponse = await api.get("/products/filter-options");
-  const { filters } = filterResponse.data;
+type FilterOption = {
+  title: string;
+  items: string[];
+};
+
+const sortOptions = [
+  { label: "New Arrivals", value: "new" },
+  { label: "Price - Low to High", value: "price-lh" },
+  { label: "Price - High to Low", value: "price-hl" },
+  { label: "Best sellers", value: "bs" },
+];
+
+const ProductListPage: React.FC<Props> = ({ searchParams }) => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [filtersItems, setFiltersItems] = useState<FilterOption[]>([]);
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const productRes = await api.get("/products", { params: searchParams });
+      const { data, page, lastPage, total } = productRes.data;
+      setProducts(data);
+      setPage(page);
+      setLastPage(lastPage);
+      setTotal(total);
+
+      const filterRes = await api.get("/products/filter-options");
+      setFiltersItems(filterRes.data.filters || []);
+    };
+
+    fetchData();
+  }, [searchParams]);
 
   return (
-    <div className="product-listing-page">
-      <div className="listing-page__header">
-        <h2 className="page-header-title">Watches</h2>
-      </div>
-      <div className="listing-page-layout">
-        <div className="layout-sidebar">
-          <h2>Filters</h2>
-          <div>
-            {filters?.map((filter: any) => {
-              return (
+    <div className="container">
+      <div className="product-listing-page">
+        <div className="listing-page-layout">
+          <div className="layout-sidebar">
+            <h2>Filters</h2>
+            <div>
+              {filtersItems.map((filter) => (
                 <div key={`filter-item-${filter.title}`}>
                   <h4>{filter.title}</h4>
                   <ul>
-                    {filter.items.map((item: any) => (
-                      <li key={`${filter.title}-items`}>{item}</li>
+                    {filter.items.map((item) => (
+                      <li key={`${filter.title}-${item}`}>{item}</li>
                     ))}
                   </ul>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="layout-content">
-          <ProductGrid products={products} />
-          {/* Simple pagination navigation */}
-          <div style={{ marginTop: "20px" }}>
-            {page > 1 && (
-              <Link href={`/products?page=${Number(page) - 1}`}>Previous</Link>
-            )}
-            <span style={{ margin: "0 10px" }}>
-              Page {page} of {lastPage}
-            </span>
-            {page < lastPage && (
-              <Link href={`/products?page=${Number(page) + 1}`}>Next</Link>
-            )}
+          <div className="layout-content">
+            <div className="listing-page__header">
+              <ProductPagination page={page} lastPage={lastPage} />
+              <div className="sort-dropdown">
+                <span>Sort By:</span>
+                <Dropdown
+                  selected={{ label: "watch", value: 3 }}
+                  data={sortOptions}
+                  placeholder="Sort"
+                  onChange={(e) => console.log(e)}
+                />
+              </div>
+            </div>
+            <ProductGrid products={products} />
+            <div className="products-footer">
+              <ProductPagination page={page} lastPage={lastPage} />
+            </div>
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@ function Header() {
 
   return (
     <header className="main-header">
-      <div className="container-fluid header-container">
+      <div className="container header-container">
         <div className="header__block">
           <Link href="/">
             <h2 className="main-logo">WatchStore</h2>
