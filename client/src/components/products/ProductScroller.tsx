@@ -41,7 +41,7 @@ async function ProductScroller({ filter = {}, title }: Props) {
               url={`/products/${productId}`}
               brand={brand}
               model={model}
-              price={`INR ${currentPrice}`}
+              price={currentPrice}
               size={size}
             />
           );

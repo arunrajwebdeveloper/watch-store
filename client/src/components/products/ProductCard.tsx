@@ -14,6 +14,7 @@ type Props = {
 
 function ProductCard(props: Props) {
   const { image, url, brand, model, price, size } = props;
+
   return (
     <div className="product-card">
       <Link href={url}>

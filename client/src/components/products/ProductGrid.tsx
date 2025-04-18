@@ -12,15 +12,16 @@ function ProductGrid({ products }: { products: any }) {
           model,
           currentPrice,
           size,
+          color,
         } = product;
         return (
           <ProductCard
-            key={`product-list-item-${brand}-${model}`}
+            key={`product-item-${brand}-${model}-${color}`}
             image={images[0]}
             url={`/products/${productId}`}
             brand={brand}
             model={model}
-            price={`INR ${currentPrice}`}
+            price={currentPrice}
             size={size}
           />
         );

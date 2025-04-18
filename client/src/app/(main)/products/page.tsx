@@ -56,7 +56,9 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const productRes = await api.get("/products", { params: searchParams });
+      const productRes = await api.get("/products", {
+        params: await searchParams,
+      });
       const { data, page, lastPage, total } = productRes.data;
       setProducts(data);
       setPage(page);
@@ -70,6 +72,15 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
     fetchData();
   }, [searchParams]);
 
+  if (!products || products.length === 0)
+    return (
+      <div
+        style={{ textAlign: "center", padding: "20px 0", marginTop: "40px" }}
+      >
+        <h2>No products found.</h2>
+      </div>
+    );
+
   return (
     <div className="container">
       <div className="product-listing-page">
@@ -78,11 +89,13 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
             <h2>Filters</h2>
             <div>
               {filtersItems.map((filter) => (
-                <div key={`filter-item-${filter.title}`}>
+                <div key={`filter-main-item-${filter.title}`}>
                   <h4>{filter.title}</h4>
                   <ul>
-                    {filter.items.map((item) => (
-                      <li key={`${filter.title}-${item}`}>{item}</li>
+                    {filter.items.map((item, i) => (
+                      <li key={`filter-element-${filter.title}-${i}`}>
+                        {item}
+                      </li>
                     ))}
                   </ul>
                 </div>

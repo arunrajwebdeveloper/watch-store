@@ -15,6 +15,15 @@ async function ProductByBrandPage({ params }: Props) {
   const res = await api.get(`/products?brand=${brand}`);
   const { data: products } = res.data;
 
+  if (!products || products.length === 0)
+    return (
+      <div
+        style={{ textAlign: "center", padding: "20px 0", marginTop: "40px" }}
+      >
+        <h2>No products found.</h2>
+      </div>
+    );
+
   return (
     <div>
       <div className="brand-banner">
