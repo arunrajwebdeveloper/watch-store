@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { currencyFormat } from "@/utils/currencyFormat";
 
 type Props = {
   image: string;
@@ -26,7 +27,7 @@ function ProductCard(props: Props) {
         />
         <h2 className="brand">{brand}</h2>
         <h3 className="model">{model}</h3>
-        <h3 className="price">{price}</h3>
+        <h3 className="price">{currencyFormat(parseInt(price))}</h3>
       </Link>
     </div>
   );

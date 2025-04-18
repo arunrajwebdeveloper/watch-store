@@ -23,7 +23,7 @@ type Props = {
 };
 
 type Product = {
-  // Define based on your backend response
+  // Define based on backend response
 };
 
 type FilterOption = {
@@ -38,12 +38,21 @@ const sortOptions = [
   { label: "Best sellers", value: "bs" },
 ];
 
-const ProductListPage: React.FC<Props> = ({ searchParams }) => {
+type Option = {
+  label: string;
+  value: string | number;
+} | null;
+
+// fun type, props type || React.ReactNode return type
+// const ProductListPage: React.FC<Props> = ({ searchParams }) => {...}
+// OR
+const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filtersItems, setFiltersItems] = useState<FilterOption[]>([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [selectedSort, setSelectedSort] = useState<Option>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,10 +95,10 @@ const ProductListPage: React.FC<Props> = ({ searchParams }) => {
               <div className="sort-dropdown">
                 <span>Sort By:</span>
                 <Dropdown
-                  selected={{ label: "watch", value: 3 }}
+                  selected={selectedSort}
                   data={sortOptions}
                   placeholder="Sort"
-                  onChange={(e) => console.log(e)}
+                  onChange={(e) => setSelectedSort(e)}
                 />
               </div>
             </div>

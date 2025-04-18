@@ -1,7 +1,9 @@
-import api from "@/lib/axios";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import api from "@/lib/axios";
+import "@/styles/products/product-details.styles.css";
+import { currencyFormat } from "@/utils/currencyFormat";
 
 type Props = {
   params: {
@@ -16,78 +18,111 @@ const ProductByIdPage = async ({ params }: Props) => {
   const { product, variants } = res.data;
 
   return (
-    <div>
-      <Link href="/products">Go to products</Link>
-      <h4>{product.brand}</h4>
-      <div>{product.model}</div>
-      <div>{product.currentPrice}</div>
-      {product.images.map((img: string, i: number) => {
-        return (
-          <Image
-            key={`product-image-${i}`}
-            src={img}
-            height={100}
-            width={100}
-            style={{ objectFit: "contain" }}
-            alt={`product-image-${product.model}`}
-          />
-        );
-      })}
+    <div className="container">
+      {/* <Link href="/products">Go to products</Link> */}
 
-      {/* Color variants */}
-
-      {variants.length > 0 && (
-        <div>
-          <strong style={{ marginBottom: "20px", display: "block" }}>
-            Available Colors:
-          </strong>
-          <ul
-            style={{
-              display: "flex",
-              gap: "10px",
-              listStyle: "none",
-              padding: 0,
-            }}
-          >
-            {variants.map((variant: any) => {
-              const isSelected = variant._id === product._id;
-
-              return (
-                <li
-                  key={variant._id}
-                  style={{
-                    border: isSelected ? "2px solid black" : "1px solid #ddd",
-                    borderRadius: 8,
-                    padding: 4,
-                    cursor: "pointer",
-                  }}
-                >
-                  <Link href={`/products/${variant._id}`}>
-                    <div style={{ width: 50 }}>
-                      <Image
-                        src={variant.images[0]}
-                        alt={`variant-model-${variant.model}`}
-                        width={50}
-                        height={50}
-                        style={{ objectFit: "contain" }}
-                      />
-                      <div
-                        style={{
-                          marginTop: "4px",
-                          textAlign: "center",
-                          fontSize: 12,
-                        }}
-                      >
-                        {variant.color}
-                      </div>
-                    </div>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+      <div className="product-details-page">
+        <div className="product-showcase-images">
+          {product.images.map((img: string, i: number) => {
+            return (
+              <img
+                key={`product-image-${i}`}
+                src={img}
+                alt={`product-image-${product.model}`}
+              />
+            );
+          })}
         </div>
-      )}
+        <div className="product-basic-details">
+          <Link
+            className="product-brand-link"
+            href={`/products/brand/${product.brand}`}
+          >
+            <h4 className="product-brand">{product.brand}</h4>
+          </Link>
+          <div className="product-model">{product.model}</div>
+          <div className="product-price">
+            {currencyFormat(parseInt(product.currentPrice))}
+          </div>
+          <small>*Inclusive of all taxes</small>
+
+          {variants.length > 0 && (
+            <div className="product-varients-row">
+              <h4 className="product-varients-title">Available Colors:</h4>
+              <ul className="product-varients-list">
+                {variants.map((variant: any) => {
+                  const isSelected = variant._id === product._id;
+
+                  return (
+                    <li
+                      key={variant._id}
+                      className={`product-varients-item ${
+                        isSelected ? "selected" : ""
+                      }`}
+                    >
+                      <Link href={`/products/${variant._id}`}>
+                        <div style={{ width: 80 }}>
+                          <Image
+                            src={variant.images[0]}
+                            alt={`variant-model-${variant.model}`}
+                            width={80}
+                            height={80}
+                            style={{ objectFit: "contain" }}
+                          />
+                          <div
+                            style={{
+                              marginTop: "4px",
+                              textAlign: "center",
+                              fontSize: 12,
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            {variant.color}
+                          </div>
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+
+          <div className="product-actions">
+            <button className="btn cart-add-btn">Add to cart</button>
+            <button className="btn secondary add-wishlist-btn">
+              Add to wishlist
+            </button>
+          </div>
+
+          <div className="other-details">
+            {product.gender && (
+              <div className="detail-row">
+                <span>Gender:</span>
+                <span>{`${product.gender === "male" ? "Men" : "Women"}`}</span>
+              </div>
+            )}
+            {product.weight && (
+              <div className="detail-row">
+                <span>Weight:</span>
+                <span>{`${product.weight}g`}</span>
+              </div>
+            )}
+            {product.size && (
+              <div className="detail-row">
+                <span>Size:</span>
+                <span>{`${product.size}mm`}</span>
+              </div>
+            )}
+            {product.movementType && (
+              <div className="detail-row">
+                <span>Movement Type:</span>
+                <span>{product.movementType}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
