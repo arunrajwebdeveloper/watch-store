@@ -7,12 +7,7 @@ import ProductScroller from "@/components/products/ProductScroller";
 export default async function HomePage() {
   return (
     <div>
-      <Banner
-        url="/products/brand/rolex"
-        image="/rolex-banner.jpeg"
-        content="Welcome to WatchStore, Official Rolex Retailer in the World"
-        buttonText="Explore more"
-      />
+      <Banner url="/products/brand/casio" image="/desktop-full-metal-1.avif" />
       <Grid>
         <GridItem
           url="/products?gender=male"

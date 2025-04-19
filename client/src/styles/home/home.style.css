@@ -47,3 +47,11 @@
   font-size: 1.8rem;
   margin-bottom: 1em;
 }
+.wide-banner {
+  height: 500px;
+  width: 100%;
+}
+.wide-banner > a {
+  display: block;
+  height: 100%;
+}

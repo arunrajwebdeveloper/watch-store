@@ -1,17 +1,22 @@
 import React from "react";
-import GridItem from "./GridItem";
+import Link from "next/link";
 
 type Props = {
   url: string;
   image: string;
-  content: string;
-  buttonText: string;
 };
 
 const Banner = (props: Props) => {
   return (
     <div className="wide-banner">
-      <GridItem {...props} />
+      <Link href={props.url}>
+        <img
+          src={props.image}
+          alt="banner image"
+          className="grid-item__image"
+          style={{ objectFit: "cover", width: "100%", height: "100%" }}
+        />
+      </Link>
     </div>
   );
 };
