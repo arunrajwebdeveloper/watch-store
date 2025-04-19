@@ -29,6 +29,7 @@ type Product = {
 type FilterOption = {
   title: string;
   items: string[];
+  field: string;
 };
 
 const sortOptions = [
@@ -94,11 +95,49 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
                 <div key={`filter-main-item-${filter.title}`}>
                   <h4>{filter.title}</h4>
                   <ul>
-                    {filter.items.map((item, i) => (
-                      <li key={`filter-element-${filter.title}-${i}`}>
-                        {item}
-                      </li>
-                    ))}
+                    {filter.items.map((item, i) => {
+                      if (filter.field === "price") {
+                        return (
+                          <li key={`filter-element-${filter.title}-${i}`}>
+                            <input
+                              type="text"
+                              value={item}
+                              onChange={() => {}}
+                            />
+                          </li>
+                        );
+                      }
+                      if (filter.field === "gender") {
+                        return (
+                          <li key={`filter-element-${filter.title}-${i}`}>
+                            <input
+                              id={`${filter.title}-${item}`}
+                              type="radio"
+                              name="gender"
+                              value={item}
+                              onChange={() => {}}
+                            />
+                            <label htmlFor={`${filter.title}-${item}`}>
+                              {item}
+                            </label>
+                          </li>
+                        );
+                      }
+                      return (
+                        <li key={`filter-element-${filter.title}-${i}`}>
+                          <input
+                            id={`${filter.title}-${item}`}
+                            type="checkbox"
+                            name={item}
+                            value={item}
+                            onChange={() => {}}
+                          />
+                          <label htmlFor={`${filter.title}-${item}`}>
+                            {item}
+                          </label>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               ))}
