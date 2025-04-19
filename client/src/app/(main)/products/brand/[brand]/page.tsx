@@ -1,4 +1,3 @@
-import ProductCard from "@/components/products/ProductCard";
 import ProductGrid from "@/components/products/ProductGrid";
 import api from "@/lib/axios";
 import React from "react";

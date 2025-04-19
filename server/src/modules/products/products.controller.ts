@@ -8,6 +8,7 @@ import {
   Body,
   Query,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -15,6 +16,7 @@ import { FilterProductDto } from './dto/filter-product.dto';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -49,11 +51,18 @@ export class ProductsController {
     return this.productService.create(dto);
   }
 
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles('admin')
+  // @Put('edit/:id')
+  // update(@Param('id') id: string, @Body() dto: CreateProductDto) {
+  //   return this.productService.update(id, dto);
+  // }
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  @Put('edit/:id')
-  update(@Param('id') id: string, @Body() dto: CreateProductDto) {
-    return this.productService.update(id, dto);
+  @Patch('edit/:id')
+  update(@Param('id') id: string, @Body() dto: UpdateProductDto) {
+    return this.productService.patch(id, dto);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

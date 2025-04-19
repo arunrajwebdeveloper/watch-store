@@ -8,14 +8,25 @@ type Props = {
 
 const ProductPagination = ({ page, lastPage }: Props) => {
   const currentPage = Number(page);
-  const pageNumbers = [];
+  const pageNumbers: (number | string)[] = [];
 
-  // Center around current page: show 5 pages max (e.g., 3 4 5 6 7)
-  const start = Math.max(1, currentPage - 2);
-  const end = Math.min(lastPage, currentPage + 2);
-
-  for (let i = start; i <= end; i++) {
+  // Always show the first 3 pages or until currentPage if it's less than 3
+  for (let i = 1; i <= Math.min(3, lastPage); i++) {
     pageNumbers.push(i);
+  }
+
+  // Add ellipsis if needed before the last page
+  if (lastPage > 4) {
+    if (currentPage > 4 && currentPage < lastPage - 1) {
+      pageNumbers.push("...");
+      pageNumbers.push(currentPage);
+      pageNumbers.push("...");
+    } else {
+      pageNumbers.push("...");
+    }
+
+    // Always show the last page
+    pageNumbers.push(lastPage);
   }
 
   return (
@@ -27,15 +38,21 @@ const ProductPagination = ({ page, lastPage }: Props) => {
         </>
       )}
 
-      {pageNumbers.map((num) => (
-        <Link
-          className={`link-boxed ${num === currentPage ? "active" : ""}`}
-          key={num}
-          href={`/products?page=${num}`}
-        >
-          {num}
-        </Link>
-      ))}
+      {pageNumbers.map((num, index) =>
+        num === "..." ? (
+          <span key={`ellipsis-${index}`} className="ellipsis">
+            ...
+          </span>
+        ) : (
+          <Link
+            key={num}
+            className={`link-boxed ${num === currentPage ? "active" : ""}`}
+            href={`/products?page=${num}`}
+          >
+            {num}
+          </Link>
+        )
+      )}
 
       {currentPage < lastPage && (
         <>

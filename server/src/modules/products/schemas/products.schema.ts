@@ -26,7 +26,10 @@ export class Product {
   @Prop({ required: true })
   size: string;
 
-  @Prop({ required: true, enum: ['analog', 'automatic', 'digital', 'smart'] })
+  @Prop({
+    required: true,
+    enum: ['analog', 'automatic', 'digital', 'smart', 'chronograph'],
+  })
   movementType: string;
 
   @Prop({ required: true, enum: ['male', 'female'] })

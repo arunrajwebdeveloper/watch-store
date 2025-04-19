@@ -22,8 +22,8 @@ export class CreateProductDto {
   @IsString()
   size: string;
 
-  @IsEnum(['analog', 'automatic', 'digital', 'smart'])
-  movementType: 'analog' | 'automatic' | 'digital' | 'smart';
+  @IsEnum(['analog', 'automatic', 'digital', 'smart', 'chronograph'])
+  movementType: 'analog' | 'automatic' | 'digital' | 'smart' | 'chronograph';
 
   @IsEnum(['male', 'female'])
   gender: 'male' | 'female';

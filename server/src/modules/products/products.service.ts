@@ -8,6 +8,7 @@ import { Product, ProductDocument } from './schemas/products.schema';
 import { Model, Types } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FilterProductDto } from './dto/filter-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -126,11 +127,24 @@ export class ProductsService {
     return { product, variants };
   }
 
-  async update(id: string, dto: CreateProductDto) {
+  // async update(id: string, dto: CreateProductDto) {
+  //   const product = await this.productModel.findByIdAndUpdate(id, dto, {
+  //     new: true,
+  //   });
+  //   if (!product) throw new NotFoundException('Product not found');
+  //   return product;
+  // }
+
+  async patch(id: string, dto: UpdateProductDto) {
     const product = await this.productModel.findByIdAndUpdate(id, dto, {
       new: true,
+      runValidators: true, // Optional: ensures updated fields are validated
     });
-    if (!product) throw new NotFoundException('Product not found');
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
     return product;
   }
 

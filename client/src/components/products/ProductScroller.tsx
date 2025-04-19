@@ -33,10 +33,11 @@ async function ProductScroller({ filter = {}, title }: Props) {
             model,
             currentPrice,
             size,
+            color,
           } = product;
           return (
             <ProductCard
-              key={`product-scroller-item-${brand}-${model}`}
+              key={`product-scroller-item-${brand}-${model}-${color}`}
               image={images[0]}
               url={`/products/${productId}`}
               brand={brand}
