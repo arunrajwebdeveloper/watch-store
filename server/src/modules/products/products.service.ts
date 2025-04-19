@@ -38,20 +38,44 @@ export class ProductsService {
       const filterFields = [
         { title: 'Brands', field: 'brand' },
         { title: 'Colors', field: 'color' },
-        { title: 'Price', field: 'currentPrice' },
         { title: 'Size', field: 'size' },
         { title: 'Movement Type', field: 'movementType' },
         { title: 'Gender', field: 'gender' },
       ];
 
-      const results = await Promise.all(
-        filterFields.map((f) => this.productModel.distinct(f.field)),
-      );
+      const results = await Promise.all([
+        this.productModel
+          .findOne()
+          .sort({ currentPrice: 1 })
+          .select('currentPrice')
+          .lean(),
+        this.productModel
+          .findOne()
+          .sort({ currentPrice: -1 })
+          .select('currentPrice')
+          .lean(),
+        ...filterFields.map((f) => this.productModel.distinct(f.field)),
+      ]);
 
-      const filters = filterFields.map((f, idx) => ({
-        title: f.title,
-        items: results[idx],
-      }));
+      const minPriceDoc = results[0] as { currentPrice?: number } | null;
+      const maxPriceDoc = results[1] as { currentPrice?: number } | null;
+      const distinctResults = results.slice(2) as unknown[][];
+
+      const filters = [
+        {
+          title: 'Price',
+          items: [
+            minPriceDoc?.currentPrice ?? 0,
+            maxPriceDoc?.currentPrice ?? 0,
+          ],
+          field: 'price',
+        },
+        ...filterFields.map((f, idx) => ({
+          title: f.title,
+          items: distinctResults[idx],
+          field: f.field,
+        })),
+      ];
 
       return { filters };
     } catch (error) {
