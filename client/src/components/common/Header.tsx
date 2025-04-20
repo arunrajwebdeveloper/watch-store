@@ -23,28 +23,27 @@ function Header() {
           <div className="top-header-block">
             <div></div>
             <div className="top-header-actions">
-              {isAuthenticated && user && (
-                <Link className="top-header-link" href={"/wishlist"}>
-                  <svg
-                    width="800px"
-                    height="800px"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <g>
-                      <path
-                        d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z"
-                        stroke="#000000"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </g>
-                  </svg>
-                  <span>Wishlist</span>
-                </Link>
-              )}
+              <Link className="top-header-link" href={"/wishlist"}>
+                <svg
+                  width="800px"
+                  height="800px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g>
+                    <path
+                      d="M12 7.69431C10 2.99988 3 3.49988 3 9.49991C3 15.4999 12 20.5001 12 20.5001C12 20.5001 21 15.4999 21 9.49991C21 3.49988 14 2.99988 12 7.69431Z"
+                      stroke="#000000"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </g>
+                </svg>
+                <span>Wishlist</span>
+              </Link>
+
               <Link className="top-header-link" href={"/cart"}>
                 <svg
                   width="800px"

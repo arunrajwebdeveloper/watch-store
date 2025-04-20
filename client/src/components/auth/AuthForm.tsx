@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/store";
 import {
   loginUser,
@@ -18,6 +18,9 @@ export default function AuthForm({ name }: PropType) {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get("redirect") || "/home";
+
   const isLogin = name === "login";
   const isRegister = name === "register";
   const isResetPassword = name === "reset-password";
@@ -27,6 +30,7 @@ export default function AuthForm({ name }: PropType) {
     try {
       if (isLogin) {
         await dispatch(loginUser(form)).unwrap();
+        return router.push(redirectPath);
       } else if (isRegister) {
         await dispatch(registerUser(form)).unwrap();
       } else if (isResetPassword) {
