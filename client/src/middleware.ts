@@ -24,6 +24,7 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
+// '/product/:path*', // 👈 this matches /product/[123], /product/[abc] etc.
 export const config = {
   matcher: ["/orders", "/wishlist", "/profile", "/login", "/register"],
 };
