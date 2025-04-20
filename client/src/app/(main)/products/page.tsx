@@ -55,8 +55,6 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
   const [total, setTotal] = useState(0);
   const [selectedSort, setSelectedSort] = useState<Option>(null);
 
-  console.log("filtersItems :>> ", filtersItems);
-
   useEffect(() => {
     const fetchData = async () => {
       const productRes = await api.get("/products", {

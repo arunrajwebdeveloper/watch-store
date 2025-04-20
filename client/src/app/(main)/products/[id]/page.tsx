@@ -5,6 +5,7 @@ import api from "@/lib/axios";
 import "@/styles/products/product-details.styles.css";
 import { currencyFormat } from "@/utils/currencyFormat";
 import AddToCartButton from "@/components/products/AddToCartButton";
+import AddToWishlistButton from "@/components/products/AddToWishlistButton";
 
 type Props = {
   params: {
@@ -91,9 +92,7 @@ const ProductByIdPage = async ({ params }: Props) => {
 
           <div className="product-actions">
             <AddToCartButton productId={product._id} />
-            <button className="btn secondary add-wishlist-btn">
-              Add to wishlist
-            </button>
+            <AddToWishlistButton productId={product._id} />
           </div>
 
           <div className="other-details">

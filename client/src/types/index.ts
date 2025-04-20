@@ -29,3 +29,7 @@ export interface CartUpdateInput {
 export interface CartInput extends CartUpdateInput {
   productId: string;
 }
+
+export interface WishlistInput {
+  productId: string;
+}
