@@ -11,6 +11,8 @@ function Header() {
   const user = useAppSelector((state) => state.auth.user);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
+  const cartItemsCount = useAppSelector((state) => state.cart.cartItemCount);
+
   const handleLogout = async () => {
     await dispatch(logoutUser());
     // window.location.href = "/login";
@@ -62,7 +64,7 @@ function Header() {
                     />
                   </g>
                 </svg>
-                <span>Cart</span>
+                <span>Cart - {cartItemsCount}</span>
               </Link>
               {!isAuthenticated && !user && (
                 <>

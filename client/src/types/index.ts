@@ -16,3 +16,16 @@ export interface AuthState {
   isAuthenticated: boolean;
   loading: boolean;
 }
+
+export interface CartState {
+  cartItems: any[];
+  cartItemCount: number;
+}
+
+export interface CartUpdateInput {
+  quantity: number;
+}
+
+export interface CartInput extends CartUpdateInput {
+  productId: string;
+}
