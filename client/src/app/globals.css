@@ -87,7 +87,12 @@ header.main-header {
   height: 54px;
 }
 h2.main-logo {
-  font-size: 1.2rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+h2.main-logo span.colored {
+  color: #09ad17;
 }
 .header-menu nav.header-nav a {
   font-size: 1rem;

@@ -118,7 +118,9 @@ function Header() {
         <div className="container header-container">
           <div className="header__block">
             <Link href="/">
-              <h2 className="main-logo">WatchStore</h2>
+              <h2 className="main-logo">
+                Watch<span className="colored">Store</span>
+              </h2>
             </Link>
             <div className="header-menu">
               <nav className="header-nav">
