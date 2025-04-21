@@ -49,8 +49,7 @@
   object-fit: cover;
 }
 .auth__form-block {
-  padding: 100px 50px 20px 50px;
-  height: 100%;
+  padding: 100px 50px 50px 50px;
   width: 100%;
 }
 

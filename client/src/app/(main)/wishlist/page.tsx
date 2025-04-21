@@ -10,7 +10,7 @@ function Wishlist() {
     <div>
       <h2>Wishlist</h2>
       <div className="product-list-grid">
-        {user?.wishList?.length > 0 ? (
+        {user && user?.wishList?.length > 0 ? (
           user?.wishList?.map((list: any) => {
             const {
               images,

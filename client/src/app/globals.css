@@ -284,6 +284,11 @@ a.btn.secondary {
 /* .listing-page-layout .product-card {
   width: calc(100% - 2rem);
 } */
+
+.product-listing-page {
+  padding: 40px 0;
+}
+
 .product-list-grid {
   display: flex;
   flex-wrap: wrap;

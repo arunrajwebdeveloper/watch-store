@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "@/lib/axios";
 import { AuthState, LoginInput, RegisterInput, ResetInput } from "@/types";
+import { getCart } from "./cartSlice";
 
 const initialState: AuthState = {
   user: null,
@@ -10,8 +11,12 @@ const initialState: AuthState = {
 
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async (data: LoginInput) => {
+  async (data: LoginInput, { dispatch }) => {
     const res = await api.post("/auth/login", data); // sets cookies server-side
+
+    // ✅ Trigger cart sync after login
+    await dispatch(getCart());
+
     return res.data; // { user }
   }
 );
@@ -32,10 +37,17 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
-export const refreshUser = createAsyncThunk("auth/refresh", async () => {
-  const res = await api.post("/auth/refresh"); // re-issues token in cookie
-  return res.data;
-});
+export const refreshUser = createAsyncThunk(
+  "auth/refresh",
+  async (_, { dispatch }) => {
+    const res = await api.post("/auth/refresh"); // re-issues token in cookie
+
+    // ✅ Trigger cart sync on refresh too
+    await dispatch(getCart());
+
+    return res.data;
+  }
+);
 
 export const logoutUser = createAsyncThunk("auth/logout", async () => {
   await api.post("/auth/logout"); // clears cookie

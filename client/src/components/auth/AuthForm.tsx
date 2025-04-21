@@ -29,12 +29,14 @@ export default function AuthForm({ name }: PropType) {
     e.preventDefault();
     try {
       if (isLogin) {
-        await dispatch(loginUser(form)).unwrap();
+        const { email, password } = form;
+        await dispatch(loginUser({ email, password })).unwrap();
         return router.push(redirectPath);
       } else if (isRegister) {
         await dispatch(registerUser(form)).unwrap();
       } else if (isResetPassword) {
-        await dispatch(resetPassword(form)).unwrap();
+        const { email } = form;
+        await dispatch(resetPassword({ email })).unwrap();
       }
       router.push("/home");
     } catch (err) {

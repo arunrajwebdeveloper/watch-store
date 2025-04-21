@@ -1,5 +1,7 @@
 import axios from "axios";
 import { API_BASE_URL } from "@/constants";
+import { store } from "@/store"; // your redux store
+import { startLoading, stopLoading } from "@/store/slices/loadingSlice";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -20,9 +22,27 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
+// 🔄 Show spinner on request
+api.interceptors.request.use(
+  (config) => {
+    // Dispatch startLoading before each request if no requests are currently in progress
+    if (!store.getState().loading.isLoading) {
+      store.dispatch(startLoading());
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    store.dispatch(stopLoading());
+    return response;
+  },
   async (error) => {
+    store.dispatch(stopLoading());
     const originalRequest = error.config;
 
     if (

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "@/lib/axios";
 import { CartInput, CartState, CartUpdateInput } from "@/types";
+import { logoutUser } from "./authSlice";
 
 const initialState: CartState = {
   cartItems: [],
@@ -64,6 +65,11 @@ const cartSlice = createSlice({
         state.cartItemCount = action.payload?.items?.length ?? 0;
       })
       .addCase(clearCart.fulfilled, (state) => {
+        state.cartItems = [];
+        state.cartItemCount = 0;
+      })
+      // ✅ Clear cart when user logs out
+      .addCase(logoutUser.fulfilled, (state) => {
         state.cartItems = [];
         state.cartItemCount = 0;
       });
