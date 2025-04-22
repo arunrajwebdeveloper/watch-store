@@ -2,14 +2,12 @@ import {
   Injectable,
   ConflictException,
   NotFoundException,
-  BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/users.schema';
 import { SignupDto } from '../auth/dto/signup.dto';
 import { AddressDto } from './dto/address.dto';
-import { WishlistDto } from './dto/wishlist.dto';
 
 @Injectable()
 export class UsersService {
@@ -36,7 +34,6 @@ export class UsersService {
     const user = await this.userModel
       .findById(id)
       .select('-password')
-      .populate('wishList.product')
       .lean()
       .exec();
     if (!user) {
@@ -62,32 +59,32 @@ export class UsersService {
     };
   }
 
-  async addToWishlist(userId: string, dto: WishlistDto) {
-    const user = await this.userModel.findById(userId);
+  // async addToWishlist(userId: string, dto: WishlistDto) {
+  //   const user = await this.userModel.findById(userId);
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  //   if (!user) {
+  //     throw new NotFoundException('User not found');
+  //   }
 
-    if (!user.wishList) {
-      user.wishList = [];
-    }
+  //   if (!user.wishList) {
+  //     user.wishList = [];
+  //   }
 
-    const alreadyExists = user.wishList.some(
-      (item) => item.product.toString() === dto.productId,
-    );
+  //   const alreadyExists = user.wishList.some(
+  //     (item) => item.product.toString() === dto.productId,
+  //   );
 
-    if (alreadyExists) {
-      throw new BadRequestException('Product is already in the wishlist');
-    }
+  //   if (alreadyExists) {
+  //     throw new BadRequestException('Product is already in the wishlist');
+  //   }
 
-    user.wishList.push({
-      product: new Types.ObjectId(dto.productId),
-      addedAt: new Date(),
-    });
+  //   user.wishList.push({
+  //     product: new Types.ObjectId(dto.productId),
+  //     addedAt: new Date(),
+  //   });
 
-    await user.save();
+  //   await user.save();
 
-    return { message: 'Product added to wishlist' };
-  }
+  //   return { message: 'Product added to wishlist' };
+  // }
 }
