@@ -57,6 +57,8 @@ const cartSlice = createSlice({
       .addCase(addToCart.fulfilled, (state, action) => {
         const cartList = action.payload?.items;
 
+        console.log("cartList :>> ", cartList);
+
         state.cartItems = cartList;
         state.cartItemCount = cartList?.length ?? 0;
       })

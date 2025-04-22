@@ -42,7 +42,9 @@ export class CartService {
       }
     }
 
-    return cart.save();
+    await cart.save();
+
+    return this.getUserCart(userId);
   }
 
   async updateQuantity(userId: string, productId: string, dto: UpdateCartDto) {
@@ -53,7 +55,9 @@ export class CartService {
     if (!item) throw new NotFoundException('Product not in cart');
 
     item.quantity = dto.quantity;
+
     await cart.save();
+
     return this.getUserCart(userId);
   }
 
@@ -68,7 +72,7 @@ export class CartService {
 
     await cart.save();
 
-    return { productId };
+    return this.getUserCart(userId);
   }
 
   async clearCart(userId: string) {
@@ -77,6 +81,9 @@ export class CartService {
     if (!cart) throw new NotFoundException('Cart not found');
 
     cart.items = [];
-    return cart.save();
+
+    await cart.save();
+
+    return this.getUserCart(userId);
   }
 }
