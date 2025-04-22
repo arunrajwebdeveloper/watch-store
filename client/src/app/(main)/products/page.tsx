@@ -153,10 +153,38 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
                   onChange={(e) => setSelectedSort(e)}
                 />
               </div>
+              <div className="sort-dropdown">
+                <span>Page</span>
+                <Dropdown
+                  selected={{ value: 10, label: "10" }}
+                  data={[
+                    { value: 10, label: "10" },
+                    { value: 20, label: "20" },
+                    { value: 40, label: "40" },
+                  ]}
+                  placeholder="Count"
+                  onChange={(e) => {}}
+                />
+                <span>of {total}</span>
+              </div>
             </div>
             <ProductGrid products={products} />
             <div className="products-footer">
               <ProductPagination page={page} lastPage={lastPage} />
+              <div className="sort-dropdown">
+                <span>Page</span>
+                <Dropdown
+                  selected={{ value: 10, label: "10" }}
+                  data={[
+                    { value: 10, label: "10" },
+                    { value: 20, label: "20" },
+                    { value: 40, label: "40" },
+                  ]}
+                  placeholder="Count"
+                  onChange={(e) => {}}
+                />
+                <span>of {total}</span>
+              </div>
             </div>
           </div>
         </div>

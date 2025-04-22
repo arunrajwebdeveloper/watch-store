@@ -514,6 +514,7 @@ a.btn.secondary {
   align-items: center;
   height: 50px;
   margin-top: 40px;
+  justify-content: space-between;
 }
 .sort-dropdown {
   display: flex;
