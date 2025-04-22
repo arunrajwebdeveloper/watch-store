@@ -228,6 +228,12 @@ span.count-badge {
   overflow-y: auto;
   width: 100%;
   flex: 1;
+  display: flex;
+}
+.cart-drop-scroll .emty-cart {
+  font-size: 1rem;
+  color: #666;
+  margin: auto;
 }
 ul.ul-cart-list li {
   padding: 8px 20px;
@@ -260,6 +266,10 @@ ul.ul-cart-list li button.rmv {
   height: 24px;
   border: 0;
   background-color: transparent;
+}
+ul.ul-cart-list li .counts button {
+  background-color: #eee;
+  border: 1px solid #eee;
 }
 
 ul.ul-cart-list li .counts button svg,
