@@ -49,6 +49,7 @@ button:not(:disabled) {
 }
 button:disabled {
   cursor: not-allowed;
+  opacity: 0.8;
 }
 
 ::-webkit-scrollbar-track {
@@ -95,9 +96,11 @@ h2.main-logo span.colored {
   color: #09ad17;
 }
 .header-menu nav.header-nav a {
-  font-size: 1rem;
+  font-size: 0.8rem;
   outline: 0;
   margin: 0 0.8em;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
 header.top-header {
@@ -208,6 +211,7 @@ span.count-badge {
   align-items: center;
   padding: 0 20px;
   border-bottom: 1px solid #eee;
+  justify-content: space-between;
 }
 .cart-drop-header h3 {
   font-size: 1rem;
@@ -220,9 +224,10 @@ span.count-badge {
   width: 100%;
 }
 .cart-drop-scroll {
-  max-height: calc(100% - 90px);
+  max-height: calc(500px - 90px);
   overflow-y: auto;
   width: 100%;
+  flex: 1;
 }
 ul.ul-cart-list li {
   padding: 8px 20px;

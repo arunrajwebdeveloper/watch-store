@@ -2,12 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
 import cartReducer from "./slices/cartSlice";
 import wishlistReducer from "./slices/wishlistSlice";
-import loadingReducer from "./slices/loadingSlice";
+// import loadingReducer from "./slices/loadingSlice";
 import { TypedUseSelectorHook, useSelector, useDispatch } from "react-redux";
 
 export const store = configureStore({
   reducer: {
-    loading: loadingReducer,
+    // loading: loadingReducer,
     auth: authReducer,
     cart: cartReducer,
     wishlist: wishlistReducer,

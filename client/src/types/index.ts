@@ -20,14 +20,12 @@ export interface AuthState {
 export interface CartState {
   cartItems: any[];
   cartItemCount: number;
+  isLoading: boolean;
 }
 
-export interface CartUpdateInput {
-  quantity: number;
-}
-
-export interface CartInput extends CartUpdateInput {
+export interface CartInput {
   productId: string;
+  quantity: number;
 }
 
 export interface WishlistInput {

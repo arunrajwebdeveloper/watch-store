@@ -53,6 +53,10 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [pageLimit, setPageLimit] = useState<Option>({
+    value: 10,
+    label: "10",
+  });
   const [selectedSort, setSelectedSort] = useState<Option>(null);
 
   useEffect(() => {
@@ -60,11 +64,15 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
       const productRes = await api.get("/products", {
         params: await searchParams,
       });
-      const { data, page, lastPage, total } = productRes.data;
+      const { data, page, lastPage, total, limit } = productRes.data;
       setProducts(data);
       setPage(page);
       setLastPage(lastPage);
       setTotal(total);
+      setPageLimit({
+        value: parseInt(limit),
+        label: limit?.toString(),
+      });
 
       const filterRes = await api.get("/products/filter-options");
       setFiltersItems(filterRes.data.filters || []);
@@ -156,14 +164,14 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
               <div className="sort-dropdown">
                 <span>Page</span>
                 <Dropdown
-                  selected={{ value: 10, label: "10" }}
+                  selected={pageLimit}
                   data={[
                     { value: 10, label: "10" },
                     { value: 20, label: "20" },
                     { value: 40, label: "40" },
                   ]}
                   placeholder="Count"
-                  onChange={(e) => {}}
+                  onChange={(e) => setPageLimit(e)}
                 />
                 <span>of {total}</span>
               </div>
@@ -174,14 +182,14 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
               <div className="sort-dropdown">
                 <span>Page</span>
                 <Dropdown
-                  selected={{ value: 10, label: "10" }}
+                  selected={pageLimit}
                   data={[
                     { value: 10, label: "10" },
                     { value: 20, label: "20" },
                     { value: 40, label: "40" },
                   ]}
                   placeholder="Count"
-                  onChange={(e) => {}}
+                  onChange={(e) => setPageLimit(e)}
                 />
                 <span>of {total}</span>
               </div>

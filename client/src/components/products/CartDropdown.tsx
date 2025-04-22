@@ -1,30 +1,74 @@
-import { useAppSelector } from "@/store";
-import Image from "next/image";
 import React from "react";
+import Image from "next/image";
+import { useAppDispatch, useAppSelector } from "@/store";
+import {
+  clearCart,
+  removeCartItem,
+  updateCartItem,
+} from "@/store/slices/cartSlice";
 
 function CartDropdown() {
   const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const isLoading = useAppSelector((state) => state.cart.isLoading);
+  const dispatch = useAppDispatch();
+
+  const handleQuantity = (
+    { quantity, productId }: { quantity: number; productId: string },
+    type = "INC"
+  ) => {
+    if (type === "DEC") {
+      if (quantity > 1) {
+        dispatch(
+          updateCartItem({
+            quantity: quantity - 1,
+            productId,
+          })
+        );
+      } else {
+        dispatch(removeCartItem(productId));
+      }
+    } else if (type === "INC") {
+      dispatch(
+        updateCartItem({
+          quantity: quantity + 1,
+          productId,
+        })
+      );
+    }
+  };
+
   return (
-    <div style={{ height: "100%" }}>
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
       <div className="cart-drop-header">
         <h3>Cart</h3>
+        <span onClick={() => dispatch(clearCart())}>Clear cart</span>
       </div>
       <div className="cart-drop-scroll">
         <ul className="ul-cart-list">
-          {cartItems?.length > 0 ? (
+          {isLoading ? (
+            <span>Fetching...</span>
+          ) : cartItems?.length > 0 ? (
             cartItems?.map(({ product, quantity }) => {
-              // console.log("item :>> ", product);
               return (
-                <li>
+                <li key={product._id}>
                   <div className="item-details">
                     <div className="basic">
                       <div className="thumbnail">
                         <Image
                           src={product?.images[0]}
-                          alt={`cart-list-${product._id}`}
+                          alt={`Product ${product?.brand} ${product?.model}`}
                           width={50}
                           height={50}
                           style={{ objectFit: "contain" }}
+                          loading="lazy"
+                          priority={false}
                         />
                       </div>
                       <div>
@@ -34,7 +78,17 @@ function CartDropdown() {
                     </div>
                     <div className="actions">
                       <div className="counts">
-                        <button onClick={() => {}}>
+                        <button
+                          onClick={() =>
+                            handleQuantity(
+                              {
+                                quantity,
+                                productId: product._id,
+                              },
+                              "DEC"
+                            )
+                          }
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="800px"
@@ -54,12 +108,18 @@ function CartDropdown() {
                             </g>
                           </svg>
                         </button>
-                        <input
-                          type="text"
-                          value={quantity}
-                          onChange={() => {}}
-                        />
-                        <button onClick={() => {}}>
+                        <input type="text" value={quantity} readOnly />
+                        <button
+                          onClick={() =>
+                            handleQuantity(
+                              {
+                                quantity,
+                                productId: product._id,
+                              },
+                              "INC"
+                            )
+                          }
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="800px"
@@ -80,7 +140,10 @@ function CartDropdown() {
                           </svg>
                         </button>
                       </div>
-                      <button onClick={() => {}} className="rmv">
+                      <button
+                        onClick={() => dispatch(removeCartItem(product._id))}
+                        className="rmv"
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="800px"

@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "@/lib/axios";
-import { CartInput, CartState, CartUpdateInput } from "@/types";
+import { CartInput, CartState } from "@/types";
 import { logoutUser } from "./authSlice";
 
 const initialState: CartState = {
   cartItems: [],
   cartItemCount: 0,
+  isLoading: false,
 };
 
 export const getCart = createAsyncThunk("cart/get", async () => {
@@ -23,8 +24,9 @@ export const addToCart = createAsyncThunk(
 
 export const updateCartItem = createAsyncThunk(
   "cart/update",
-  async (data: CartUpdateInput) => {
-    const res = await api.patch("/cart/update", data);
+  async (data: CartInput) => {
+    const { productId, quantity } = data;
+    const res = await api.patch(`/cart/update/${productId}`, { quantity });
     return res.data;
   }
 );
@@ -48,19 +50,31 @@ const cartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(getCart.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(getCart.fulfilled, (state, action) => {
         const cartList = action.payload?.items;
 
         state.cartItems = cartList;
         state.cartItemCount = cartList?.length ?? 0;
+        state.isLoading = false;
+      })
+      .addCase(getCart.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(addToCart.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         const cartList = action.payload?.items;
 
-        console.log("cartList :>> ", cartList);
-
         state.cartItems = cartList;
         state.cartItemCount = cartList?.length ?? 0;
+        state.isLoading = false;
+      })
+      .addCase(addToCart.rejected, (state) => {
+        state.isLoading = false;
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
         const cartList = action.payload?.items;
@@ -78,6 +92,7 @@ const cartSlice = createSlice({
         state.cartItems = [];
         state.cartItemCount = 0;
       })
+
       // ✅ Clear cart when user logs out
       .addCase(logoutUser.fulfilled, (state) => {
         state.cartItems = [];

@@ -122,6 +122,7 @@ export class ProductsService {
       data,
       total,
       page,
+      limit,
       lastPage: Math.ceil(total / limit),
     };
   }
