@@ -6,36 +6,47 @@ import ProductCard from "@/components/products/ProductCard";
 
 function Wishlist() {
   const user = useAppSelector((state) => state.auth.user);
+  const wishlist = useAppSelector((state) => state.wishlist.wishlistItems);
+  const isLoading = useAppSelector((state) => state.wishlist.isLoading);
+
   return (
-    <div>
-      <h2>Wishlist</h2>
-      <div className="product-list-grid">
-        {user && user?.wishList?.length > 0 ? (
-          user?.wishList?.map((list: any) => {
-            const {
-              images,
-              _id: productId,
-              brand,
-              model,
-              currentPrice,
-              size,
-              color,
-            } = list?.product;
-            return (
-              <ProductCard
-                key={`product-wishlist-item-${brand}-${model}-${color}`}
-                image={images[0]}
-                url={`/products/${productId}`}
-                brand={brand}
-                model={model}
-                price={currentPrice}
-                size={size}
-              />
-            );
-          })
-        ) : (
-          <span>No wishlist items</span>
-        )}
+    <div className="container">
+      <div className="product-listing-page">
+        <div className="page-header">
+          <h2>Wishlist</h2>
+        </div>
+        <div className="listing-page-layout">
+          <div className="product-list-grid">
+            {isLoading ? (
+              <span>Fetching...</span>
+            ) : user && wishlist?.length > 0 ? (
+              wishlist?.map((list: any) => {
+                const {
+                  images,
+                  _id: productId,
+                  brand,
+                  model,
+                  currentPrice,
+                  size,
+                  color,
+                } = list?.product;
+                return (
+                  <ProductCard
+                    key={`product-wishlist-item-${brand}-${model}-${color}`}
+                    image={images[0]}
+                    url={`/products/${productId}`}
+                    brand={brand}
+                    model={model}
+                    price={currentPrice}
+                    size={size}
+                  />
+                );
+              })
+            ) : (
+              <span>No wishlist items</span>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

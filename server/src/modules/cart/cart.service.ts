@@ -66,7 +66,9 @@ export class CartService {
       (item) => item.product.toString() !== productId,
     );
 
-    return cart.save();
+    await cart.save();
+
+    return { productId };
   }
 
   async clearCart(userId: string) {

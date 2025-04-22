@@ -446,3 +446,8 @@ a.btn.secondary {
     width: 320px;
   }
 }
+
+.page-header {
+  padding: 20px 0;
+  margin-bottom: 20px;
+}

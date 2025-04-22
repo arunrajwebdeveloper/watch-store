@@ -33,3 +33,8 @@ export interface CartInput extends CartUpdateInput {
 export interface WishlistInput {
   productId: string;
 }
+
+export interface WishlistState {
+  wishlistItems: any[];
+  isLoading: boolean;
+}

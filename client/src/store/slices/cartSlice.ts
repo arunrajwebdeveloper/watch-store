@@ -49,20 +49,28 @@ const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getCart.fulfilled, (state, action) => {
-        state.cartItems = action.payload?.items;
-        state.cartItemCount = action.payload?.items?.length ?? 0;
+        const cartList = action.payload?.items;
+
+        state.cartItems = cartList;
+        state.cartItemCount = cartList?.length ?? 0;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
-        state.cartItems = action.payload?.items;
-        state.cartItemCount = action.payload?.items?.length;
+        const cartList = action.payload?.items;
+
+        state.cartItems = cartList;
+        state.cartItemCount = cartList?.length ?? 0;
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
-        state.cartItems = action.payload.items;
-        state.cartItemCount = action.payload?.items?.length ?? 0;
+        const cartList = action.payload?.items;
+
+        state.cartItems = cartList;
+        state.cartItemCount = cartList?.length ?? 0;
       })
       .addCase(removeCartItem.fulfilled, (state, action) => {
-        state.cartItems = action.payload.items;
-        state.cartItemCount = action.payload?.items?.length ?? 0;
+        const cartList = action.payload?.items;
+
+        state.cartItems = cartList;
+        state.cartItemCount = cartList?.length ?? 0;
       })
       .addCase(clearCart.fulfilled, (state) => {
         state.cartItems = [];

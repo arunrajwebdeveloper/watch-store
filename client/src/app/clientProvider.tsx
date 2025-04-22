@@ -6,6 +6,7 @@ import { refreshUser } from "@/store/slices/authSlice";
 import { usePathname } from "next/navigation";
 import { getCart } from "@/store/slices/cartSlice";
 import GlobalSpinner from "@/components/common/GlobalSpinner";
+import { getWishlist } from "@/store/slices/wishlistSlice";
 
 const ClientProvider = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
@@ -18,6 +19,7 @@ const ClientProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     dispatch(refreshUser());
     dispatch(getCart());
+    dispatch(getWishlist());
   }, [dispatch]);
 
   return (

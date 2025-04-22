@@ -20,7 +20,7 @@ export class WishlistService {
   }
 
   async addToWishlist(userId: string, dto: AddToWishlistDto) {
-    let wishlist = await this.wishlistModel.findOne({ user: userId }).exec();
+    let wishlist = await this.wishlistModel.findOne({ user: userId });
 
     const productObjectId = new Types.ObjectId(dto.productId);
 
@@ -35,16 +35,22 @@ export class WishlistService {
       );
 
       if (existingItem) {
+        // Remove item
         wishlist.items = wishlist.items.filter(
           (item) => item.product.toString() !== dto.productId,
         );
-        return wishlist.save();
       } else {
+        // Add item
         wishlist.items.push({ product: productObjectId });
       }
     }
 
-    return wishlist.save();
+    await wishlist.save();
+
+    // Populate and return the full updated wishlist
+    const updatedWishlist = await this.getWishlist(userId);
+
+    return updatedWishlist;
   }
 
   async removeFromWishlist(userId: string, productId: string) {
@@ -56,7 +62,12 @@ export class WishlistService {
       (item) => item.product.toString() !== productId,
     );
 
-    return wishlist.save();
+    await wishlist.save();
+
+    // Populate and return the full updated wishlist
+    const updatedWishlist = await this.getWishlist(userId);
+
+    return updatedWishlist;
   }
 
   async clearWishlist(userId: string) {

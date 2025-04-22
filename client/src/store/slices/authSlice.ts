@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "@/lib/axios";
 import { AuthState, LoginInput, RegisterInput, ResetInput } from "@/types";
 import { getCart } from "./cartSlice";
+import { getWishlist } from "./wishlistSlice";
 
 const initialState: AuthState = {
   user: null,
@@ -14,8 +15,9 @@ export const loginUser = createAsyncThunk(
   async (data: LoginInput, { dispatch }) => {
     const res = await api.post("/auth/login", data); // sets cookies server-side
 
-    // ✅ Trigger cart sync after login
+    // ✅ Trigger cart / wishlist sync after login
     await dispatch(getCart());
+    await dispatch(getWishlist());
 
     return res.data; // { user }
   }
@@ -42,8 +44,9 @@ export const refreshUser = createAsyncThunk(
   async (_, { dispatch }) => {
     const res = await api.post("/auth/refresh"); // re-issues token in cookie
 
-    // ✅ Trigger cart sync on refresh too
+    // ✅ Trigger cart / wishlist sync on refresh too
     await dispatch(getCart());
+    await dispatch(getWishlist());
 
     return res.data;
   }
