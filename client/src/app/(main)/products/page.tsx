@@ -5,6 +5,8 @@ import api from "@/lib/axios";
 import ProductGrid from "@/components/products/ProductGrid";
 import ProductPagination from "@/components/products/ProductPagination";
 import Dropdown from "@/components/common/Dropdown";
+import SortDropdown from "@/components/products/SortDropdown";
+import ProductFilters from "@/components/products/ProductFilters";
 
 type Props = {
   searchParams: {
@@ -26,18 +28,13 @@ type Product = {
   // Define based on backend response
 };
 
-type FilterOption = {
+export type FilterOptionItem = {
   title: string;
-  items: string[];
+  items: string[] | number[];
   field: string;
 };
 
-const sortOptions = [
-  { label: "New Arrivals", value: "new" },
-  { label: "Price - Low to High", value: "price-lh" },
-  { label: "Price - High to Low", value: "price-hl" },
-  { label: "Best sellers", value: "bs" },
-];
+export type FilterOptions = Record<string, FilterOptionItem>;
 
 type Option = {
   label: string;
@@ -49,7 +46,7 @@ type Option = {
 // OR
 const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [filtersItems, setFiltersItems] = useState<FilterOption[]>([]);
+  const [filtersItems, setFiltersItems] = useState<FilterOptions | null>(null);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -57,7 +54,6 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
     value: 10,
     label: "10",
   });
-  const [selectedSort, setSelectedSort] = useState<Option>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,93 +71,32 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
       });
 
       const filterRes = await api.get("/products/filter-options");
-      setFiltersItems(filterRes.data.filters || []);
+      setFiltersItems(filterRes.data || {});
     };
 
     fetchData();
   }, [searchParams]);
-
-  if (!products || products.length === 0)
-    return (
-      <div
-        style={{ textAlign: "center", padding: "20px 0", marginTop: "40px" }}
-      >
-        <h2>No products found.</h2>
-      </div>
-    );
 
   return (
     <div className="container">
       <div className="product-listing-page">
         <div className="listing-page-layout">
           <div className="layout-sidebar">
-            <h2>Filters</h2>
-            <div>
-              {filtersItems.map((filter) => (
-                <div key={`filter-main-item-${filter.title}`}>
-                  <h4>{filter.title}</h4>
-                  <ul>
-                    {filter.items.map((item, i) => {
-                      if (filter.field === "price") {
-                        return (
-                          <li key={`filter-element-${filter.title}-${i}`}>
-                            <input
-                              type="text"
-                              value={item}
-                              onChange={() => {}}
-                            />
-                          </li>
-                        );
-                      }
-                      if (filter.field === "gender") {
-                        return (
-                          <li key={`filter-element-${filter.title}-${i}`}>
-                            <input
-                              id={`${filter.title}-${item}`}
-                              type="radio"
-                              name="gender"
-                              value={item}
-                              onChange={() => {}}
-                            />
-                            <label htmlFor={`${filter.title}-${item}`}>
-                              {item}
-                            </label>
-                          </li>
-                        );
-                      }
-                      return (
-                        <li key={`filter-element-${filter.title}-${i}`}>
-                          <input
-                            id={`${filter.title}-${item}`}
-                            type="checkbox"
-                            name={item}
-                            value={item}
-                            onChange={() => {}}
-                          />
-                          <label htmlFor={`${filter.title}-${item}`}>
-                            {item}
-                          </label>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              ))}
-            </div>
+            {filtersItems ? (
+              <ProductFilters filtersItems={filtersItems} />
+            ) : (
+              <span>Fetching...</span>
+            )}
           </div>
           <div className="layout-content">
             <div className="listing-page__header">
               <ProductPagination page={page} lastPage={lastPage} />
+
               <div className="sort-dropdown">
                 <span>Sort By:</span>
-                <Dropdown
-                  selected={selectedSort}
-                  data={sortOptions}
-                  placeholder="Sort"
-                  onChange={(e) => setSelectedSort(e)}
-                />
+                <SortDropdown />
               </div>
-              <div className="sort-dropdown">
+              <div className="sort-dropdown page-count">
                 <span>Page</span>
                 <Dropdown
                   selected={pageLimit}
@@ -176,10 +111,23 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
                 <span>of {total}</span>
               </div>
             </div>
-            <ProductGrid products={products} />
+
+            {!products || products.length === 0 ? (
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "20px 0",
+                  marginTop: "40px",
+                }}
+              >
+                <h2>No products found.</h2>
+              </div>
+            ) : (
+              <ProductGrid products={products} />
+            )}
             <div className="products-footer">
               <ProductPagination page={page} lastPage={lastPage} />
-              <div className="sort-dropdown">
+              <div className="sort-dropdown page-count">
                 <span>Page</span>
                 <Dropdown
                   selected={pageLimit}

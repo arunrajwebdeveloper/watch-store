@@ -33,14 +33,65 @@ export class ProductsService {
   //     .exec();
   // }
 
+  // async getFilterOptions() {
+  //   try {
+  //     const filterFields = [
+  //       { title: 'Brands', field: 'brand' },
+  //       { title: 'Colors', field: 'color' },
+  //       { title: 'Size', field: 'size' },
+  //       { title: 'Movement Type', field: 'movementType' },
+  //       { title: 'Gender', field: 'gender' },
+  //     ];
+
+  //     const results = await Promise.all([
+  //       this.productModel
+  //         .findOne()
+  //         .sort({ currentPrice: 1 })
+  //         .select('currentPrice')
+  //         .lean(),
+  //       this.productModel
+  //         .findOne()
+  //         .sort({ currentPrice: -1 })
+  //         .select('currentPrice')
+  //         .lean(),
+  //       ...filterFields.map((f) => this.productModel.distinct(f.field)),
+  //     ]);
+
+  //     const minPriceDoc = results[0] as { currentPrice?: number } | null;
+  //     const maxPriceDoc = results[1] as { currentPrice?: number } | null;
+  //     const distinctResults = results.slice(2) as unknown[][];
+
+  //     const filters = [
+  //       {
+  //         title: 'Price',
+  //         items: [
+  //           minPriceDoc?.currentPrice ?? 0,
+  //           maxPriceDoc?.currentPrice ?? 0,
+  //         ],
+  //         field: 'price',
+  //       },
+  //       ...filterFields.map((f, idx) => ({
+  //         title: f.title,
+  //         items: distinctResults[idx],
+  //         field: f.field,
+  //       })),
+  //     ];
+
+  //     return { filters };
+  //   } catch (error) {
+  //     console.error('Error getting filter options:', error);
+  //     throw new InternalServerErrorException('Failed to load filter options');
+  //   }
+  // }
+
   async getFilterOptions() {
     try {
       const filterFields = [
-        { title: 'Brands', field: 'brand' },
-        { title: 'Colors', field: 'color' },
-        { title: 'Size', field: 'size' },
-        { title: 'Movement Type', field: 'movementType' },
-        { title: 'Gender', field: 'gender' },
+        { key: 'brands', title: 'Brands', field: 'brand' },
+        { key: 'colors', title: 'Colors', field: 'color' },
+        { key: 'size', title: 'Size', field: 'size' },
+        { key: 'movementType', title: 'Movement Type', field: 'movementType' },
+        { key: 'gender', title: 'Gender', field: 'gender' },
       ];
 
       const results = await Promise.all([
@@ -61,8 +112,8 @@ export class ProductsService {
       const maxPriceDoc = results[1] as { currentPrice?: number } | null;
       const distinctResults = results.slice(2) as unknown[][];
 
-      const filters = [
-        {
+      const filters: Record<string, any> = {
+        price: {
           title: 'Price',
           items: [
             minPriceDoc?.currentPrice ?? 0,
@@ -70,14 +121,17 @@ export class ProductsService {
           ],
           field: 'price',
         },
-        ...filterFields.map((f, idx) => ({
+      };
+
+      filterFields.forEach((f, idx) => {
+        filters[f.key] = {
           title: f.title,
           items: distinctResults[idx],
           field: f.field,
-        })),
-      ];
+        };
+      });
 
-      return { filters };
+      return filters;
     } catch (error) {
       console.error('Error getting filter options:', error);
       throw new InternalServerErrorException('Failed to load filter options');

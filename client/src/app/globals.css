@@ -356,6 +356,10 @@ a.btn.secondary {
 }
 
 /* DROPDOWN */
+.sort-dropdown.page-count .dropdown-element {
+  min-width: 75px;
+}
+
 .dropdown-element {
   position: relative;
   width: 100%;
