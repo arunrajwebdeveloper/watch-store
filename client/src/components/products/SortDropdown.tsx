@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createProductQueryUrl } from "@/lib/createProductQueryUrl";
+import { searchParamsToObject } from "@/utils/searchParamsToObject";
 
 const data = {
   "createdAt:desc": "Newest",
@@ -28,7 +29,7 @@ export default function SortDropdown() {
     const [sortBy, sortOrder] = value?.split(":");
     router.push(
       createProductQueryUrl("/products", {
-        ...Object.fromEntries(searchParams.entries()),
+        ...searchParamsToObject(searchParams),
         sortBy,
         sortOrder,
       })

@@ -9,6 +9,7 @@ import SortDropdown from "@/components/products/SortDropdown";
 import ProductFilters from "@/components/products/ProductFilters";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createProductQueryUrl } from "@/lib/createProductQueryUrl";
+import { searchParamsToObject } from "@/utils/searchParamsToObject";
 
 const pageCounts = [
   { value: 10, label: "10" },
@@ -46,9 +47,8 @@ const ProductListPage = (): React.ReactNode => {
   useEffect(() => {
     const fetchData = async () => {
       const productRes = await api.get("/products", {
-        params: {
-          ...Object.fromEntries(searchParams.entries()),
-        },
+        // params: searchParams,
+        params: searchParamsToObject(searchParams),
       });
       const { data, page, lastPage, total, limit } = productRes.data;
       setProducts(data);
@@ -91,7 +91,7 @@ const ProductListPage = (): React.ReactNode => {
                   onChange={(e) => {
                     router.push(
                       createProductQueryUrl("/products", {
-                        ...Object.fromEntries(searchParams.entries()),
+                        ...searchParamsToObject(searchParams),
                         limit: e.value,
                       })
                     );
@@ -125,7 +125,7 @@ const ProductListPage = (): React.ReactNode => {
                   onChange={(e) => {
                     router.push(
                       createProductQueryUrl("/products", {
-                        ...Object.fromEntries(searchParams.entries()),
+                        ...searchParamsToObject(searchParams),
                         limit: e.value,
                       })
                     );

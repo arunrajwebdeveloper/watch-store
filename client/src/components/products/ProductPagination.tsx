@@ -1,6 +1,7 @@
 import "@/styles/products/pagination.styles.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createProductQueryUrl } from "@/lib/createProductQueryUrl";
+import { searchParamsToObject } from "@/utils/searchParamsToObject";
 
 type Props = {
   page: number;
@@ -41,7 +42,7 @@ const ProductPagination = ({ page, lastPage }: Props) => {
             onClick={() => {
               router.push(
                 createProductQueryUrl("/products", {
-                  ...Object.fromEntries(searchParams.entries()),
+                  ...searchParamsToObject(searchParams),
                   page: 1,
                 })
               );
@@ -53,7 +54,7 @@ const ProductPagination = ({ page, lastPage }: Props) => {
             onClick={() => {
               router.push(
                 createProductQueryUrl("/products", {
-                  ...Object.fromEntries(searchParams.entries()),
+                  ...searchParamsToObject(searchParams),
                   page: currentPage - 1,
                 })
               );
@@ -76,7 +77,7 @@ const ProductPagination = ({ page, lastPage }: Props) => {
             onClick={() => {
               router.push(
                 createProductQueryUrl("/products", {
-                  ...Object.fromEntries(searchParams.entries()),
+                  ...searchParamsToObject(searchParams),
                   page: num,
                 })
               );
@@ -93,7 +94,7 @@ const ProductPagination = ({ page, lastPage }: Props) => {
             onClick={() => {
               router.push(
                 createProductQueryUrl("/products", {
-                  ...Object.fromEntries(searchParams.entries()),
+                  ...searchParamsToObject(searchParams),
                   page: currentPage + 1,
                 })
               );
@@ -105,7 +106,7 @@ const ProductPagination = ({ page, lastPage }: Props) => {
             onClick={() => {
               router.push(
                 createProductQueryUrl("/products", {
-                  ...Object.fromEntries(searchParams.entries()),
+                  ...searchParamsToObject(searchParams),
                   page: lastPage,
                 })
               );
