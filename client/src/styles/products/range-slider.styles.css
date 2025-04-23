@@ -1,11 +1,11 @@
 .range-slider {
   padding-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .price-input {
   width: 100%;
   display: flex;
-  margin: 25px 0 0;
+  margin: 14px 0 0;
   align-items: center;
   justify-content: space-between;
 }

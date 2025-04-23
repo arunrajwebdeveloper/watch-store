@@ -76,23 +76,25 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
       </div>
       <div className="price-input">
         <div className="field">
-          <span>Min</span>
-          <input
+          <span>Min:</span>
+          <span>{minVal}</span>
+          {/* <input
             type="number"
             className="input-min"
             value={minVal}
             onChange={(e) => handleMinChange(parseInt(e.target.value))}
-          />
+          /> */}
         </div>
         <div className="separator">-</div>
         <div className="field">
-          <span>Max</span>
-          <input
+          <span>Max:</span>
+          <span>{maxVal}</span>
+          {/* <input
             type="number"
             className="input-max"
             value={maxVal}
             onChange={(e) => handleMaxChange(parseInt(e.target.value))}
-          />
+          /> */}
         </div>
       </div>
     </div>
