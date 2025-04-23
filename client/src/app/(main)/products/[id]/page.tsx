@@ -70,6 +70,7 @@ const ProductByIdPage = async ({ params }: Props) => {
                             width={80}
                             height={80}
                             style={{ objectFit: "contain" }}
+                            // priority={false}
                           />
                           <div
                             style={{

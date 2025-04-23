@@ -104,10 +104,10 @@ export class ProductsService {
       if (filter.maxPrice) query['currentPrice']['$lte'] = filter.maxPrice;
     }
 
-    const sort: any = {};
-    if (filter.sortBy) {
-      sort[filter.sortBy] = filter.sortOrder === 'asc' ? 1 : -1;
-    }
+    const sort: Record<string, 1 | -1> =
+      filter.sortBy && filter.sortOrder
+        ? { [filter.sortBy]: filter.sortOrder === 'asc' ? 1 : -1 }
+        : { createdAt: -1 };
 
     const page = filter.page || 1;
     const limit = filter.limit || 10;

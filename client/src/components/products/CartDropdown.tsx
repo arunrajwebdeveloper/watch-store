@@ -6,6 +6,7 @@ import {
   removeCartItem,
   updateCartItem,
 } from "@/store/slices/cartSlice";
+import Link from "next/link";
 
 function CartDropdown() {
   const cartItems = useAppSelector((state) => state.cart.cartItems);
@@ -54,15 +55,17 @@ function CartDropdown() {
                     <div className="item-details">
                       <div className="basic">
                         <div className="thumbnail">
-                          <Image
-                            src={product?.images[0]}
-                            alt={`Product ${product?.brand} ${product?.model}`}
-                            width={50}
-                            height={50}
-                            style={{ objectFit: "contain" }}
-                            // loading="lazy"
-                            priority={false}
-                          />
+                          <Link href={`/products/${product._id}`}>
+                            <Image
+                              src={product?.images[0]}
+                              alt={`Product ${product?.brand} ${product?.model}`}
+                              width={50}
+                              height={50}
+                              style={{ objectFit: "contain" }}
+                              // loading="lazy"
+                              priority={false}
+                            />
+                          </Link>
                         </div>
                         <div>
                           <h4>{product?.brand}</h4>
