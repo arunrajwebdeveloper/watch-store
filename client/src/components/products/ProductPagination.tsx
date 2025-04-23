@@ -1,5 +1,6 @@
-import Link from "next/link";
 import "@/styles/products/pagination.styles.css";
+import { useRouter, useSearchParams } from "next/navigation";
+import { createProductQueryUrl } from "@/lib/createProductQueryUrl";
 
 type Props = {
   page: number;
@@ -7,6 +8,9 @@ type Props = {
 };
 
 const ProductPagination = ({ page, lastPage }: Props) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const currentPage = Number(page);
   const pageNumbers: (number | string)[] = [];
 
@@ -33,8 +37,30 @@ const ProductPagination = ({ page, lastPage }: Props) => {
     <div className="pagination-element">
       {currentPage > 1 && (
         <>
-          <Link href={`/products?page=1`}>First</Link>
-          <Link href={`/products?page=${currentPage - 1}`}>Previous</Link>
+          <a
+            onClick={() => {
+              router.push(
+                createProductQueryUrl("/products", {
+                  ...Object.fromEntries(searchParams.entries()),
+                  page: 1,
+                })
+              );
+            }}
+          >
+            First
+          </a>
+          <a
+            onClick={() => {
+              router.push(
+                createProductQueryUrl("/products", {
+                  ...Object.fromEntries(searchParams.entries()),
+                  page: currentPage - 1,
+                })
+              );
+            }}
+          >
+            Previous
+          </a>
         </>
       )}
 
@@ -44,20 +70,49 @@ const ProductPagination = ({ page, lastPage }: Props) => {
             ...
           </span>
         ) : (
-          <Link
+          <a
             key={num}
             className={`link-boxed ${num === currentPage ? "active" : ""}`}
-            href={`/products?page=${num}`}
+            onClick={() => {
+              router.push(
+                createProductQueryUrl("/products", {
+                  ...Object.fromEntries(searchParams.entries()),
+                  page: num,
+                })
+              );
+            }}
           >
             {num}
-          </Link>
+          </a>
         )
       )}
 
       {currentPage < lastPage && (
         <>
-          <Link href={`/products?page=${currentPage + 1}`}>Next</Link>
-          <Link href={`/products?page=${lastPage}`}>Last</Link>
+          <a
+            onClick={() => {
+              router.push(
+                createProductQueryUrl("/products", {
+                  ...Object.fromEntries(searchParams.entries()),
+                  page: currentPage + 1,
+                })
+              );
+            }}
+          >
+            Next
+          </a>
+          <a
+            onClick={() => {
+              router.push(
+                createProductQueryUrl("/products", {
+                  ...Object.fromEntries(searchParams.entries()),
+                  page: lastPage,
+                })
+              );
+            }}
+          >
+            Last
+          </a>
         </>
       )}
     </div>

@@ -8,7 +8,7 @@ type Option = {
 };
 
 type Props = {
-  selected: Option | null;
+  selected: string | number | null;
   placeholder: string;
   data: Option[];
   onChange: (value: Option) => void;
@@ -54,7 +54,7 @@ const Dropdown: React.FC<Props> = ({
     <div className="dropdown-element" ref={dropdownRef}>
       <div className="dropdown-element-ui">
         <div className="dropdown-element__selected" onClick={toggleDropdown}>
-          <span>{selected ? selected?.label : placeholder}</span>
+          <span>{selected ? selected : placeholder}</span>
           <img className="arrow" src="./down-arrow.svg" alt="down arrow" />
         </div>
         {isVisible && (
@@ -65,7 +65,7 @@ const Dropdown: React.FC<Props> = ({
                   key={`${list.label}-${list.value}`}
                   onClick={() => onSelectValue(list)}
                   className={`dropdown-element__item ${
-                    selected?.value === list.value ? "selected" : ""
+                    selected === list.value ? "selected" : ""
                   }`}
                 >
                   {list.label}

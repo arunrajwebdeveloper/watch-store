@@ -19,15 +19,13 @@ export default function SortDropdown() {
   const searchParams = useSearchParams();
 
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [selected, setSelected] = useState<SortOptionKey>(
-    `${searchParams.get("sortBy") || "createdAt"}:${
-      searchParams.get("sortOrder") || "desc"
-    }` as SortOptionKey
-  );
+
+  const CURRENT_VALUE = `${searchParams.get("sortBy") || "createdAt"}:${
+    searchParams.get("sortOrder") || "desc"
+  }` as SortOptionKey;
 
   const handleSortChange = (value: string) => {
     const [sortBy, sortOrder] = value?.split(":");
-    setSelected(value as SortOptionKey);
     router.push(
       createProductQueryUrl("/products", {
         ...Object.fromEntries(searchParams.entries()),
@@ -65,19 +63,20 @@ export default function SortDropdown() {
     <div className="dropdown-element" ref={dropdownRef}>
       <div className="dropdown-element-ui">
         <div className="dropdown-element__selected" onClick={toggleDropdown}>
-          <span>{data[selected]}</span>
+          <span>{data[CURRENT_VALUE]}</span>
           <img className="arrow" src="./down-arrow.svg" alt="down arrow" />
         </div>
         {isVisible && (
           <div className="dropdown-element__list">
             {Object.entries(data)?.map((list) => {
               const [value, label] = list;
+
               return (
                 <div
                   key={`${label}-${value}`}
                   onClick={() => handleSortChange(value)}
                   className={`dropdown-element__item ${
-                    selected === value ? "selected" : ""
+                    CURRENT_VALUE === value ? "selected" : ""
                   }`}
                 >
                   {label}

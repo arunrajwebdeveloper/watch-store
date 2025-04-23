@@ -86,7 +86,13 @@ export default function ProductFilters({
   const groupedParams = Array.from(searchParams.entries()).reduce<
     Record<string, string[]>
   >((acc, [key, value]) => {
-    if (key === "sortBy" || key === "sortOrder") return acc;
+    if (
+      key === "sortBy" ||
+      key === "sortOrder" ||
+      key === "limit" ||
+      key === "page"
+    )
+      return acc;
     if (!acc[key]) acc[key] = [];
     if (!acc[key].includes(value)) acc[key].push(value);
     return acc;

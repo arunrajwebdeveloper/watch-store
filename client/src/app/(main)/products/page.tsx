@@ -7,22 +7,16 @@ import ProductPagination from "@/components/products/ProductPagination";
 import Dropdown from "@/components/common/Dropdown";
 import SortDropdown from "@/components/products/SortDropdown";
 import ProductFilters from "@/components/products/ProductFilters";
+import { useRouter, useSearchParams } from "next/navigation";
+import { createProductQueryUrl } from "@/lib/createProductQueryUrl";
 
-type Props = {
-  searchParams: {
-    brand?: string;
-    color?: string;
-    size?: string;
-    gender?: string;
-    movementType?: string;
-    minPrice?: string;
-    maxPrice?: string;
-    sortBy?: string;
-    sortOrder?: "asc" | "desc";
-    page?: string;
-    limit?: string;
-  };
-};
+const pageCounts = [
+  { value: 10, label: "10" },
+  { value: 20, label: "20" },
+  { value: 30, label: "30" },
+  { value: 40, label: "40" },
+  { value: 50, label: "50" },
+];
 
 type Product = {
   // Define based on backend response
@@ -36,39 +30,31 @@ export type FilterOptionItem = {
 
 export type FilterOptions = Record<string, FilterOptionItem>;
 
-type Option = {
-  label: string;
-  value: string | number;
-} | null;
-
 // fun type, props type || React.ReactNode return type
 // const ProductListPage: React.FC<Props> = ({ searchParams }) => {...}
 // OR
-const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
+const ProductListPage = (): React.ReactNode => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [products, setProducts] = useState<Product[]>([]);
   const [filtersItems, setFiltersItems] = useState<FilterOptions | null>(null);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const [pageLimit, setPageLimit] = useState<Option>({
-    value: 10,
-    label: "10",
-  });
 
   useEffect(() => {
     const fetchData = async () => {
       const productRes = await api.get("/products", {
-        params: await searchParams,
+        params: {
+          ...Object.fromEntries(searchParams.entries()),
+        },
       });
       const { data, page, lastPage, total, limit } = productRes.data;
       setProducts(data);
       setPage(page);
       setLastPage(lastPage);
       setTotal(total);
-      setPageLimit({
-        value: parseInt(limit),
-        label: limit?.toString(),
-      });
 
       const filterRes = await api.get("/products/filter-options");
       setFiltersItems(filterRes.data || {});
@@ -99,14 +85,17 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
               <div className="sort-dropdown page-count">
                 <span>Page</span>
                 <Dropdown
-                  selected={pageLimit}
-                  data={[
-                    { value: 10, label: "10" },
-                    { value: 20, label: "20" },
-                    { value: 40, label: "40" },
-                  ]}
+                  selected={Number(searchParams.get("limit")) || 10}
+                  data={pageCounts}
                   placeholder="Count"
-                  onChange={(e) => setPageLimit(e)}
+                  onChange={(e) => {
+                    router.push(
+                      createProductQueryUrl("/products", {
+                        ...Object.fromEntries(searchParams.entries()),
+                        limit: e.value,
+                      })
+                    );
+                  }}
                 />
                 <span>of {total}</span>
               </div>
@@ -130,14 +119,17 @@ const ProductListPage = ({ searchParams }: Props): React.ReactNode => {
               <div className="sort-dropdown page-count">
                 <span>Page</span>
                 <Dropdown
-                  selected={pageLimit}
-                  data={[
-                    { value: 10, label: "10" },
-                    { value: 20, label: "20" },
-                    { value: 40, label: "40" },
-                  ]}
+                  selected={Number(searchParams.get("limit")) || 10}
+                  data={pageCounts}
                   placeholder="Count"
-                  onChange={(e) => setPageLimit(e)}
+                  onChange={(e) => {
+                    router.push(
+                      createProductQueryUrl("/products", {
+                        ...Object.fromEntries(searchParams.entries()),
+                        limit: e.value,
+                      })
+                    );
+                  }}
                 />
                 <span>of {total}</span>
               </div>

@@ -7,6 +7,8 @@
 .pagination-element a {
   font-size: 1rem;
   color: #000;
+  cursor: pointer;
+  user-select: none;
 }
 .pagination-element a.link-boxed {
   padding: 5px 10px;
