@@ -10,19 +10,42 @@ export default function ProductFilters({
 }: {
   filtersItems: any;
 }) {
-  const { brands, colors, price, size, movementType, gender } =
-    filtersItems || {};
+  // const { brands, colors, price, size, movementType, gender } =
+  //   filtersItems || {};
 
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const paramMin = Number(searchParams.get("minPrice"));
   const paramMax = Number(searchParams.get("maxPrice"));
-  const defaultPriceMin = price?.items[0];
-  const defaultPriceMax = price?.items[1];
 
   const [minPrice, setMinPrice] = useState<number>(paramMin);
   const [maxPrice, setMaxPrice] = useState<number>(paramMax);
+
+  const [defaultPriceMin, setDefaultPriceMin] = useState<number>(0);
+  const [defaultPriceMax, setDefaultPriceMax] = useState<number>(0);
+
+  const [brands, setBrands] = useState<any>({});
+  const [colors, setColors] = useState<any>({});
+  const [price, setPrice] = useState<any>({});
+  const [size, setSize] = useState<any>({});
+  const [movementType, setMovementType] = useState<any>({});
+  const [gender, setGender] = useState<any>({});
+
+  useEffect(() => {
+    if (filtersItems) {
+      setBrands(filtersItems?.brands);
+      setColors(filtersItems?.colors);
+      setPrice(filtersItems?.price);
+      setSize(filtersItems?.size);
+      setMovementType(filtersItems?.movementType);
+      setGender(filtersItems?.gender);
+      setDefaultPriceMin(filtersItems?.price?.items[0]);
+      setDefaultPriceMax(filtersItems?.price?.items[1]);
+      setMinPrice(paramMin || filtersItems?.price?.items[0]);
+      setMaxPrice(paramMax || filtersItems?.price?.items[1]);
+    }
+  }, [filtersItems]);
 
   const handleFilterChange = (key: string, value: string) => {
     const currentParams = new URLSearchParams(searchParams.toString());
@@ -46,6 +69,9 @@ export default function ProductFilters({
   };
 
   const clearAllFilters = () => {
+    handlePriceChange(defaultPriceMin, defaultPriceMax);
+    setDefaultPriceMin(price?.items[0]);
+    setDefaultPriceMax(price?.items[1]);
     router.push("/products");
   };
 
@@ -77,7 +103,6 @@ export default function ProductFilters({
   };
 
   const handlePriceChange = (min: number, max: number) => {
-    console.log("Selected price range:", min, max);
     setMinPrice(min);
     setMaxPrice(max);
   };
@@ -118,37 +143,22 @@ export default function ProductFilters({
       )}
       <div className="filter-items-scroller">
         {/* Price Range */}
-        <FilterSection title="Price Range">
-          {/* <div className="price-filter-inputs">
-            <input
-              type="number"
-              value={minPrice || defaultPriceMin}
-              onChange={(e) => setMinPrice(Number(e.target.value))}
-              placeholder="Min"
+        {minPrice && maxPrice && defaultPriceMin && defaultPriceMax && (
+          <FilterSection title="Price Range">
+            <PriceRangeSlider
+              defaultMin={minPrice}
+              defaultMax={maxPrice}
+              min={defaultPriceMin}
+              max={defaultPriceMax}
+              step={100}
+              gap={1000}
+              onChange={handlePriceChange}
             />
-            <input
-              type="number"
-              value={maxPrice || defaultPriceMax}
-              onChange={(e) => setMaxPrice(Number(e.target.value))}
-              placeholder="Max"
-            />
-          </div>
-          <button onClick={handlePriceApply} className="price-apply">
-            Apply
-          </button> */}
-          <PriceRangeSlider
-            defaultMin={minPrice || defaultPriceMin}
-            defaultMax={maxPrice || defaultPriceMax}
-            min={defaultPriceMin}
-            max={defaultPriceMax}
-            step={100}
-            gap={1000}
-            onChange={handlePriceChange}
-          />
-          <button onClick={handlePriceApply} className="price-apply">
-            Apply
-          </button>
-        </FilterSection>
+            <button onClick={handlePriceApply} className="price-apply">
+              Apply
+            </button>
+          </FilterSection>
+        )}
 
         {/* Brand */}
         <FilterSection title="Brands">

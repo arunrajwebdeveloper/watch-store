@@ -22,8 +22,8 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
   gap = 1000,
   onChange,
 }) => {
-  const [minVal, setMinVal] = useState(defaultMin);
-  const [maxVal, setMaxVal] = useState(defaultMax);
+  const [minVal, setMinVal] = useState<number>(defaultMin);
+  const [maxVal, setMaxVal] = useState<number>(defaultMax);
 
   useEffect(() => {
     const left = (minVal / max) * 100;
