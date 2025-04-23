@@ -10,9 +10,6 @@ export default function ProductFilters({
 }: {
   filtersItems: any;
 }) {
-  // const { brands, colors, price, size, movementType, gender } =
-  //   filtersItems || {};
-
   const router = useRouter();
   const searchParams = useSearchParams();
 
