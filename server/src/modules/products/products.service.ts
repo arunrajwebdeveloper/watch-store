@@ -9,6 +9,7 @@ import { Model, Types } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FilterProductDto } from './dto/filter-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { extractArrayFilter, regexArray } from '../../utils/query-parser.util';
 
 @Injectable()
 export class ProductsService {
@@ -139,19 +140,20 @@ export class ProductsService {
   }
 
   async findAll(filter: FilterProductDto) {
-    const query = {};
+    const query: any = {};
+    const multiFields = ['brand', 'color', 'movementType', 'size'];
 
-    if (filter.brand)
-      query['brand'] = { $regex: new RegExp(`^${filter.brand}$`, 'i') };
-    if (filter.color)
-      query['color'] = { $regex: new RegExp(`^${filter.color}$`, 'i') };
-    if (filter.size) query['size'] = filter.size;
+    for (const field of multiFields) {
+      const raw = filter[field] || filter[`${field}[]`];
+      const values = extractArrayFilter(raw);
+
+      if (values.length) {
+        query[field] = { $in: regexArray(values) };
+      }
+    }
+
     if (filter.gender)
       query['gender'] = { $regex: new RegExp(`^${filter.gender}$`, 'i') };
-    if (filter.movementType)
-      query['movementType'] = {
-        $regex: new RegExp(`^${filter.movementType}$`, 'i'),
-      };
     if (filter.minPrice || filter.maxPrice) {
       query['currentPrice'] = {};
       if (filter.minPrice) query['currentPrice']['$gte'] = filter.minPrice;
