@@ -10,15 +10,26 @@ function AddToCartButton({ productId }: { productId: string }) {
 
   const user = useAppSelector((state) => state.auth.user);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const cartList = useAppSelector((state) => state.cart.cartItems);
+
+  const isExistingItem =
+    cartList?.length > 0 &&
+    cartList?.find((c) => {
+      return c.product?._id === productId;
+    });
 
   const handleAddToCart = (productId: string) => {
     if (user && isAuthenticated) {
-      dispatch(
-        addToCart({
-          productId,
-          quantity: 1,
-        })
-      ).unwrap();
+      if (!isExistingItem) {
+        dispatch(
+          addToCart({
+            productId,
+            quantity: 1,
+          })
+        ).unwrap();
+      } else {
+        router.push("/cart");
+      }
     } else {
       router.push("/login");
     }
@@ -29,7 +40,7 @@ function AddToCartButton({ productId }: { productId: string }) {
       onClick={() => handleAddToCart(productId)}
       className="btn cart-add-btn"
     >
-      Add to cart
+      {isExistingItem ? "Go to cart" : "Add to cart"}
     </button>
   );
 }
