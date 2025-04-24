@@ -50,11 +50,25 @@ const wishlistSlice = createSlice({
       .addCase(getWishlist.rejected, (state) => {
         state.isLoading = false;
       })
+      .addCase(addToWishlist.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(addToWishlist.fulfilled, (state, action) => {
         state.wishlistItems = action.payload?.items;
+        state.isLoading = false;
+      })
+      .addCase(addToWishlist.rejected, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(removeWishlistItem.pending, (state) => {
+        state.isLoading = true;
       })
       .addCase(removeWishlistItem.fulfilled, (state, action) => {
         state.wishlistItems = action.payload?.items;
+        state.isLoading = false;
+      })
+      .addCase(removeWishlistItem.rejected, (state) => {
+        state.isLoading = false;
       })
       .addCase(clearWishlist.fulfilled, (state) => {
         state.wishlistItems = [];

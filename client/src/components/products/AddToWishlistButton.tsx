@@ -14,6 +14,7 @@ function AddToWishlistButton({ productId }: { productId: string }) {
   const user = useAppSelector((state) => state.auth.user);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const wishlist = useAppSelector((state) => state.wishlist.wishlistItems);
+  const isLoading = useAppSelector((state) => state.wishlist.isLoading);
 
   const isExistingItem =
     wishlist?.length > 0 &&
@@ -39,6 +40,7 @@ function AddToWishlistButton({ productId }: { productId: string }) {
 
   return (
     <button
+      disabled={isLoading}
       onClick={() => handleAddToWishlist(productId)}
       className="btn secondary add-wishlist-btn"
     >

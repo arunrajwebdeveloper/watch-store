@@ -82,11 +82,18 @@ const cartSlice = createSlice({
         state.cartItems = cartList;
         state.cartItemCount = cartList?.length ?? 0;
       })
+      .addCase(removeCartItem.pending, (state) => {
+        state.isLoading = true;
+      })
       .addCase(removeCartItem.fulfilled, (state, action) => {
         const cartList = action.payload?.items;
 
         state.cartItems = cartList;
         state.cartItemCount = cartList?.length ?? 0;
+        state.isLoading = false;
+      })
+      .addCase(removeCartItem.rejected, (state) => {
+        state.isLoading = false;
       })
       .addCase(clearCart.fulfilled, (state) => {
         state.cartItems = [];
