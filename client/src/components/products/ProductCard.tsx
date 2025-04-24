@@ -22,8 +22,8 @@ function ProductCard(props: Props) {
         <Image
           src={image}
           alt={`${brand}-${model}`}
-          height={300}
-          width={300}
+          height={260}
+          width={260}
           style={{ objectFit: "contain" }}
         />
         <h2 className="brand">{brand}</h2>

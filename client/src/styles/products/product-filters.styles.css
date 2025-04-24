@@ -4,6 +4,7 @@
   justify-content: space-between;
   border-bottom: 1px solid #eee;
   padding: 10px 0;
+  height: 62px;
 }
 .applied-filters-list {
   margin: 20px 0;
@@ -40,7 +41,7 @@ p.filter-item__title {
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 5px;
   align-items: center;
 }
 span.chip {

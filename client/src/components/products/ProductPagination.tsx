@@ -1,6 +1,6 @@
 import "@/styles/products/pagination.styles.css";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createProductQueryUrl } from "@/lib/createProductQueryUrl";
+import { createProductQueryUrl } from "@/utils/createProductQueryUrl";
 import { searchParamsToObject } from "@/utils/searchParamsToObject";
 
 type Props = {

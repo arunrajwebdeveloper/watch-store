@@ -8,7 +8,7 @@ import Dropdown from "@/components/common/Dropdown";
 import SortDropdown from "@/components/products/SortDropdown";
 import ProductFilters from "@/components/products/ProductFilters";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createProductQueryUrl } from "@/lib/createProductQueryUrl";
+import { createProductQueryUrl } from "@/utils/createProductQueryUrl";
 import { searchParamsToObject } from "@/utils/searchParamsToObject";
 
 const pageCounts = [
@@ -50,7 +50,7 @@ const ProductListPage = (): React.ReactNode => {
         // params: searchParams,
         params: searchParamsToObject(searchParams),
       });
-      const { data, page, lastPage, total, limit } = productRes.data;
+      const { data, page, lastPage, total } = productRes.data;
       setProducts(data);
       setPage(page);
       setLastPage(lastPage);
@@ -77,7 +77,6 @@ const ProductListPage = (): React.ReactNode => {
           <div className="layout-content">
             <div className="listing-page__header">
               <ProductPagination page={page} lastPage={lastPage} />
-
               <div className="sort-dropdown">
                 <span>Sort By:</span>
                 <SortDropdown />

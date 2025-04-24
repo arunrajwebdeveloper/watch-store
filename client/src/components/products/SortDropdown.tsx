@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createProductQueryUrl } from "@/lib/createProductQueryUrl";
+import { createProductQueryUrl } from "@/utils/createProductQueryUrl";
 import { searchParamsToObject } from "@/utils/searchParamsToObject";
 
 const data = {
