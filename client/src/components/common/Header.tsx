@@ -46,7 +46,15 @@ function Header() {
       <header className="top-header">
         <div className="container top-header__container">
           <div className="top-header-block">
-            <div></div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <span>
+                <small>+91-9876543210</small>
+              </span>
+              |
+              <span>
+                <small>watchstore@gmail.com</small>
+              </span>
+            </div>
             <div className="top-header-actions">
               <Link className="top-header-link" href={"/wishlist"}>
                 <svg
