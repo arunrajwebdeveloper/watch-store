@@ -5,12 +5,14 @@ import { logoutUser } from "@/store/slices/authSlice";
 import { useAppSelector, useAppDispatch } from "@/store";
 import Link from "next/link";
 import CartDropdown from "../products/CartDropdown";
+import { useRouter } from "next/navigation";
 
 function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const user = useAppSelector((state) => state.auth.user);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
@@ -166,7 +168,10 @@ function Header() {
             <div className="header-actions-block">
               {isAuthenticated && user && (
                 <>
-                  <div>
+                  <div
+                    onClick={() => router.push("/profile")}
+                    style={{ cursor: "pointer" }}
+                  >
                     {/*<div>{user?.name}</div>
                    <div>{user?.email}</div> */}
                     <img
