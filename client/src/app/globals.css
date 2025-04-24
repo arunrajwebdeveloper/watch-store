@@ -294,6 +294,7 @@ ul.ul-cart-list li .counts input {
 
 footer.main-footer {
   width: 100%;
+  background-color: #f3f4ff;
 }
 
 .main-footer .footer-block {
@@ -446,6 +447,7 @@ a.btn.secondary {
   display: flex;
   justify-content: flex-start;
   gap: 20px;
+  padding: 10px 0;
 }
 .product-scroller__header {
   text-align: center;
@@ -469,17 +471,22 @@ a.btn.secondary {
 .product-card img {
   margin-bottom: 1em;
 }
-.product-card .watch-size {
+
+.product-card .product-highlights {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+.product-card .highlight-chip {
   display: inline-block;
   border: 1px solid #a7a7a7;
   font-size: 12px;
   padding: 4px;
   border-radius: 20px;
   color: #111;
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 1;
+  text-transform: capitalize;
 }
 .product-card h2.brand {
   font-size: 1rem;
@@ -507,7 +514,15 @@ a.btn.secondary {
   margin-top: 50px;
   margin-bottom: 50px;
 }
-
+.brand-product-list .product-list-grid {
+  gap: 0;
+  justify-content: center;
+}
+.brand-product-list .product-list-grid .product-card {
+  border: 1px solid #eee;
+  margin-left: -1px;
+  margin-top: -1px;
+}
 .listing-page__header {
   height: 62px;
   display: flex;
@@ -541,6 +556,12 @@ a.btn.secondary {
   height: 62px;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
+}
+.brand-banner h2 {
+  font-size: 8rem;
+  color: #fff;
+  margin: auto;
+  font-weight: 700;
 }
 .sort-dropdown {
   display: flex;

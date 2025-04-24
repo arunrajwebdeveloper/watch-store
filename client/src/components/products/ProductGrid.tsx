@@ -13,6 +13,7 @@ function ProductGrid({ products }: { products: any }) {
           currentPrice,
           size,
           color,
+          movementType,
         } = product;
         return (
           <ProductCard
@@ -23,6 +24,7 @@ function ProductGrid({ products }: { products: any }) {
             model={model}
             price={currentPrice}
             size={size}
+            movementType={movementType}
           />
         );
       })}

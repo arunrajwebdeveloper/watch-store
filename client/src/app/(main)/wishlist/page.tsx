@@ -29,6 +29,7 @@ function Wishlist() {
                   currentPrice,
                   size,
                   color,
+                  movementType,
                 } = list?.product;
                 return (
                   <ProductCard
@@ -39,6 +40,7 @@ function Wishlist() {
                     model={model}
                     price={currentPrice}
                     size={size}
+                    movementType={movementType}
                   />
                 );
               })

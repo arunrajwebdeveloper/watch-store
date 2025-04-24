@@ -34,6 +34,7 @@ async function ProductScroller({ filter = {}, title }: Props) {
             currentPrice,
             size,
             color,
+            movementType,
           } = product;
           return (
             <ProductCard
@@ -44,6 +45,7 @@ async function ProductScroller({ filter = {}, title }: Props) {
               model={model}
               price={currentPrice}
               size={size}
+              movementType={movementType}
             />
           );
         })}
