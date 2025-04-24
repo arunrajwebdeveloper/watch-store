@@ -1,6 +1,6 @@
-import ProductGrid from "@/components/products/ProductGrid";
 import api from "@/lib/axios";
 import React from "react";
+import ProductGrid from "@/components/products/ProductGrid";
 
 type Props = {
   params: {
