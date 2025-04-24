@@ -15,7 +15,7 @@ function Checkout() {
         <div className="page-header">
           <h2>Checkout</h2>
         </div>
-        <div className="listing-page-layout">{/* CHECKOUT */}</div>
+        <div className="listing-page-layout"> CHECKOUT </div>
       </div>
     </div>
   );
