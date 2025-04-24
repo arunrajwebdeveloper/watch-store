@@ -1,10 +1,13 @@
 "use client";
 
 import React from "react";
-import { useAppSelector } from "@/store";
+import { useAppSelector, useAppDispatch } from "@/store";
 import ProductCard from "@/components/products/ProductCard";
+import { removeWishlistItem } from "@/store/slices/wishlistSlice";
 
 function Wishlist() {
+  const dispatch = useAppDispatch();
+
   const user = useAppSelector((state) => state.auth.user);
   const wishlist = useAppSelector((state) => state.wishlist.wishlistItems);
   const isLoading = useAppSelector((state) => state.wishlist.isLoading);
@@ -41,6 +44,10 @@ function Wishlist() {
                     price={currentPrice}
                     size={size}
                     movementType={movementType}
+                    productId={productId}
+                    onRemoveAction={(productId) =>
+                      dispatch(removeWishlistItem(productId))
+                    }
                   />
                 );
               })

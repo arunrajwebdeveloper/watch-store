@@ -1,9 +1,6 @@
 "use client";
 import React from "react";
-import {
-  addToWishlist,
-  removeWishlistItem,
-} from "@/store/slices/wishlistSlice";
+import { addToWishlist } from "@/store/slices/wishlistSlice";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { useRouter } from "next/navigation";
 
@@ -24,15 +21,11 @@ function AddToWishlistButton({ productId }: { productId: string }) {
 
   const handleAddToWishlist = (productId: string) => {
     if (user && isAuthenticated) {
-      if (isExistingItem) {
-        dispatch(removeWishlistItem(productId)).unwrap();
-      } else {
-        dispatch(
-          addToWishlist({
-            productId,
-          })
-        ).unwrap();
-      }
+      dispatch(
+        addToWishlist({
+          productId,
+        })
+      ).unwrap();
     } else {
       router.push("/login");
     }
