@@ -4,7 +4,13 @@ import { addToCart } from "@/store/slices/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { useRouter } from "next/navigation";
 
-function AddToCartButton({ productId }: { productId: string }) {
+function AddToCartButton({
+  productId,
+  noStock,
+}: {
+  productId: string;
+  noStock: boolean;
+}) {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -38,11 +44,11 @@ function AddToCartButton({ productId }: { productId: string }) {
 
   return (
     <button
-      disabled={isLoading}
+      disabled={isLoading || noStock}
       onClick={() => handleAddToCart(productId)}
       className="btn cart-add-btn"
     >
-      {isExistingItem ? "Go to cart" : "Add to cart"}
+      {isExistingItem ? "Go to cart" : noStock ? "Out of stock" : "Add to cart"}
     </button>
   );
 }

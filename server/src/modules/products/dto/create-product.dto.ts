@@ -29,4 +29,6 @@ export class CreateProductDto {
   gender: 'male' | 'female';
 
   images?: string[];
+
+  inventory: number;
 }

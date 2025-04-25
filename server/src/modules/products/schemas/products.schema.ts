@@ -40,6 +40,9 @@ export class Product {
 
   @Prop()
   variantGroupId: string;
+
+  @Prop({ required: true, default: 0 })
+  inventory: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

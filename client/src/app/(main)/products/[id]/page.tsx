@@ -19,6 +19,9 @@ const ProductByIdPage = async ({ params }: Props) => {
   const res = await api.get(`/products/${id}`);
   const { product, variants } = res.data;
 
+  const isLimitedStock = product.inventory <= 10 && product.inventory > 0;
+  const isStockEmpty = product.inventory === 0;
+
   return (
     <div className="container">
       {/* <Link href="/products">Go to products</Link> */}
@@ -47,6 +50,16 @@ const ProductByIdPage = async ({ params }: Props) => {
             {currencyFormat(parseInt(product.currentPrice))}
           </div>
           <small>*Inclusive of all taxes</small>
+
+          {isLimitedStock && (
+            <div
+              style={{ color: "red", marginTop: "10px" }}
+            >{`Only ${product.inventory} items left`}</div>
+          )}
+
+          {isStockEmpty && (
+            <div style={{ color: "red", marginTop: "10px" }}>Out of stock</div>
+          )}
 
           {variants.length > 0 && (
             <div className="product-varients-row">
@@ -92,7 +105,7 @@ const ProductByIdPage = async ({ params }: Props) => {
           )}
 
           <div className="product-actions">
-            <AddToCartButton productId={product._id} />
+            <AddToCartButton productId={product._id} noStock={isStockEmpty} />
             <AddToWishlistButton productId={product._id} />
           </div>
 
