@@ -44,6 +44,10 @@ export const clearCart = createAsyncThunk("cart/clear", async () => {
   return res.data;
 });
 
+const calculateCartLength = (cart: any) => {
+  return cart.reduce((acc: number, curr: any) => acc + curr.quantity, 0);
+};
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -57,7 +61,7 @@ const cartSlice = createSlice({
         const cartList = action.payload?.items;
 
         state.cartItems = cartList;
-        state.cartItemCount = cartList?.length ?? 0;
+        state.cartItemCount = calculateCartLength(cartList) ?? 0;
         state.isLoading = false;
       })
       .addCase(getCart.rejected, (state) => {
@@ -70,7 +74,7 @@ const cartSlice = createSlice({
         const cartList = action.payload?.items;
 
         state.cartItems = cartList;
-        state.cartItemCount = cartList?.length ?? 0;
+        state.cartItemCount = calculateCartLength(cartList) ?? 0;
         state.isLoading = false;
       })
       .addCase(addToCart.rejected, (state) => {
@@ -80,7 +84,7 @@ const cartSlice = createSlice({
         const cartList = action.payload?.items;
 
         state.cartItems = cartList;
-        state.cartItemCount = cartList?.length ?? 0;
+        state.cartItemCount = calculateCartLength(cartList) ?? 0;
       })
       .addCase(removeCartItem.pending, (state) => {
         state.isLoading = true;
@@ -89,7 +93,7 @@ const cartSlice = createSlice({
         const cartList = action.payload?.items;
 
         state.cartItems = cartList;
-        state.cartItemCount = cartList?.length ?? 0;
+        state.cartItemCount = calculateCartLength(cartList) ?? 0;
         state.isLoading = false;
       })
       .addCase(removeCartItem.rejected, (state) => {
