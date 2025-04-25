@@ -16,29 +16,18 @@ function AddToCartButton({
 
   const user = useAppSelector((state) => state.auth.user);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const cartList = useAppSelector((state) => state.cart.cartItems);
   const isLoading = useAppSelector((state) => state.cart.isLoading);
-
-  const isExistingItem =
-    cartList?.length > 0 &&
-    cartList?.find((c) => {
-      return c.product?._id === productId;
-    });
 
   const handleAddToCart = (productId: string) => {
     if (user && isAuthenticated) {
-      if (!isExistingItem) {
-        dispatch(
-          addToCart({
-            productId,
-            quantity: 1,
-          })
-        ).unwrap();
-      } else {
-        router.push("/cart");
-      }
+      dispatch(
+        addToCart({
+          productId,
+          quantity: 1,
+        })
+      ).unwrap();
     } else {
-      router.push("/login");
+      router.push("/login"); // negotiable
     }
   };
 
@@ -48,7 +37,7 @@ function AddToCartButton({
       onClick={() => handleAddToCart(productId)}
       className="btn cart-add-btn"
     >
-      {isExistingItem ? "Go to cart" : noStock ? "Out of stock" : "Add to cart"}
+      {noStock ? "Out of stock" : "Add to cart"}
     </button>
   );
 }
