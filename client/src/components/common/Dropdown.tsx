@@ -2,6 +2,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
+const arrowDown = "/down-arrow.svg";
+
 type Option = {
   label: string;
   value: string | number;
@@ -55,7 +57,7 @@ const Dropdown: React.FC<Props> = ({
       <div className="dropdown-element-ui">
         <div className="dropdown-element__selected" onClick={toggleDropdown}>
           <span>{selected ? selected : placeholder}</span>
-          <img className="arrow" src="./down-arrow.svg" alt="down arrow" />
+          <img className="arrow" src={arrowDown} alt="down arrow" />
         </div>
         {isVisible && (
           <div className="dropdown-element__list">

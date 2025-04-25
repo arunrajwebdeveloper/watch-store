@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { createProductQueryUrl } from "@/utils/createProductQueryUrl";
 import { searchParamsToObject } from "@/utils/searchParamsToObject";
 
+const arrowDown = "/down-arrow.svg";
+
 const data = {
   "createdAt:desc": "Newest",
   "currentPrice:asc": "Price: Low to High",
@@ -65,7 +67,7 @@ export default function SortDropdown() {
       <div className="dropdown-element-ui">
         <div className="dropdown-element__selected" onClick={toggleDropdown}>
           <span>{data[CURRENT_VALUE]}</span>
-          <img className="arrow" src="./down-arrow.svg" alt="down arrow" />
+          <img className="arrow" src={arrowDown} alt="down arrow" />
         </div>
         {isVisible && (
           <div className="dropdown-element__list">
