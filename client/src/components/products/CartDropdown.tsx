@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-function CartDropdown() {
+function CartDropdown({ onProceed }: { onProceed: () => void }) {
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const isLoading = useAppSelector((state) => state.cart.isLoading);
   const dispatch = useAppDispatch();
@@ -171,6 +171,7 @@ function CartDropdown() {
           className="btn secondary"
           onClick={() => {
             router.push("/cart");
+            onProceed();
           }}
         >
           Go to cart

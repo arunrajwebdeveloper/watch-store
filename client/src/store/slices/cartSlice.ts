@@ -6,6 +6,7 @@ import { logoutUser } from "./authSlice";
 const initialState: CartState = {
   cartItems: [],
   cartItemCount: 0,
+  cartTotalAmount: 0,
   isLoading: false,
 };
 
@@ -44,14 +45,26 @@ export const clearCart = createAsyncThunk("cart/clear", async () => {
   return res.data;
 });
 
-const calculateCartLength = (cart: any) => {
-  return cart.reduce((acc: number, curr: any) => acc + curr.quantity, 0);
+const calculateCartLength = (cartItems: any) => {
+  return cartItems.reduce((acc: number, item: any) => acc + item.quantity, 0);
+};
+
+const calculateGrandTotal = (cartItems: any[]) => {
+  return cartItems.reduce((acc: number, item: any) => {
+    const quantity = item.quantity || 0;
+    const price = item.product?.currentPrice || 0;
+    return acc + quantity * price;
+  }, 0);
 };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
+  reducers: {
+    setGrandTotal(state, action) {
+      state.cartTotalAmount = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCart.pending, (state) => {
@@ -62,6 +75,7 @@ const cartSlice = createSlice({
 
         state.cartItems = cartList;
         state.cartItemCount = calculateCartLength(cartList) ?? 0;
+        state.cartTotalAmount = calculateGrandTotal(cartList);
         state.isLoading = false;
       })
       .addCase(getCart.rejected, (state) => {
@@ -75,6 +89,7 @@ const cartSlice = createSlice({
 
         state.cartItems = cartList;
         state.cartItemCount = calculateCartLength(cartList) ?? 0;
+        state.cartTotalAmount = calculateGrandTotal(cartList);
         state.isLoading = false;
       })
       .addCase(addToCart.rejected, (state) => {
@@ -85,6 +100,7 @@ const cartSlice = createSlice({
 
         state.cartItems = cartList;
         state.cartItemCount = calculateCartLength(cartList) ?? 0;
+        state.cartTotalAmount = calculateGrandTotal(cartList);
       })
       .addCase(removeCartItem.pending, (state) => {
         state.isLoading = true;
@@ -94,6 +110,7 @@ const cartSlice = createSlice({
 
         state.cartItems = cartList;
         state.cartItemCount = calculateCartLength(cartList) ?? 0;
+        state.cartTotalAmount = calculateGrandTotal(cartList);
         state.isLoading = false;
       })
       .addCase(removeCartItem.rejected, (state) => {

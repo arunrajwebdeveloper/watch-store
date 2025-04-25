@@ -107,7 +107,9 @@ function Header() {
                 {isVisible && (
                   <div className="menu-dropdown-element">
                     <div className="menu-drop-content">
-                      <CartDropdown />
+                      <CartDropdown
+                        onProceed={() => setIsVisible((prev) => !prev)}
+                      />
                     </div>
                   </div>
                 )}

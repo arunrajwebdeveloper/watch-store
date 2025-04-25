@@ -21,6 +21,7 @@ export interface CartState {
   cartItems: any[];
   cartItemCount: number;
   isLoading: boolean;
+  cartTotalAmount: number;
 }
 
 export interface CartInput {
