@@ -741,11 +741,80 @@ table.summary-table td {
   height: 38px;
   font-size: 1rem;
 }
+
 tr.grand-total td {
+  height: 50px;
+  border-top: 1px solid #ccc;
+}
+tr.grand-total td h3 {
   font-size: 1.2rem;
   font-weight: 700;
-  height: 50px;
+  margin-top: 30px;
 }
 table.summary-table td:last-child {
   text-align: right;
+}
+
+.promo-code {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+}
+.promo-code h4 {
+  font-size: 1rem;
+  margin-bottom: 14px;
+  color: #000;
+}
+.promo-code-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.promo-code-field button.btn {
+  width: 90px;
+  flex: none;
+}
+.promo-code-field input.input-element {
+  flex: 1;
+}
+.invalid-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 1em;
+}
+.checkout-final-btn {
+  margin-top: 30px;
+}
+.checkout-final-btn button.btn {
+  width: 100%;
+}
+.applied-promo-code {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 15px;
+  gap: 10px;
+}
+.applied-promo-code .promocode-display {
+  background-color: #9bffba;
+  display: flex;
+  height: 30px;
+  align-items: center;
+  padding-left: 10px;
+  color: #000;
+  user-select: none;
+}
+.applied-promo-code .promocode-display button {
+  background-color: #6ecf8c;
+  border: 0;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+.applied-promo-code .promocode-display span {
+  padding-right: 10px;
+  font-size: 1rem;
 }

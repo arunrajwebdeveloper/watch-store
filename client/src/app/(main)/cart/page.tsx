@@ -54,7 +54,7 @@ function CartPage() {
       },
       gstAmount: { label: `GST (${GST_RATE * 100}%)`, value: gstAmount },
       shippingFee: { label: "Shipping Fee", value: SHIPPING_FEE },
-      grandTotal: { label: "Grand Total", value: finalAmount },
+      grandTotal: { label: "Total Payable", value: finalAmount },
     };
   };
 
@@ -206,42 +206,96 @@ function CartPage() {
           </div>
           <div className="cart-layout-sidebar">
             <div className="cart-sidebar-wrap">
-              <div className="sidebar-box">
-                <div className="box-header">
-                  <h4>Summary</h4>
+              {cartItems?.length > 0 && (
+                <div className="sidebar-box">
+                  <div className="box-header">
+                    <h4>Summary</h4>
+                  </div>
+                  <div className="sidebar-box-content">
+                    <div className="promo-code">
+                      <h4>Do you have a promo code?</h4>
+                      <div>
+                        <div className="promo-code-field">
+                          <input
+                            className="input-element"
+                            placeholder="Promo code"
+                            // value=""
+                            onChange={() => {}}
+                          />
+                          <button className="btn secondary">Apply</button>
+                        </div>
+                        <div className="invalid-message">
+                          Promo code is invalid or expired.
+                        </div>
+                        <div className="applied-promo-code">
+                          <div className="promocode-display">
+                            <span>ZONE2345Y</span>
+                            <button>
+                              <svg
+                                width="22px"
+                                height="22px"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                              >
+                                <g>
+                                  <path
+                                    d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16"
+                                    stroke="#000000"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </g>
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <table className="summary-table">
+                      <tbody>
+                        {Object.entries(priceBreakdownList).map(
+                          ([key, { value, label }]) => {
+                            if (key === "grandTotal") {
+                              return (
+                                <tr key={key} className="grand-total">
+                                  <td>
+                                    <h3>{label}</h3>
+                                  </td>
+                                  <td>
+                                    <h3>
+                                      {currencyFormat(
+                                        parseInt(value.toString())
+                                      )}
+                                    </h3>
+                                  </td>
+                                </tr>
+                              );
+                            }
+                            return (
+                              <tr
+                                key={key}
+                                style={{
+                                  color: key === "discount" ? "green" : "",
+                                }}
+                              >
+                                <td>{label}</td>
+                                <td>
+                                  {key === "discount" ? "-" : ""}
+                                  {currencyFormat(parseInt(value.toString()))}
+                                </td>
+                              </tr>
+                            );
+                          }
+                        )}
+                      </tbody>
+                    </table>
+                    <div className="checkout-final-btn">
+                      <button className="btn primary">Checkout</button>
+                    </div>
+                  </div>
                 </div>
-                <div className="sidebar-box-content">
-                  <table className="summary-table">
-                    <tbody>
-                      {Object.entries(priceBreakdownList).map(
-                        ([key, { value, label }]) => {
-                          return (
-                            <tr
-                              key={key}
-                              className={
-                                key === "grandTotal" ? "grand-total" : ""
-                              }
-                              style={{
-                                color: key === "discount" ? "green" : "",
-                              }}
-                            >
-                              <td>{label}</td>
-                              <td>
-                                {key === "discount"
-                                  ? "-"
-                                  : key === "gstAmount" || key === "shippingFee"
-                                  ? "+"
-                                  : ""}
-                                {currencyFormat(parseInt(value.toString()))}
-                              </td>
-                            </tr>
-                          );
-                        }
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
