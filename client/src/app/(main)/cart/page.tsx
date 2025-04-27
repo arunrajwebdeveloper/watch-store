@@ -98,9 +98,14 @@ function CartPage() {
                               <div>
                                 <h4 className="brand-name">{product?.brand}</h4>
                                 <div>
-                                  <span className="brnd-model">
+                                  <span className="brand-model">
                                     {product?.model}
                                   </span>
+                                </div>
+                                <div className="product-description">
+                                  <div className="sm-txt">{`Size: ${product.size}mm`}</div>
+                                  <div className="sm-txt">{`Color: ${product.color}`}</div>
+                                  <div className="sm-txt">{`Movement Type: ${product.movementType}`}</div>
                                 </div>
                                 <button
                                   disabled={isLoading}

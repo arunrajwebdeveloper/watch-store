@@ -694,11 +694,24 @@ table.product-listing-table h4.brand-name {
   margin-bottom: 3px;
   color: #000;
 }
-table.product-listing-table span.brnd-model {
+table.product-listing-table span.brand-model {
   font-size: 1rem;
   margin-bottom: 5px;
   display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
 }
+table.product-listing-table .product-description {
+  margin-top: 8px;
+}
+table.product-listing-table .product-description .sm-txt {
+  font-size: 0.8rem;
+  margin-bottom: 2px;
+  text-transform: capitalize;
+}
+
 table.product-listing-table button.rmv-btn {
   border: 0;
   background-color: transparent;
