@@ -278,7 +278,7 @@ function CartPage() {
                             if (key === "discount") {
                               if (value !== 0) {
                                 return (
-                                  <tr style={{ color: "green" }}>
+                                  <tr key={key} style={{ color: "green" }}>
                                     <td>
                                       <div
                                         style={{
