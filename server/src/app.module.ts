@@ -5,6 +5,7 @@ import { UsersModule } from './modules/users/users.module';
 import { ProductsModule } from './modules/products/products.module';
 import { CartModule } from './modules/cart/cart.module';
 import { WishlistModule } from './modules/wishlist/wishlist.module';
+import { CouponModule } from './modules/coupon/coupon.module';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -21,6 +22,7 @@ if (!mongoUri) {
     ProductsModule,
     CartModule,
     WishlistModule,
+    CouponModule,
   ],
 })
 export class AppModule {}
