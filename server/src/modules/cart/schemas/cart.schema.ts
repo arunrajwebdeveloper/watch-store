@@ -5,7 +5,12 @@ export type CartDocument = Cart & Document;
 
 @Schema({ timestamps: true })
 export class Cart {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true,
+  })
   user: Types.ObjectId;
 
   @Prop({
@@ -13,6 +18,7 @@ export class Cart {
       {
         product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
         quantity: { type: Number, required: true, default: 1 },
+        price: { type: Number, required: true, default: 0 },
       },
     ],
     default: [],
@@ -20,7 +26,17 @@ export class Cart {
   items: {
     product: Types.ObjectId;
     quantity: number;
+    price: number;
   }[];
+
+  @Prop({ default: 0 })
+  cartTotal: number;
+
+  @Prop({ default: 0 })
+  discount: number;
+
+  @Prop({ default: 0 })
+  finalTotal: number;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);
