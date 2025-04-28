@@ -4,7 +4,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { ClientSession, Model } from 'mongoose';
 import { Coupon, PromocodeType } from './schemas/coupon.schema';
 import { CreateCouponDto } from './dto/create-coupon.dto';
 
@@ -28,44 +28,45 @@ export class CouponService {
   async findCouponByCode(code: string): Promise<Coupon> {
     const coupon = await this.couponModel.findOne({ code });
 
-    if (!coupon || !coupon.isActive) {
-      throw new NotFoundException('Coupon not found or inactive');
+    // if (!coupon || !coupon.isActive) {
+    //   throw new NotFoundException('Coupon not found or inactive');
+    // }
+
+    if (!coupon) {
+      throw new BadRequestException({
+        statusCode: 400,
+        message: 'Invalid coupon code',
+        error: 'INVALID_COUPON_CODE',
+      });
+    }
+
+    // Check expiry date
+    const currentDate = new Date();
+    if (coupon.expiry < currentDate) {
+      throw new BadRequestException({
+        statusCode: 400,
+        message: 'Coupon has expired',
+        error: 'COUPON_EXPIRED',
+      });
+    }
+
+    // Check usage limit
+    if (coupon.usedCount >= coupon.usageLimit) {
+      throw new BadRequestException({
+        statusCode: 400,
+        message: 'Coupon usage limit reached',
+        error: 'COUPON_USAGE_LIMIT_REACHED',
+      });
     }
 
     return coupon;
   }
 
-  async applyCoupon(cartTotal: number, code: string): Promise<number> {
-    const coupon = await this.findCouponByCode(code);
-
-    // Check expiry date
-    const currentDate = new Date();
-    if (coupon.expiry < currentDate) {
-      throw new BadRequestException('Coupon has expired');
-    }
-
-    // Check usage limit
-    if (coupon.usedCount >= coupon.usageLimit) {
-      throw new BadRequestException('Coupon usage limit reached');
-    }
-
-    // Calculate the discount
-    let discountAmount = 0;
-    if (coupon.type === PromocodeType.FIXED) {
-      discountAmount = coupon.discount;
-    } else if (coupon.type === PromocodeType.PERCENTAGE) {
-      discountAmount = (cartTotal * coupon.discount) / 100;
-    }
-
-    // Apply the discount
-    const newTotal = cartTotal - discountAmount;
-
-    // Update the used count
-    await this.couponModel.updateOne(
-      { _id: coupon._id },
+  async updateCouponUsedCount(couponId: string, session?: ClientSession) {
+    await this.couponModel.findByIdAndUpdate(
+      { _id: couponId },
       { $inc: { usedCount: 1 } },
+      { session },
     );
-
-    return newTotal;
   }
 }

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import api from "@/lib/axios";
 import { CartInput, CartState } from "@/types";
 import { logoutUser } from "./authSlice";
@@ -7,7 +7,17 @@ const initialState: CartState = {
   cartItems: [],
   cartItemCount: 0,
   cartTotalAmount: 0,
+  cartFinalTotalAmount: 0,
+  cartDiscountAmount: 0,
+  appliedCoupon: null,
   isLoading: false,
+  isUpdatingCart: false,
+  isCartEmpty: true,
+  gstPercentage: 0,
+  gstAmount: 0,
+  shippingFee: 0,
+  couponError: null,
+  isApplyingCoupon: false,
 };
 
 export const getCart = createAsyncThunk("cart/get", async () => {
@@ -45,24 +55,60 @@ export const clearCart = createAsyncThunk("cart/clear", async () => {
   return res.data;
 });
 
+export const applyCoupon = createAsyncThunk(
+  "cart/applyCoupon",
+  async (couponCode: string, { rejectWithValue }) => {
+    try {
+      const res = await api.post("/cart/apply-coupon", { couponCode });
+      return res.data;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue({ message: "Something went wrong" });
+    }
+  }
+);
+
+export const removeAppliedCoupon = createAsyncThunk(
+  "cart/removeCoupon",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.patch("/cart/remove-coupon");
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response.data.message || "Failed to remove coupon"
+      );
+    }
+  }
+);
+
 const calculateCartLength = (cartItems: any) => {
-  return cartItems.reduce((acc: number, item: any) => acc + item.quantity, 0);
+  return cartItems?.reduce((acc: number, item: any) => acc + item.quantity, 0);
 };
 
-const calculateGrandTotal = (cartItems: any[]) => {
-  return cartItems.reduce((acc: number, item: any) => {
-    const quantity = item.quantity || 0;
-    const price = item.product?.currentPrice || 0;
-    return acc + quantity * price;
-  }, 0);
+const setState = (state: any, response: any) => {
+  if (response) {
+    state.cartItems = response.items;
+    state.cartItemCount = calculateCartLength(response.items);
+    state.cartTotalAmount = response.cartTotal;
+    state.cartFinalTotalAmount = response.finalTotal;
+    state.cartDiscountAmount = response.discount;
+    state.appliedCoupon = response.appliedCoupon || null;
+    state.isCartEmpty = response.items.length === 0;
+    state.gstPercentage = response.gstPercentage;
+    state.gstAmount = response.gstAmount;
+    state.shippingFee = response.shippingFee;
+  }
 };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    setGrandTotal(state, action) {
-      state.cartTotalAmount = action.payload;
+    clearCouponError(state) {
+      state.couponError = null;
     },
   },
   extraReducers: (builder) => {
@@ -71,11 +117,7 @@ const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(getCart.fulfilled, (state, action) => {
-        const cartList = action.payload?.items;
-
-        state.cartItems = cartList;
-        state.cartItemCount = calculateCartLength(cartList) ?? 0;
-        state.cartTotalAmount = calculateGrandTotal(cartList);
+        setState(state, action.payload);
         state.isLoading = false;
       })
       .addCase(getCart.rejected, (state) => {
@@ -85,32 +127,27 @@ const cartSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(addToCart.fulfilled, (state, action) => {
-        const cartList = action.payload?.items;
-
-        state.cartItems = cartList;
-        state.cartItemCount = calculateCartLength(cartList) ?? 0;
-        state.cartTotalAmount = calculateGrandTotal(cartList);
+        setState(state, action.payload);
         state.isLoading = false;
       })
       .addCase(addToCart.rejected, (state) => {
         state.isLoading = false;
       })
+      .addCase(updateCartItem.pending, (state) => {
+        state.isUpdatingCart = true;
+      })
       .addCase(updateCartItem.fulfilled, (state, action) => {
-        const cartList = action.payload?.items;
-
-        state.cartItems = cartList;
-        state.cartItemCount = calculateCartLength(cartList) ?? 0;
-        state.cartTotalAmount = calculateGrandTotal(cartList);
+        setState(state, action.payload);
+        state.isUpdatingCart = false;
+      })
+      .addCase(updateCartItem.rejected, (state) => {
+        state.isUpdatingCart = false;
       })
       .addCase(removeCartItem.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(removeCartItem.fulfilled, (state, action) => {
-        const cartList = action.payload?.items;
-
-        state.cartItems = cartList;
-        state.cartItemCount = calculateCartLength(cartList) ?? 0;
-        state.cartTotalAmount = calculateGrandTotal(cartList);
+        setState(state, action.payload);
         state.isLoading = false;
       })
       .addCase(removeCartItem.rejected, (state) => {
@@ -120,6 +157,33 @@ const cartSlice = createSlice({
         state.cartItems = [];
         state.cartItemCount = 0;
       })
+      .addCase(applyCoupon.pending, (state, action) => {
+        setState(state, action.payload);
+        state.isApplyingCoupon = true;
+        state.couponError = null;
+      })
+      .addCase(applyCoupon.fulfilled, (state, action) => {
+        setState(state, action.payload);
+        state.isApplyingCoupon = false;
+      })
+      .addCase(applyCoupon.rejected, (state, action) => {
+        state.isApplyingCoupon = false;
+        state.couponError = action.payload;
+      })
+
+      .addCase(removeAppliedCoupon.pending, (state, action) => {
+        setState(state, action.payload);
+        state.isApplyingCoupon = true;
+        state.couponError = null;
+      })
+      .addCase(removeAppliedCoupon.fulfilled, (state, action) => {
+        setState(state, action.payload);
+        state.isApplyingCoupon = false;
+      })
+      .addCase(removeAppliedCoupon.rejected, (state, action) => {
+        state.isApplyingCoupon = false;
+        state.couponError = action.payload;
+      })
 
       // ✅ Clear cart when user logs out
       .addCase(logoutUser.fulfilled, (state) => {
@@ -128,5 +192,5 @@ const cartSlice = createSlice({
       });
   },
 });
-
+export const { clearCouponError } = cartSlice.actions;
 export default cartSlice.reducer;
