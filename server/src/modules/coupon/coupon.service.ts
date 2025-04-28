@@ -1,11 +1,7 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ClientSession, Model } from 'mongoose';
-import { Coupon, PromocodeType } from './schemas/coupon.schema';
+import { Coupon } from './schemas/coupon.schema';
 import { CreateCouponDto } from './dto/create-coupon.dto';
 
 @Injectable()
@@ -27,10 +23,6 @@ export class CouponService {
 
   async findCouponByCode(code: string): Promise<Coupon> {
     const coupon = await this.couponModel.findOne({ code });
-
-    // if (!coupon || !coupon.isActive) {
-    //   throw new NotFoundException('Coupon not found or inactive');
-    // }
 
     if (!coupon) {
       throw new BadRequestException({
