@@ -19,17 +19,17 @@ import { ApplyCouponDto } from './dto/apply-coupon.dto';
 export class CouponController {
   constructor(private readonly couponService: CouponService) {}
 
-  @Post('create')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
-  create(@Body() code: CreateCouponDto) {
-    return this.couponService.createCoupon(code);
-  }
-
   @UseGuards(JwtAuthGuard)
   @Post('apply')
   async apply(@Body() applyCouponDto: ApplyCouponDto) {
     const { cartTotal, code } = applyCouponDto;
     return this.couponService.applyCoupon(cartTotal, code);
+  }
+
+  @Post('create')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  create(@Body() code: CreateCouponDto) {
+    return this.couponService.createCoupon(code);
   }
 }

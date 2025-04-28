@@ -21,7 +21,7 @@ export class CouponService {
       throw new BadRequestException('Coupon already exists');
     }
 
-    const coupon = new this.couponModel(CreateCouponDto);
+    const coupon = new this.couponModel(createCouponDto);
     return coupon.save();
   }
 
