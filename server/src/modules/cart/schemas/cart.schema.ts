@@ -4,7 +4,7 @@ import { PromocodeType } from 'src/modules/coupon/schemas/coupon.schema';
 
 export interface AppliedCoupon {
   code: string;
-  discountAmount: number;
+  discount: number;
   promocodeType: string;
 }
 
@@ -56,7 +56,7 @@ export class Cart {
   @Prop({
     type: {
       code: { type: String },
-      discountAmount: { type: Number, default: 0 },
+      discount: { type: Number, default: 0 },
       promocodeType: { type: String, enum: PromocodeType },
     },
     default: null,

@@ -94,12 +94,18 @@ export class CartService {
 
       // Apply coupon discount if available
       if (cart.appliedCoupon) {
-        cart.discount = cart.appliedCoupon.discountAmount;
+        if (cart.appliedCoupon.promocodeType === PromocodeType.FIXED) {
+          cart.discount = cart.appliedCoupon.discount;
+        } else if (
+          cart.appliedCoupon.promocodeType === PromocodeType.PERCENTAGE
+        ) {
+          cart.discount = cart.cartTotal * cart.appliedCoupon.discount;
+        }
       } else {
         cart.discount = 0;
       }
 
-      const subtotal = cart.cartTotal + cart.shippingFee - cart.discount;
+      const subtotal = cart.cartTotal + cart.shippingFee;
       const gstAmount = subtotal * cart.gstPercentage;
 
       cart.gstPercentage = cart.gstPercentage;
@@ -146,13 +152,20 @@ export class CartService {
         0,
       );
 
+      // Apply coupon discount if available
       if (cart.appliedCoupon) {
-        cart.discount = cart.appliedCoupon.discountAmount;
+        if (cart.appliedCoupon.promocodeType === PromocodeType.FIXED) {
+          cart.discount = cart.appliedCoupon.discount;
+        } else if (
+          cart.appliedCoupon.promocodeType === PromocodeType.PERCENTAGE
+        ) {
+          cart.discount = cart.cartTotal * cart.appliedCoupon.discount;
+        }
       } else {
         cart.discount = 0;
       }
 
-      const subtotal = cart.cartTotal + cart.shippingFee - cart.discount;
+      const subtotal = cart.cartTotal + cart.shippingFee;
       const gstAmount = subtotal * cart.gstPercentage;
 
       cart.gstPercentage = cart.gstPercentage;
@@ -200,24 +213,24 @@ export class CartService {
       const coupon = await this.couponService.findCouponByCode(couponCode);
 
       // Calculate the discount
-      let discountAmount = 0;
+      let discount = 0;
       if (coupon.type === PromocodeType.FIXED) {
-        discountAmount = coupon.discount;
+        discount = coupon.discount;
       } else if (coupon.type === PromocodeType.PERCENTAGE) {
-        discountAmount = cart.cartTotal * coupon.discount;
+        discount = cart.cartTotal * coupon.discount;
       }
 
       // Apply coupon to the cart
       cart.appliedCoupon = {
         code: coupon.code,
-        discountAmount,
+        discount: coupon.discount,
         promocodeType: coupon.type,
       };
 
       // Recalculate discount and final total
-      cart.discount = discountAmount;
+      cart.discount = discount;
 
-      const subtotal = cart.cartTotal + cart.shippingFee - discountAmount;
+      const subtotal = cart.cartTotal + cart.shippingFee - discount;
       const gstAmount = subtotal * cart.gstPercentage;
 
       cart.gstPercentage = cart.gstPercentage;
@@ -277,7 +290,7 @@ export class CartService {
       await session.commitTransaction();
       session.endSession();
 
-      return this.getUserCart(userId); // return updated cart
+      return this.getUserCart(userId);
     } catch (error) {
       await session.abortTransaction();
       session.endSession();
@@ -310,7 +323,20 @@ export class CartService {
         0,
       );
 
-      const subtotal = cart.cartTotal + cart.shippingFee - cart.discount;
+      // Apply coupon discount if available
+      if (cart.appliedCoupon) {
+        if (cart.appliedCoupon.promocodeType === PromocodeType.FIXED) {
+          cart.discount = cart.appliedCoupon.discount;
+        } else if (
+          cart.appliedCoupon.promocodeType === PromocodeType.PERCENTAGE
+        ) {
+          cart.discount = cart.cartTotal * cart.appliedCoupon.discount;
+        }
+      } else {
+        cart.discount = 0;
+      }
+
+      const subtotal = cart.cartTotal + cart.shippingFee;
       const gstAmount = subtotal * cart.gstPercentage;
 
       cart.gstPercentage = cart.gstPercentage;
