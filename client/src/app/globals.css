@@ -659,12 +659,14 @@ a.btn.secondary {
 
 .cart-layout-wrapper {
   width: 100%;
+}
+.checkout-page .cart-layout-wrapper {
   padding-right: 30px;
-  border-right: 1px solid #ccc;
 }
 .cart-layout-sidebar {
-  width: 320px;
+  width: 380px;
   flex: none;
+  border-left: 1px solid #ccc;
 }
 table.product-listing-table {
   width: 100%;
@@ -722,9 +724,20 @@ table.product-listing-table button.rmv-btn {
   margin-top: 10px;
 }
 
+tr.cart-total-footer td {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #000;
+}
+
+table.product-listing-table td:last-child,
+table.product-listing-table th:last-child {
+  text-align: right;
+}
+
 .cart-layout-sidebar .page-header,
 .cart-layout-sidebar .sidebar-box {
-  padding-left: 20px;
+  padding-left: 30px;
   padding-right: 20px;
 }
 
@@ -832,4 +845,36 @@ table.summary-table td:last-child {
 .applied-promo-code .promocode-display span {
   padding-right: 10px;
   font-size: 1rem;
+}
+
+.address-list {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+.address-list label {
+  border: 1px solid #ccc;
+  padding: 20px;
+  padding-bottom: 60px;
+  border-radius: 10px;
+  font-size: 1rem;
+  line-height: 1.4em;
+  color: black;
+  outline: 0;
+  user-select: none;
+  position: relative;
+}
+.address-list label .badge {
+  background-color: #000;
+  color: #fff;
+  display: inline-block;
+  padding: 4px 6px;
+  border-radius: 30px;
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
+}
+
+.checkout-address-list-block {
+  margin-bottom: 24px;
 }
