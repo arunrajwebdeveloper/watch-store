@@ -14,7 +14,6 @@ import { AddToCartDto } from './dto/add-to-cart.dto';
 import { RequestWithUser } from '../common/types/express-request.interface';
 import { JwtAuthGuard } from '../auth/jwt.guard';
 import { UpdateCartDto } from './dto/update-cart.dto';
-import { PromocodeDto } from './dto/promocode.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('cart')
@@ -51,15 +50,5 @@ export class CartController {
   @Post('clear')
   clearCart(@Req() req: RequestWithUser) {
     return this.cartService.clearCart(req.user.userId);
-  }
-
-  @Post('apply-coupon')
-  applyCoupon(@Req() req: RequestWithUser, @Body() dto: PromocodeDto) {
-    return this.cartService.applyCoupon(req.user.userId, dto);
-  }
-
-  @Patch('remove-coupon')
-  async removeCoupon(@Req() req: RequestWithUser) {
-    return this.cartService.removeCoupon(req.user.userId);
   }
 }
