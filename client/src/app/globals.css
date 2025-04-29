@@ -739,9 +739,15 @@ tr.cart-total-footer td {
   color: #000;
 }
 
-table.product-listing-table td:last-child,
+table.product-listing-table td:not(.emty-cart):last-child,
 table.product-listing-table th:last-child {
   text-align: right;
+}
+
+table.product-listing-table td.emty-cart {
+  text-align: center;
+  font-size: 1rem;
+  color: #000;
 }
 
 .cart-layout-sidebar .page-header,
