@@ -170,11 +170,11 @@ function CartDropdown({ onProceed }: { onProceed: () => void }) {
           disabled={cartItems?.length === 0 || isLoading}
           className="btn secondary"
           onClick={() => {
-            router.push("/cart");
+            router.push("/checkout");
             onProceed();
           }}
         >
-          Go to cart
+          Go to Checkout
         </button>
       </div>
     </div>
