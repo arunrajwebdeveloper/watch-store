@@ -5,6 +5,7 @@ import { Cart, CartDocument } from './schemas/cart.schema';
 import { AddToCartDto } from './dto/add-to-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { ProductsService } from '../products/products.service';
+import { GST_RATE, SHIPPING_FEE } from '../common/constants/CartRates';
 
 @Injectable()
 export class CartService {
@@ -60,6 +61,9 @@ export class CartService {
           price: product.currentPrice,
         });
       }
+
+      cart.gstPercentage = GST_RATE;
+      cart.shippingFee = SHIPPING_FEE;
 
       cart.cartTotal = cart.items.reduce(
         (sum, item) => sum + item.quantity * item.price,

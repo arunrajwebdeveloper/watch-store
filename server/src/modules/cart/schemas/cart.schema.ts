@@ -31,6 +31,15 @@ export class Cart {
 
   @Prop({ default: 0 })
   cartTotal: number;
+
+  @Prop({ default: 0 })
+  gstPercentage: number;
+
+  @Prop({ default: 0 })
+  gstAmount: number;
+
+  @Prop({ default: 0 })
+  shippingFee: number;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);
