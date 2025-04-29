@@ -30,7 +30,7 @@ export class CouponService {
     return coupon.save();
   }
 
-  async findCouponByCode(code: string): Promise<Coupon> {
+  async validateCoupon(code: string): Promise<Coupon> {
     const coupon = await this.couponModel.findOne({ code });
 
     if (!coupon) {
