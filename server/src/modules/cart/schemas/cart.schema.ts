@@ -1,7 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, Types } from 'mongoose';
+import { PromocodeType } from '../../coupon/schemas/coupon.schema';
 
 export type CartDocument = Cart & Document;
+
+export interface AppliedCoupon {
+  code: string;
+  discount: number;
+  discountType: PromocodeType;
+}
 
 @Schema({ timestamps: true })
 export class Cart {
@@ -33,6 +40,12 @@ export class Cart {
   cartTotal: number;
 
   @Prop({ default: 0 })
+  discount: number;
+
+  @Prop({ default: 0 })
+  finalTotal: number;
+
+  @Prop({ default: 0 })
   gstPercentage: number;
 
   @Prop({ default: 0 })
@@ -40,6 +53,16 @@ export class Cart {
 
   @Prop({ default: 0 })
   shippingFee: number;
+
+  @Prop({
+    type: {
+      code: { type: String },
+      discount: { type: Number, default: 0 },
+      discountType: { type: String, enum: Object.values(PromocodeType) },
+    },
+    default: null,
+  })
+  appliedCoupon: AppliedCoupon | null;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);

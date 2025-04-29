@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Cart, CartDocument } from './schemas/cart.schema';
@@ -6,6 +10,9 @@ import { AddToCartDto } from './dto/add-to-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { ProductsService } from '../products/products.service';
 import { GST_RATE, SHIPPING_FEE } from '../common/constants/CartRates';
+import { PromocodeType } from '../coupon/schemas/coupon.schema';
+import { CouponService } from '../coupon/coupon.service';
+import { PromocodeDto } from './dto/promocode.dto';
 
 @Injectable()
 export class CartService {
@@ -13,6 +20,7 @@ export class CartService {
     @InjectModel(Cart.name)
     private cartModel: Model<CartDocument>,
     private readonly productService: ProductsService,
+    private readonly couponService: CouponService,
   ) {}
 
   async getUserCart(userId: string) {
@@ -40,10 +48,21 @@ export class CartService {
 
       let cart = await this.cartModel
         .findOne({ user: userId })
-        .session(session);
+        .session(session)
+        .exec();
 
       if (!cart) {
-        cart = new this.cartModel({ user: userId, items: [], cartTotal: 0 });
+        cart = new this.cartModel({
+          user: userId,
+          items: [],
+          cartTotal: 0,
+          finalTotal: 0,
+          discount: 0,
+          appliedCoupon: null,
+          shipping: 0,
+          gstPercentage: 0,
+          gstAmount: 0,
+        });
       }
 
       const productObjectId = new Types.ObjectId(dto.productId);
@@ -69,6 +88,25 @@ export class CartService {
         (sum, item) => sum + item.quantity * item.price,
         0,
       );
+
+      // Apply coupon discount if available
+      if (cart.appliedCoupon) {
+        if (cart.appliedCoupon.discountType === PromocodeType.FIXED) {
+          cart.discount = Math.min(cart.appliedCoupon.discount, cart.cartTotal);
+        } else if (
+          cart.appliedCoupon.discountType === PromocodeType.PERCENTAGE
+        ) {
+          cart.discount = cart.cartTotal * cart.appliedCoupon.discount;
+        }
+      } else {
+        cart.discount = 0;
+      }
+
+      const subtotal = cart.cartTotal + cart.shippingFee;
+      const gstAmount = subtotal * cart.gstPercentage;
+
+      cart.gstAmount = gstAmount;
+      cart.finalTotal = subtotal + gstAmount;
 
       await cart.save({ session });
 
@@ -108,6 +146,25 @@ export class CartService {
         0,
       );
 
+      // Apply coupon discount if available
+      if (cart.appliedCoupon) {
+        if (cart.appliedCoupon.discountType === PromocodeType.FIXED) {
+          cart.discount = Math.min(cart.appliedCoupon.discount, cart.cartTotal);
+        } else if (
+          cart.appliedCoupon.discountType === PromocodeType.PERCENTAGE
+        ) {
+          cart.discount = cart.cartTotal * cart.appliedCoupon.discount;
+        }
+      } else {
+        cart.discount = 0;
+      }
+
+      const subtotal = cart.cartTotal + cart.shippingFee;
+      const gstAmount = subtotal * cart.gstPercentage;
+
+      cart.gstAmount = gstAmount;
+      cart.finalTotal = subtotal + gstAmount;
+
       await cart.save({ session });
 
       // Commit the transaction if everything is fine
@@ -124,13 +181,125 @@ export class CartService {
     }
   }
 
+  async applyCoupon(userId: string, dto: PromocodeDto) {
+    const { couponCode } = dto;
+
+    const session = await this.cartModel.startSession();
+    session.startTransaction();
+
+    try {
+      const cart = await this.cartModel
+        .findOne({ user: userId })
+        .session(session)
+        .exec();
+
+      if (!cart) throw new NotFoundException('Cart not found');
+
+      // Check if a coupon is already applied (Optional safeguard)
+      if (cart.appliedCoupon) {
+        throw new BadRequestException(
+          'A coupon is already applied to the cart',
+        );
+      }
+
+      // Fetch coupon from the database
+      const coupon = await this.couponService.validateCoupon(couponCode);
+
+      // Calculate the discount
+      let discount = 0;
+      if (coupon.type === PromocodeType.FIXED) {
+        discount = Math.min(coupon.discount, cart.cartTotal);
+      } else if (coupon.type === PromocodeType.PERCENTAGE) {
+        discount = cart.cartTotal * coupon.discount;
+      }
+
+      // Apply coupon to the cart
+      cart.appliedCoupon = {
+        code: coupon.code,
+        discount: coupon.discount,
+        discountType: coupon.type as PromocodeType,
+      };
+
+      // Recalculate discount and final total
+      cart.discount = discount;
+
+      const subtotal = cart.cartTotal + cart.shippingFee - discount;
+      const gstAmount = subtotal * cart.gstPercentage;
+
+      cart.gstAmount = gstAmount;
+      cart.finalTotal = subtotal + gstAmount;
+
+      await cart.save({ session });
+
+      // Update coupon usage
+      await this.couponService.updateCouponUsedCount(
+        coupon._id.toString(),
+        session,
+      );
+
+      // Commit the transaction
+      await session.commitTransaction();
+      session.endSession();
+
+      return this.getUserCart(userId);
+    } catch (error) {
+      // Rollback the transaction if any error occurs
+      await session.abortTransaction();
+      session.endSession();
+      throw error;
+    }
+  }
+
+  async removeCoupon(userId: string) {
+    const session = await this.cartModel.startSession();
+    session.startTransaction();
+
+    try {
+      const cart = await this.cartModel
+        .findOne({ user: userId })
+        .session(session)
+        .exec();
+
+      if (!cart) throw new NotFoundException('Cart not found');
+
+      if (!cart.appliedCoupon) {
+        throw new BadRequestException('No coupon applied to cart');
+      }
+
+      // Remove the applied coupon
+      cart.appliedCoupon = null;
+      cart.discount = 0;
+
+      // Recalculate totals
+      const subtotal = cart.cartTotal + cart.shippingFee;
+      const gstAmount = subtotal * cart.gstPercentage;
+
+      cart.gstAmount = gstAmount;
+      cart.finalTotal = subtotal + gstAmount;
+
+      await cart.save({ session });
+
+      await session.commitTransaction();
+      session.endSession();
+
+      return this.getUserCart(userId);
+    } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
+      throw error;
+    }
+  }
+
   // Remove from cart with session transaction
   async removeFromCart(userId: string, productId: string) {
     const session = await this.cartModel.startSession();
     session.startTransaction();
 
     try {
-      const cart = await this.cartModel.findOne({ user: userId }).exec();
+      const cart = await this.cartModel
+        .findOne({ user: userId })
+        .session(session)
+        .exec();
       if (!cart) throw new NotFoundException('Cart not found');
 
       cart.items = cart.items.filter(
@@ -142,6 +311,25 @@ export class CartService {
         (sum, item) => sum + item.quantity * item.price,
         0,
       );
+
+      // Apply coupon discount if available
+      if (cart.appliedCoupon) {
+        if (cart.appliedCoupon.discountType === PromocodeType.FIXED) {
+          cart.discount = Math.min(cart.appliedCoupon.discount, cart.cartTotal);
+        } else if (
+          cart.appliedCoupon.discountType === PromocodeType.PERCENTAGE
+        ) {
+          cart.discount = cart.cartTotal * cart.appliedCoupon.discount;
+        }
+      } else {
+        cart.discount = 0;
+      }
+
+      const subtotal = cart.cartTotal + cart.shippingFee;
+      const gstAmount = subtotal * cart.gstPercentage;
+
+      cart.gstAmount = gstAmount;
+      cart.finalTotal = subtotal + gstAmount;
 
       await cart.save({ session });
 
@@ -164,11 +352,20 @@ export class CartService {
     session.startTransaction();
 
     try {
-      const cart = await this.cartModel.findOne({ user: userId }).exec();
+      const cart = await this.cartModel
+        .findOne({ user: userId })
+        .session(session)
+        .exec();
+
       if (!cart) throw new NotFoundException('Cart not found');
 
       cart.items = [];
       cart.cartTotal = 0;
+      cart.appliedCoupon = null;
+      cart.discount = 0;
+      cart.finalTotal = 0;
+      cart.gstPercentage = 0;
+      cart.gstAmount = 0;
 
       await cart.save({ session });
 
