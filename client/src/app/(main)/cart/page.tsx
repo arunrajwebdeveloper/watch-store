@@ -55,6 +55,18 @@ function CartPage() {
 
   const priceBreakdownList = createCartBreakdown(cartState);
 
+  const handleApplyCoupon = async (promocode: string) => {
+    if (promocode) {
+      await dispatch(applyCoupon(promocode.trim())).unwrap();
+      setPromocode("");
+    }
+  };
+
+  const handleCouponChange = (e: any) => {
+    setPromocode(e.target.value);
+    dispatch(clearCouponError());
+  };
+
   return (
     <div className="container">
       <div className="product-listing-page">
@@ -220,18 +232,12 @@ function CartPage() {
                             className="input-element"
                             placeholder="Promo code"
                             value={promocode}
-                            onChange={(e) => {
-                              setPromocode(e.target.value);
-                              dispatch(clearCouponError());
-                            }}
+                            onChange={(e) => handleCouponChange(e)}
                             disabled={cartState.isApplyingCoupon}
                           />
                           <button
                             disabled={cartState.isApplyingCoupon || !promocode}
-                            onClick={async () => {
-                              await dispatch(applyCoupon(promocode)).unwrap();
-                              setPromocode("");
-                            }}
+                            onClick={() => handleApplyCoupon(promocode)}
                             className="btn secondary"
                           >
                             Apply

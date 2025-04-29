@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ClientSession, Model } from 'mongoose';
-import { Coupon } from './schemas/coupon.schema';
+import { Coupon, PromocodeType } from './schemas/coupon.schema';
 import { CreateCouponDto } from './dto/create-coupon.dto';
 
 @Injectable()
@@ -15,6 +15,15 @@ export class CouponService {
 
     if (couponExists) {
       throw new BadRequestException('Coupon already exists');
+    }
+
+    if (
+      createCouponDto.type === PromocodeType.PERCENTAGE &&
+      (createCouponDto.discount <= 0 || createCouponDto.discount >= 1)
+    ) {
+      throw new BadRequestException(
+        'Percentage discount must be between 0 and 1',
+      );
     }
 
     const coupon = new this.couponModel(createCouponDto);

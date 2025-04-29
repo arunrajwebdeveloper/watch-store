@@ -676,6 +676,7 @@ table.product-listing-table th {
   font-weight: 600;
   height: 40px;
   border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
   text-align: left;
   padding: 20px 10px;
 }
@@ -800,6 +801,7 @@ table.summary-table td:last-child {
 }
 .checkout-final-btn button.btn {
   width: 100%;
+  font-weight: 600;
 }
 .applied-promo-code {
   display: flex;

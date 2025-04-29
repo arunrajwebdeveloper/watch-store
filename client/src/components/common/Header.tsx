@@ -99,7 +99,7 @@ function Header() {
                       />
                     </g>
                   </svg>
-                  <span>Cart</span>
+                  {/* <span>Cart</span> */}
                   {isAuthenticated && user && (
                     <span className="count-badge">{cartItemsCount}</span>
                   )}
