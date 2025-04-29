@@ -655,10 +655,19 @@ a.btn.secondary {
   margin-bottom: 20px;
 }
 
+.page-header h2 {
+  font-size: 1.8rem;
+}
+
+.page-header h3 {
+  font-size: 1.4rem;
+}
+
 /* CART */
 
 .cart-layout-wrapper {
   width: 100%;
+  padding-right: 30px;
 }
 .checkout-page .cart-layout-wrapper {
   padding-right: 30px;
@@ -863,16 +872,23 @@ table.summary-table td:last-child {
   outline: 0;
   user-select: none;
   position: relative;
+  transition: 0.3s ease;
+}
+.address-list label:hover,
+.address-list label.selected {
+  border-color: #72abf1;
+  background-color: #e8f2ff;
 }
 .address-list label .badge {
-  background-color: #000;
+  background-color: #000000;
   color: #fff;
   display: inline-block;
-  padding: 4px 6px;
+  padding: 4px 8px;
   border-radius: 30px;
   position: absolute;
   left: 15px;
   bottom: 15px;
+  font-size: 0.8rem;
 }
 
 .checkout-address-list-block {

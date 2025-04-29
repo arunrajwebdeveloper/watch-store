@@ -79,10 +79,10 @@ function CheckoutPage() {
             <div>
               <div className="checkout-address-list-block">
                 <div className="page-header">
-                  <h2>Choose Delivery Address</h2>
+                  <h3>Choose Delivery Address</h3>
                 </div>
                 <div className="address-list">
-                  <label htmlFor="add_1">
+                  <label htmlFor="add_1" className="selected">
                     <span className="badge">Home</span>
                     <input
                       type="radio"
@@ -121,7 +121,7 @@ function CheckoutPage() {
 
               <div className="product-listing-wrap">
                 <div className="page-header">
-                  <h2>Products</h2>
+                  <h3>Products</h3>
                 </div>
                 <table className="product-listing-table">
                   <tbody>
@@ -403,7 +403,9 @@ function CheckoutPage() {
                       </tbody>
                     </table>
                     <div className="checkout-final-btn">
-                      <button className="btn primary">Checkout</button>
+                      <button className="btn primary">
+                        Proceed to Payment
+                      </button>
                     </div>
                   </div>
                 </div>
