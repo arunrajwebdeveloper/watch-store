@@ -73,7 +73,7 @@ function CheckoutPage() {
         <div className="listing-page-layout">
           <div className="cart-layout-wrapper">
             <div className="page-header">
-              <h2>Checkout</h2>
+              <h2>Cart</h2>
             </div>
 
             <div>
