@@ -53,3 +53,15 @@ export interface WishlistState {
   wishlistItems: any[];
   isLoading: boolean;
 }
+
+export interface AddressInput {
+  fullname: string;
+  contact: string;
+  address: string;
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  tag: string;
+}

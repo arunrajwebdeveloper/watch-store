@@ -1,6 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "@/lib/axios";
-import { AuthState, LoginInput, RegisterInput, ResetInput } from "@/types";
+import {
+  AddressInput,
+  AuthState,
+  LoginInput,
+  RegisterInput,
+  ResetInput,
+} from "@/types";
 import { getCart } from "./cartSlice";
 import { getWishlist } from "./wishlistSlice";
 
@@ -44,7 +50,7 @@ export const refreshUser = createAsyncThunk(
   async (_, { dispatch }) => {
     const res = await api.post("/auth/refresh"); // re-issues token in cookie
 
-    // ✅ Trigger cart / wishlist sync on refresh too
+    //  Trigger cart / wishlist sync on refresh too
     await dispatch(getCart());
     await dispatch(getWishlist());
 
@@ -55,6 +61,14 @@ export const refreshUser = createAsyncThunk(
 export const logoutUser = createAsyncThunk("auth/logout", async () => {
   await api.post("/auth/logout"); // clears cookie
 });
+
+export const addAddress = createAsyncThunk(
+  "address/add",
+  async (data: AddressInput) => {
+    const res = await api.post("/users/address/add", data);
+    return res.data;
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -81,6 +95,10 @@ const authSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
+      })
+      .addCase(addAddress.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.isAuthenticated = true;
       });
   },
 });

@@ -8,12 +8,16 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/users.schema';
 import { SignupDto } from '../auth/dto/signup.dto';
 import { AddressDto } from './dto/address.dto';
+import { Address, AddressDocument } from './schemas/address.schema';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name)
     private userModel: Model<UserDocument>,
+
+    @InjectModel(Address.name)
+    private readonly addressModel: Model<AddressDocument>,
   ) {}
 
   async createUser(dto: SignupDto): Promise<User> {
@@ -33,58 +37,44 @@ export class UsersService {
   async findById(id: string): Promise<User | null> {
     const user = await this.userModel
       .findById(id)
+      .populate('addressList')
       .select('-password')
       .lean()
       .exec();
+
     if (!user) {
       throw new NotFoundException('User not found');
     }
     return user;
   }
 
-  async addAddress(id: string, dto: AddressDto) {
-    const user = await this.userModel.findByIdAndUpdate(
-      id,
-      { address: dto },
-      { new: true },
-    );
+  async addAddress(userId: string, dto: AddressDto) {
+    const address = await this.addressModel.create({ ...dto, userId });
+
+    const user = await this.userModel
+      .findByIdAndUpdate(
+        userId,
+        { $push: { addressList: address._id } },
+        { new: true },
+      )
+      .populate('addressList')
+      .lean()
+      .exec();
+
+    if (!user) throw new NotFoundException('User not found');
+    const { password, ...rest } = user;
+    return { user: rest };
+  }
+
+  async getUserAddresses(userId: string) {
+    const user = await this.userModel
+      .findById(userId)
+      .populate('addressList')
+      .lean()
+      .exec();
 
     if (!user) throw new NotFoundException('User not found');
 
-    return {
-      id: user._id.toString(),
-      name: user.name,
-      email: user.email,
-      address: user.address,
-    };
+    return user.addressList;
   }
-
-  // async addToWishlist(userId: string, dto: WishlistDto) {
-  //   const user = await this.userModel.findById(userId);
-
-  //   if (!user) {
-  //     throw new NotFoundException('User not found');
-  //   }
-
-  //   if (!user.wishList) {
-  //     user.wishList = [];
-  //   }
-
-  //   const alreadyExists = user.wishList.some(
-  //     (item) => item.product.toString() === dto.productId,
-  //   );
-
-  //   if (alreadyExists) {
-  //     throw new BadRequestException('Product is already in the wishlist');
-  //   }
-
-  //   user.wishList.push({
-  //     product: new Types.ObjectId(dto.productId),
-  //     addedAt: new Date(),
-  //   });
-
-  //   await user.save();
-
-  //   return { message: 'Product added to wishlist' };
-  // }
 }

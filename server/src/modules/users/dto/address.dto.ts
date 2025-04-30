@@ -1,6 +1,10 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsIn, IsNotEmpty, IsString } from 'class-validator';
 
 export class AddressDto {
+  @IsString()
+  @IsNotEmpty()
+  fullname: string;
+
   @IsString()
   @IsNotEmpty()
   contact: string;
@@ -28,4 +32,12 @@ export class AddressDto {
   @IsString()
   @IsNotEmpty()
   country: string;
+
+  @IsNotEmpty()
+  @IsBoolean()
+  isDefault: boolean;
+
+  @IsString()
+  @IsIn(['home', 'office'])
+  tag: string;
 }

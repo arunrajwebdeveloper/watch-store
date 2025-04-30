@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types, Schema as MongooseSchema } from 'mongoose';
-import { Address, AddressSchema } from './address.schema';
+import mongoose, { Document, Types, Schema as MongooseSchema } from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -27,8 +26,11 @@ export class User {
   @Prop({ required: true, enum: ['admin', 'customer'], default: 'customer' })
   role: string;
 
-  @Prop({ type: AddressSchema })
-  address?: Address;
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Address' }],
+    default: [],
+  })
+  addressList: Types.ObjectId[];
 
   @Prop({ default: null })
   avatar?: string;
