@@ -65,7 +65,7 @@ function Profile() {
               <h4>{user.email}</h4>
 
               <div style={{ marginTop: "30px" }}>
-                <h3 style={{ marginBottom: "10px" }}>Addressess</h3>
+                <h3 style={{ marginBottom: "10px" }}>Address List</h3>
                 <div
                   style={{
                     width: "100%",
