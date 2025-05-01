@@ -1,17 +1,38 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/store";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { currencyFormat } from "@/utils/currencyFormat";
+import RazorpayButton from "@/components/payment/RazorpayButton";
+import { createPayment } from "@/store/slices/paymentSlice";
 
 function CheckoutPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const [isCreatingOrder, setIsCreatingOrder] = useState<boolean>(false);
+  const [orderData, setOrderData] = useState<any>(null);
+
   const cartState = useAppSelector((state) => state.cart);
   const user = useAppSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    const loadPaymentData = async () => {
+      try {
+        setIsCreatingOrder(true);
+        const result = await dispatch(createPayment()).unwrap();
+        setOrderData(result);
+        setIsCreatingOrder(false);
+      } catch (err: any) {
+        console.log("Error creating payment:", err);
+        setIsCreatingOrder(false);
+      }
+    };
+
+    loadPaymentData();
+  }, []);
 
   const createCartBreakdown = (cart: any) => {
     return {
@@ -232,9 +253,13 @@ function CheckoutPage() {
                       </tbody>
                     </table>
                     <div className="checkout-final-btn">
-                      <button className="btn primary">
-                        Proceed to Payment
-                      </button>
+                      {!isCreatingOrder ? (
+                        <RazorpayButton orderData={orderData} />
+                      ) : (
+                        <div style={{ height: "50px", textAlign: "center" }}>
+                          Fetching...
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

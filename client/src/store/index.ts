@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
 import cartReducer from "./slices/cartSlice";
 import wishlistReducer from "./slices/wishlistSlice";
+import paymentReducer from "./slices/paymentSlice";
 // import loadingReducer from "./slices/loadingSlice";
 import { TypedUseSelectorHook, useSelector, useDispatch } from "react-redux";
 
@@ -11,6 +12,7 @@ export const store = configureStore({
     auth: authReducer,
     cart: cartReducer,
     wishlist: wishlistReducer,
+    payment: paymentReducer,
   },
 });
 

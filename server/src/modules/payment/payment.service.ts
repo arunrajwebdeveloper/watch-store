@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { razorpay } from 'src/utils/razorpay.util';
 import * as crypto from 'crypto';
 import { VerifyPaymentDto } from './dto/verify-payment.dto';
@@ -35,22 +39,21 @@ export class PaymentService {
 
   verifyPayment(dto: VerifyPaymentDto) {
     const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
-
     if (!RAZORPAY_KEY_SECRET) {
       throw new NotFoundException('RAZORPAY_KEY_SECRET missing');
     }
     const { razorpayOrderId, razorpayPaymentId, razorpaySignature } = dto;
 
     const body = `${razorpayOrderId}|${razorpayPaymentId}`;
+
     const expectedSignature = crypto
       .createHmac('sha256', RAZORPAY_KEY_SECRET)
       .update(body)
       .digest('hex');
 
     if (expectedSignature !== razorpaySignature) {
-      throw new Error('Payment verification failed');
+      throw new BadRequestException('Payment verification failed');
     }
-
     return { verified: true };
   }
 }
