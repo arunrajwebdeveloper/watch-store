@@ -903,6 +903,29 @@ table.summary-table td:last-child {
   font-size: 0.8rem;
 }
 
-.checkout-address-list-block {
+.checkout-address-block {
   margin-bottom: 24px;
+}
+.cart-address-list-block {
+  margin-bottom: 20px;
+}
+.checkout-address-block .address-item {
+  margin-bottom: 20px;
+  border: 1px solid #cccccc;
+  padding: 20px;
+  border-radius: 10px;
+}
+.checkout-address-block .address-item span.badge {
+  background-color: beige;
+  padding: 4px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  display: inline-block;
+  text-transform: capitalize;
+}
+.checkout-address-block .address-item .address-box {
+  font-size: 1rem;
+  line-height: 1.3rem;
+  color: #000;
 }

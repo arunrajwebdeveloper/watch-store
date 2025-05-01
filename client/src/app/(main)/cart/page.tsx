@@ -82,7 +82,7 @@ function CheckoutPage() {
               <h2>Cart</h2>
             </div>
             <div>
-              <div className="checkout-address-list-block">
+              <div className="cart-address-list-block">
                 <div className="page-header">
                   <h3>Choose Delivery Address</h3>
                 </div>

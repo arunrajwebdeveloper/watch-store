@@ -1,8 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { removeCartItem, updateCartItem } from "@/store/slices/cartSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { currencyFormat } from "@/utils/currencyFormat";
@@ -11,7 +10,6 @@ function CheckoutPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const [addressId, setAddressId] = useState("");
   const cartState = useAppSelector((state) => state.cart);
   const user = useAppSelector((state) => state.auth.user);
 
@@ -42,46 +40,19 @@ function CheckoutPage() {
               <h2>Checkout</h2>
             </div>
             <div>
-              <div className="checkout-address-list-block">
+              <div className="checkout-address-block">
                 <div className="page-header">
                   <h3>Delivery Address</h3>
                 </div>
-                <div className="address-list">
-                  {user?.addressList?.map((ad: any) => {
-                    const {
-                      _id,
-                      address,
-                      city,
-                      contact,
-                      country,
-                      fullname,
-                      postalCode,
-                      state,
-                      street,
-                      tag,
-                      isDefault,
-                    } = ad;
-
-                    return (
-                      <div
-                        key={_id}
-                        className={`address-item-box ${
-                          addressId === _id ? "selected" : ""
-                        }`}
-                        onClick={() => setAddressId(_id)}
-                      >
-                        <span className="badge">{tag}</span>
-
-                        <div className="address-item">
-                          <p>{fullname}</p>
-                          <p>{`${address} ${street}`}</p>
-                          <p>{`${city}, ${country}, ${state}`}</p>
-                          <p>{postalCode}</p>
-                          <p>Ph: {contact}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className="address-item">
+                  <span className="badge">{cartState?.address?.tag}</span>
+                  <div className="address-box">
+                    <p>{cartState?.address?.fullname}</p>
+                    <p>{`${cartState?.address?.address} ${cartState?.address?.street}`}</p>
+                    <p>{`${cartState?.address?.city}, ${cartState?.address?.country}, ${cartState?.address?.state}`}</p>
+                    <p>{cartState?.address?.postalCode}</p>
+                    <p>Ph: {cartState?.address?.contact}</p>
+                  </div>
                 </div>
               </div>
 
@@ -174,6 +145,22 @@ function CheckoutPage() {
                     <h4>Summary</h4>
                   </div>
                   <div className="sidebar-box-content">
+                    {cartState?.appliedCoupon && (
+                      <div>
+                        <h4>
+                          You have saved{" "}
+                          {currencyFormat(
+                            parseInt(cartState?.cartDiscountAmount.toString())
+                          )}
+                        </h4>
+                        <div className="applied-promo-code">
+                          <div className="promocode-display">
+                            <span>{cartState?.appliedCoupon?.code}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     <table className="summary-table">
                       <tbody>
                         {Object.entries(priceBreakdownList).map(
