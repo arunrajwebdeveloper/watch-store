@@ -37,7 +37,10 @@ export class UsersService {
   async findById(id: string): Promise<User | null> {
     const user = await this.userModel
       .findById(id)
-      .populate('addressList')
+      .populate({
+        path: 'addressList',
+        // options: { lean: true }, // ensure addresses are returned as plain objects
+      })
       .select('-password')
       .lean()
       .exec();

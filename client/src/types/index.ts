@@ -23,6 +23,32 @@ interface AppliedCoupon {
   promocodeType: string;
 }
 
+export interface AddressInput {
+  fullname: string;
+  contact: string;
+  address: string;
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+  tag: string;
+}
+
+export interface AddressResponse {
+  _id: string;
+  address: string;
+  city: string;
+  contact: string;
+  country: string;
+  fullname: string;
+  isDefault: boolean;
+  postalCode: string;
+  state: string;
+  street: string;
+  tag: string;
+  userId: string;
+}
 export interface CartState {
   cartItems: any[];
   cartItemCount: number;
@@ -38,6 +64,9 @@ export interface CartState {
   shippingFee: number;
   couponError: any | null;
   isApplyingCoupon: boolean;
+  address: AddressResponse | null;
+  isUpdatingDeliveryAddress: boolean;
+  UpdateDeliveryAddressError: any | null;
 }
 
 export interface CartInput {
@@ -52,16 +81,4 @@ export interface WishlistInput {
 export interface WishlistState {
   wishlistItems: any[];
   isLoading: boolean;
-}
-
-export interface AddressInput {
-  fullname: string;
-  contact: string;
-  address: string;
-  street: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
-  tag: string;
 }

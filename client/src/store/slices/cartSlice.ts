@@ -18,6 +18,9 @@ const initialState: CartState = {
   shippingFee: 0,
   couponError: null,
   isApplyingCoupon: false,
+  address: null,
+  isUpdatingDeliveryAddress: false,
+  UpdateDeliveryAddressError: null,
 };
 
 export const getCart = createAsyncThunk("cart/get", async () => {
@@ -84,6 +87,22 @@ export const removeAppliedCoupon = createAsyncThunk(
   }
 );
 
+export const updateDeliveryAddress = createAsyncThunk(
+  "cart/updateDeliveryAddress",
+  async (addressId: string, { rejectWithValue }) => {
+    try {
+      const res = await api.patch("/cart/update-delivery-address", {
+        addressId,
+      });
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response.data.message || "Failed to update delivery address"
+      );
+    }
+  }
+);
+
 const calculateCartLength = (cartItems: any) => {
   return cartItems?.reduce((acc: number, item: any) => acc + item.quantity, 0);
 };
@@ -100,6 +119,7 @@ const setState = (state: any, response: any) => {
     state.gstPercentage = response.gstPercentage;
     state.gstAmount = response.gstAmount;
     state.shippingFee = response.shippingFee;
+    state.address = response.address || null;
   }
 };
 
@@ -183,6 +203,20 @@ const cartSlice = createSlice({
       .addCase(removeAppliedCoupon.rejected, (state, action) => {
         state.isApplyingCoupon = false;
         state.couponError = action.payload;
+      })
+      .addCase(updateDeliveryAddress.pending, (state, action) => {
+        setState(state, action.payload);
+        state.isUpdatingDeliveryAddress = true;
+        state.UpdateDeliveryAddressError = null;
+      })
+      .addCase(updateDeliveryAddress.fulfilled, (state, action) => {
+        setState(state, action.payload);
+        state.isUpdatingDeliveryAddress = false;
+        state.UpdateDeliveryAddressError = null;
+      })
+      .addCase(updateDeliveryAddress.rejected, (state, action) => {
+        state.isUpdatingDeliveryAddress = false;
+        state.UpdateDeliveryAddressError = action.payload;
       })
 
       // ✅ Clear cart when user logs out

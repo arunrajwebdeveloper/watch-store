@@ -6,6 +6,7 @@ import { Cart, CartSchema } from './schemas/cart.schema';
 import { Product, ProductSchema } from '../products/schemas/products.schema';
 import { ProductsModule } from '../products/products.module';
 import { CouponModule } from '../coupon/coupon.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CouponModule } from '../coupon/coupon.module';
     ]),
     ProductsModule,
     CouponModule,
+    UsersModule,
   ],
   controllers: [CartController],
   providers: [CartService],

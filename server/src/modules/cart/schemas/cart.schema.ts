@@ -63,6 +63,13 @@ export class Cart {
     default: null,
   })
   appliedCoupon: AppliedCoupon | null;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Address',
+    default: null,
+  })
+  address: Types.ObjectId;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);

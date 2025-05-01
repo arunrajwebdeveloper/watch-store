@@ -13,6 +13,7 @@ import { GST_RATE, SHIPPING_FEE } from '../common/constants/CartRates';
 import { PromocodeType } from '../coupon/schemas/coupon.schema';
 import { CouponService } from '../coupon/coupon.service';
 import { PromocodeDto } from './dto/promocode.dto';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class CartService {
@@ -21,12 +22,13 @@ export class CartService {
     private cartModel: Model<CartDocument>,
     private readonly productService: ProductsService,
     private readonly couponService: CouponService,
+    private readonly usersService: UsersService,
   ) {}
 
   async getUserCart(userId: string) {
     const cart = await this.cartModel
       .findOne({ user: userId })
-      .populate('items.product')
+      .populate('items.product address')
       .lean()
       .exec();
 
@@ -88,6 +90,19 @@ export class CartService {
         (sum, item) => sum + item.quantity * item.price,
         0,
       );
+
+      const user = await this.usersService.findById(userId);
+
+      if (!user) throw new NotFoundException('User not found');
+
+      // If no address set default address
+      const defaultAddress = user?.addressList?.find(
+        (address: any) => address.isDefault,
+      );
+
+      if (!cart.address && defaultAddress) {
+        cart.address = defaultAddress._id;
+      }
 
       // Apply coupon discount if available
       if (cart.appliedCoupon) {
@@ -380,5 +395,20 @@ export class CartService {
       session.endSession();
       throw error;
     }
+  }
+
+  async updateDeliveryAddress(userId: string, addressId: string) {
+    const cart = await this.cartModel.findOne({ user: userId }).exec();
+
+    if (!cart) {
+      throw new NotFoundException('Cart not found');
+    }
+    console.log('addressId :>> ', addressId);
+    // Set selected address
+    cart.address = new Types.ObjectId(addressId);
+
+    await cart.save();
+
+    return this.getUserCart(userId);
   }
 }

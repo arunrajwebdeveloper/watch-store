@@ -8,29 +8,25 @@ import {
   applyCoupon,
   clearCouponError,
   removeAppliedCoupon,
+  updateDeliveryAddress,
 } from "@/store/slices/cartSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { currencyFormat } from "@/utils/currencyFormat";
+import { AddressResponse } from "@/types";
 
 function CheckoutPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
   const [promocode, setPromocode] = useState("");
-  const [addressId, setAddressId] = useState("");
   const isLoading = useAppSelector((state) => state.cart.isLoading);
   const cartState = useAppSelector((state) => state.cart);
   const user = useAppSelector((state) => state.auth.user);
 
-  useEffect(() => {
-    if (user?.addressList) {
-      const { _id: defaultAddressId } = user?.addressList?.find(
-        (ad: any) => ad.isDefault
-      );
-      setAddressId(defaultAddressId);
-    }
-  }, [user]);
+  console.log("cartState :>> ", cartState.address);
+
+  const defaultAddressId = cartState.address?._id;
 
   const handleQuantity = (
     { quantity, productId }: { quantity: number; productId: string },
@@ -109,9 +105,9 @@ function CheckoutPage() {
                       <div
                         key={_id}
                         className={`address-item-box ${
-                          addressId === _id ? "selected" : ""
+                          defaultAddressId === _id ? "selected" : ""
                         }`}
-                        onClick={() => setAddressId(_id)}
+                        onClick={() => dispatch(updateDeliveryAddress(_id))}
                       >
                         <span className="badge">{tag}</span>
 

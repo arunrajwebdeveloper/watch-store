@@ -62,4 +62,12 @@ export class CartController {
   async removeCoupon(@Req() req: RequestWithUser) {
     return this.cartService.removeCoupon(req.user.userId);
   }
+
+  @Patch('update-delivery-address')
+  async updateDeliveryAddress(
+    @Req() req: RequestWithUser,
+    @Body('addressId') addressId: string,
+  ) {
+    return this.cartService.updateDeliveryAddress(req.user.userId, addressId);
+  }
 }
