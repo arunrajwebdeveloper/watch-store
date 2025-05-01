@@ -169,6 +169,11 @@ img.user-avatar {
 .top-header-link.has-dropdown {
   position: relative;
   cursor: default;
+  padding: 0;
+}
+.top-header-link.has-dropdown .link-content {
+  padding: 0 14px;
+  height: 100%;
 }
 .link-content {
   display: flex;
@@ -836,6 +841,7 @@ table.summary-table td:last-child {
   flex-wrap: wrap;
   align-items: center;
   margin-top: 15px;
+  margin-bottom: 15px;
   gap: 10px;
 }
 .applied-promo-code .promocode-display {
@@ -867,7 +873,7 @@ table.summary-table td:last-child {
   gap: 25px;
   flex-wrap: wrap;
 }
-.address-list label {
+.address-list .address-item-box {
   border: 1px solid #ccc;
   padding: 20px;
   padding-bottom: 60px;
@@ -880,12 +886,12 @@ table.summary-table td:last-child {
   position: relative;
   transition: 0.3s ease;
 }
-.address-list label:hover,
-.address-list label.selected {
+.address-list .address-item-box:hover,
+.address-list .address-item-box.selected {
   border-color: #72abf1;
   background-color: #e8f2ff;
 }
-.address-list label .badge {
+.address-list .address-item-box .badge {
   background-color: #000000;
   color: #fff;
   display: inline-block;

@@ -1,14 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/store";
-import {
-  removeCartItem,
-  updateCartItem,
-  applyCoupon,
-  clearCouponError,
-  removeAppliedCoupon,
-} from "@/store/slices/cartSlice";
+import { removeCartItem, updateCartItem } from "@/store/slices/cartSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { currencyFormat } from "@/utils/currencyFormat";
@@ -17,35 +11,9 @@ function CheckoutPage() {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const [promocode, setPromocode] = useState("");
   const [addressId, setAddressId] = useState("");
-  const isLoading = useAppSelector((state) => state.cart.isLoading);
   const cartState = useAppSelector((state) => state.cart);
   const user = useAppSelector((state) => state.auth.user);
-
-  useEffect(() => {
-    if (user?.addressList) {
-      const { _id: defaultAddressId } = user?.addressList?.find(
-        (ad: any) => ad.isDefault
-      );
-      setAddressId(defaultAddressId);
-    }
-  }, [user]);
-
-  const handleQuantity = (
-    { quantity, productId }: { quantity: number; productId: string },
-    type = "INC"
-  ) => {
-    if (type === "DEC") {
-      if (quantity > 1) {
-        dispatch(updateCartItem({ quantity: quantity - 1, productId }));
-      } else {
-        dispatch(removeCartItem(productId));
-      }
-    } else {
-      dispatch(updateCartItem({ quantity: quantity + 1, productId }));
-    }
-  };
 
   const createCartBreakdown = (cart: any) => {
     return {
@@ -59,23 +27,11 @@ function CheckoutPage() {
         value: cart?.gstAmount,
       },
       shippingFee: { label: "Shipping Fee", value: cart?.shippingFee },
-      grandTotal: { label: "Grand Total", value: cart?.cartFinalTotalAmount },
+      grandTotal: { label: "Total Payable", value: cart?.cartFinalTotalAmount },
     };
   };
 
   const priceBreakdownList = createCartBreakdown(cartState);
-
-  const handleApplyCoupon = async (promocode: string) => {
-    if (promocode) {
-      await dispatch(applyCoupon(promocode.trim())).unwrap();
-      setPromocode("");
-    }
-  };
-
-  const handleCouponChange = (e: any) => {
-    setPromocode(e.target.value);
-    dispatch(clearCouponError());
-  };
 
   return (
     <div className="container">
@@ -83,12 +39,12 @@ function CheckoutPage() {
         <div className="listing-page-layout">
           <div className="cart-layout-wrapper">
             <div className="page-header">
-              <h2>Cart</h2>
+              <h2>Checkout</h2>
             </div>
             <div>
               <div className="checkout-address-list-block">
                 <div className="page-header">
-                  <h3>Choose Delivery Address</h3>
+                  <h3>Delivery Address</h3>
                 </div>
                 <div className="address-list">
                   {user?.addressList?.map((ad: any) => {
@@ -103,6 +59,7 @@ function CheckoutPage() {
                       state,
                       street,
                       tag,
+                      isDefault,
                     } = ad;
 
                     return (
@@ -112,6 +69,9 @@ function CheckoutPage() {
                           addressId === _id ? "selected" : ""
                         }`}
                         onClick={() => setAddressId(_id)}
+                        style={{
+                          borderColor: isDefault && !addressId ? "blue" : "",
+                        }}
                       >
                         <span className="badge">{tag}</span>
 
@@ -173,84 +133,12 @@ function CheckoutPage() {
                                       <div className="sm-txt">{`Color: ${product.color}`}</div>
                                       <div className="sm-txt">{`Movement Type: ${product.movementType}`}</div>
                                     </div>
-                                    <button
-                                      disabled={isLoading}
-                                      onClick={() =>
-                                        dispatch(removeCartItem(product._id))
-                                      }
-                                      className="rmv-btn"
-                                    >
-                                      Remove
-                                    </button>
                                   </div>
                                 </div>
                               </td>
                               <td>
                                 <div className="counts">
-                                  <button
-                                    onClick={() =>
-                                      handleQuantity(
-                                        {
-                                          quantity,
-                                          productId: product._id,
-                                        },
-                                        "DEC"
-                                      )
-                                    }
-                                  >
-                                    <svg
-                                      width="800px"
-                                      height="800px"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                    >
-                                      <g>
-                                        <path
-                                          id="Vector"
-                                          d="M6 12H18"
-                                          stroke="#000000"
-                                          strokeWidth="2"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        />
-                                      </g>
-                                    </svg>
-                                  </button>
-                                  <input
-                                    type="text"
-                                    value={quantity}
-                                    readOnly
-                                  />
-                                  <button
-                                    onClick={() =>
-                                      handleQuantity(
-                                        {
-                                          quantity,
-                                          productId: product._id,
-                                        },
-                                        "INC"
-                                      )
-                                    }
-                                  >
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="800px"
-                                      height="800px"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                    >
-                                      <g>
-                                        <path
-                                          id="Vector"
-                                          d="M6 12H12M12 12H18M12 12V18M12 12V6"
-                                          stroke="#000000"
-                                          strokeWidth="2"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        />
-                                      </g>
-                                    </svg>
-                                  </button>
+                                  <span>{quantity}</span>
                                 </div>
                               </td>
                               <td>
@@ -289,73 +177,6 @@ function CheckoutPage() {
                     <h4>Summary</h4>
                   </div>
                   <div className="sidebar-box-content">
-                    {!cartState?.appliedCoupon && (
-                      <div className="promo-code">
-                        <h4>Do you have a promo code?</h4>
-                        <div>
-                          <div className="promo-code-field">
-                            <input
-                              className="input-element"
-                              placeholder="Promo code"
-                              value={promocode}
-                              onChange={(e) => handleCouponChange(e)}
-                              disabled={cartState.isApplyingCoupon}
-                            />
-                            <button
-                              disabled={
-                                cartState.isApplyingCoupon || !promocode
-                              }
-                              onClick={() => handleApplyCoupon(promocode)}
-                              className="btn secondary"
-                            >
-                              Apply
-                            </button>
-                          </div>
-                          {cartState?.couponError && (
-                            <div className="invalid-message">
-                              {cartState?.couponError?.message}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    {cartState?.appliedCoupon && (
-                      <div>
-                        <h4>
-                          You have saved{" "}
-                          {currencyFormat(
-                            parseInt(cartState?.cartDiscountAmount.toString())
-                          )}
-                        </h4>
-                        <div className="applied-promo-code">
-                          <div className="promocode-display">
-                            <span>{cartState?.appliedCoupon?.code}</span>
-                            <button
-                              onClick={() => dispatch(removeAppliedCoupon())}
-                            >
-                              <svg
-                                width="22px"
-                                height="22px"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                              >
-                                <g>
-                                  <path
-                                    d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16"
-                                    stroke="#000000"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  />
-                                </g>
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
                     <table className="summary-table">
                       <tbody>
                         {Object.entries(priceBreakdownList).map(
@@ -427,11 +248,8 @@ function CheckoutPage() {
                       </tbody>
                     </table>
                     <div className="checkout-final-btn">
-                      <button
-                        onClick={() => router.push("/checkout")}
-                        className="btn primary"
-                      >
-                        Checkout
+                      <button className="btn primary">
+                        Proceed to Payment
                       </button>
                     </div>
                   </div>
