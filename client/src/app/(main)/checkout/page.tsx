@@ -256,8 +256,14 @@ function CheckoutPage() {
                       {!isCreatingOrder ? (
                         <RazorpayButton orderData={orderData} />
                       ) : (
-                        <div style={{ height: "50px", textAlign: "center" }}>
-                          Fetching...
+                        <div
+                          style={{
+                            height: "50px",
+                            textAlign: "center",
+                            lineHeight: "50px",
+                          }}
+                        >
+                          Please wait...
                         </div>
                       )}
                     </div>
