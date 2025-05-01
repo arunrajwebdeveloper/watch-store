@@ -69,9 +69,6 @@ function CheckoutPage() {
                           addressId === _id ? "selected" : ""
                         }`}
                         onClick={() => setAddressId(_id)}
-                        style={{
-                          borderColor: isDefault && !addressId ? "blue" : "",
-                        }}
                       >
                         <span className="badge">{tag}</span>
 
