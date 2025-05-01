@@ -28,7 +28,7 @@ const RazorpayButton = ({
       currency: orderData?.currency,
       order_id: orderData?.razorpayOrderId,
       handler: async function (response: any) {
-        dispatch(
+        const orderSummary = await dispatch(
           placeOrder({
             razorpayOrderId: response.razorpay_order_id,
             razorpayPaymentId: response.razorpay_payment_id,
@@ -36,6 +36,7 @@ const RazorpayButton = ({
           })
         );
         console.log("Order success:", response.data);
+        console.log("orderSummary :>> ", orderSummary);
         router.push("/order-success"); // Redirect after success
       },
       prefill: {

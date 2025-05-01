@@ -4,21 +4,20 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Connection, Types } from 'mongoose';
-import { Cart } from '../cart/schemas/cart.schema';
-import { Order } from './schemas/order.schema';
+import { Model, Connection } from 'mongoose';
+import { Cart, CartDocument } from '../cart/schemas/cart.schema';
+import { Order, OrderDocument } from './schemas/order.schema';
 import { InjectConnection } from '@nestjs/mongoose';
 import { PlaceOrderDto } from './dto/place-order.dto';
-import * as crypto from 'crypto';
 import { Product, ProductDocument } from '../products/schemas/products.schema';
 import { PaymentService } from '../payment/payment.service';
 
 @Injectable()
 export class OrderService {
   constructor(
-    @InjectModel(Cart.name) private cartModel: Model<Cart>,
+    @InjectModel(Cart.name) private cartModel: Model<CartDocument>,
     @InjectModel(Product.name) private productModel: Model<ProductDocument>,
-    @InjectModel(Order.name) private orderModel: Model<Order>,
+    @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
     @InjectConnection() private connection: Connection,
 
     private readonly paymentService: PaymentService,
@@ -33,7 +32,11 @@ export class OrderService {
       this.paymentService.verifyPayment(dto);
 
       // Fetch cart
-      const cart = await this.cartModel.findOne({ userId }).session(session);
+      const cart = await this.cartModel
+        .findOne({ user: userId })
+        .session(session)
+        .exec();
+
       if (!cart || cart.items.length === 0) {
         throw new NotFoundException('Cart is empty');
       }
@@ -46,11 +49,12 @@ export class OrderService {
 
         if (!product || product.inventory < item.quantity) {
           throw new BadRequestException(
-            `Insufficient stock for ${product?.model || 'a product'}`,
+            `Insufficient stock for ${`${product?.brand} ${product?.model}` || 'a product'}`,
           );
         }
 
         product.inventory -= item.quantity;
+
         await product.save({ session });
       }
 
@@ -58,7 +62,7 @@ export class OrderService {
       const order = new this.orderModel({
         userId,
         items: cart.items,
-        address: cart.address,
+        address: cart.address._id,
         totalAmount: cart.finalTotal,
         payment: {
           razorpayOrderId: dto.razorpayOrderId,

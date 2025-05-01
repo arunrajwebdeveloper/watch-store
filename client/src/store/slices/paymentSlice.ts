@@ -17,6 +17,7 @@ export const createPayment = createAsyncThunk(
 export const placeOrder = createAsyncThunk(
   "order/placeOrder",
   async (payload: RazorpayResult, thunkAPI) => {
+    console.log("hello :>> ", "hello");
     const res = await api.post("/orders/place", payload);
     return res.data;
   }
