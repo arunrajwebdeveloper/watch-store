@@ -27,7 +27,7 @@ export class OrderController {
     return this.orderService.placeOrder(req.user.userId, dto);
   }
 
-  @Get()
+  @Get('my-orders')
   async getUserOrders(@Req() req: RequestWithUser) {
     return this.orderService.getOrdersByUser(req.user.userId);
   }

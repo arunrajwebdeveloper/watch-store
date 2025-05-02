@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { addAddress } from "@/store/slices/authSlice";
 import { AddressInput } from "@/types";
+import { getOrders } from "@/store/slices/ordersSlice";
 
 function Profile() {
   const [address, setAddress] = useState<AddressInput>({
@@ -19,6 +20,7 @@ function Profile() {
   });
 
   const user = useAppSelector((state) => state.auth.user);
+  const { orders, isLoading } = useAppSelector((state) => state.orders);
 
   const dispatch = useAppDispatch();
 
@@ -37,6 +39,10 @@ function Profile() {
       [name]: checked,
     }));
   };
+
+  useEffect(() => {
+    dispatch(getOrders());
+  }, [dispatch]);
 
   return (
     <div className="container">
@@ -125,6 +131,51 @@ function Profile() {
                       </div>
                     );
                   })}
+                </div>
+              </div>
+
+              {/* Orders */}
+
+              <div className="orders" style={{ marginTop: "30px" }}>
+                <h3 style={{ marginBottom: "10px" }}>Order List</h3>
+                <div className="order-list-block">
+                  {isLoading ? (
+                    <span>Fetching...</span>
+                  ) : (
+                    !isLoading &&
+                    orders?.length > 0 &&
+                    orders?.map((order: any) => {
+                      return order?.items?.map((item: any) => {
+                        return (
+                          <div
+                            key={order?._id}
+                            style={{
+                              display: "flex",
+                              gap: "15px",
+                              marginBottom: "20px",
+                              border: "1px solid #ccc",
+                              padding: "20px",
+                              borderRadius: "8px",
+                            }}
+                          >
+                            <img
+                              src={item?.product?.images[0]}
+                              loading="lazy"
+                              width={100}
+                              height={100}
+                            />
+                            <div>
+                              <h4>{item?.product?.brand}</h4>
+                              <p>{item?.product?.model}</p>
+                              <p>Qty: {item?.quantity}</p>
+                              <p>Status: {order?.status}</p>
+                              <p>OrderId: {order?._id}</p>
+                            </div>
+                          </div>
+                        );
+                      });
+                    })
+                  )}
                 </div>
               </div>
             </div>

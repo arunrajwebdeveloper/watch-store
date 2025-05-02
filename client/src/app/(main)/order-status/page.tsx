@@ -80,15 +80,17 @@ export default function OrderStatusPage() {
                   </tr>
                   {orderDetails.items.map((item: any, idx: number) => {
                     return (
-                      <tr key={item._id}>
+                      <tr key={item?._id}>
                         <td>{++idx}</td>
                         <td>
                           <div>
-                            <h5>{item.brand}</h5>
-                            <p>{item.product?.model || item.productId}</p>
+                            <h5>{item?.product?.brand}</h5>
+                            <p>
+                              {item?.product?.model || item?.product?.productId}
+                            </p>
                           </div>
                         </td>
-                        <td>{item.quantity}</td>
+                        <td>{item?.quantity}</td>
                       </tr>
                     );
                   })}

@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useSelector, useDispatch } from "react-redux";
 import authReducer from "./slices/authSlice";
 import cartReducer from "./slices/cartSlice";
 import wishlistReducer from "./slices/wishlistSlice";
 import paymentReducer from "./slices/paymentSlice";
+import ordersReducer from "./slices/ordersSlice";
 // import loadingReducer from "./slices/loadingSlice";
-import { TypedUseSelectorHook, useSelector, useDispatch } from "react-redux";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     cart: cartReducer,
     wishlist: wishlistReducer,
     payment: paymentReducer,
+    orders: ordersReducer,
   },
 });
 
