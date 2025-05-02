@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
@@ -13,7 +13,6 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { currencyFormat } from "@/utils/currencyFormat";
-import { AddressResponse } from "@/types";
 
 function CheckoutPage() {
   const dispatch = useAppDispatch();
@@ -23,8 +22,6 @@ function CheckoutPage() {
   const isLoading = useAppSelector((state) => state.cart.isLoading);
   const cartState = useAppSelector((state) => state.cart);
   const user = useAppSelector((state) => state.auth.user);
-
-  console.log("cartState :>> ", cartState.address);
 
   const defaultAddressId = cartState.address?._id;
 

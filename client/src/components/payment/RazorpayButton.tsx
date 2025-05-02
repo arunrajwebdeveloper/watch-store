@@ -27,26 +27,39 @@ const RazorpayButton = ({
       amount: orderData?.amount,
       currency: orderData?.currency,
       order_id: orderData?.razorpayOrderId,
+
       handler: async function (response: any) {
-        const orderSummary = await dispatch(
-          placeOrder({
-            razorpayOrderId: response.razorpay_order_id,
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpaySignature: response.razorpay_signature,
-          })
-        );
-        console.log("Order success:", response.data);
-        console.log("orderSummary :>> ", orderSummary);
-        router.push("/order-success"); // Redirect after success
+        try {
+          const resultAction = await dispatch(
+            placeOrder({
+              razorpayOrderId: response.razorpay_order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature,
+            })
+          ).unwrap();
+
+          router.push(
+            `/order-status?status=success&orderId=${resultAction.orderId}`
+          );
+        } catch (error) {
+          console.error("Order placing failed", error);
+          router.push(`/order-status?status=order_failed`);
+        }
       },
-      prefill: {
-        name: "Test User",
-        email: "test@example.com",
+
+      modal: {
+        ondismiss: () => {
+          router.push("/order-status?status=cancelled");
+        },
       },
-      theme: { color: "#3399cc" },
     };
 
     const rzp = new (window as any).Razorpay(options);
+
+    rzp.on("payment.failed", function () {
+      router.push("/order-status?status=payment_failed");
+    });
+
     rzp.open();
   };
 
