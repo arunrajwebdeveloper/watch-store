@@ -62,7 +62,7 @@ export class OrderService {
       const order = new this.orderModel({
         userId,
         items: cart.items,
-        address: cart.address._id,
+        address: cart?.address?._id,
         totalAmount: cart.finalTotal,
         payment: {
           razorpayOrderId: dto.razorpayOrderId,
@@ -77,7 +77,15 @@ export class OrderService {
 
       // Clear cart
       cart.items = [];
+      cart.cartTotal = 0;
       cart.appliedCoupon = null;
+      cart.discount = 0;
+      cart.finalTotal = 0;
+      cart.gstPercentage = 0;
+      cart.gstAmount = 0;
+      cart.shippingFee = 0;
+      cart.address = null;
+
       await cart.save({ session });
 
       await session.commitTransaction();
@@ -89,5 +97,63 @@ export class OrderService {
       session.endSession();
       throw err;
     }
+  }
+
+  async getOrdersByUser(userId: string) {
+    return this.orderModel
+      .find({ userId })
+      .sort({ createdAt: -1 })
+      .populate('items.product', 'brand model price images')
+      .select('-__v')
+      .exec();
+  }
+
+  async getOrderById(userId: string, orderId: string) {
+    return this.orderModel
+      .findOne({
+        _id: orderId,
+        userId,
+      })
+      .populate('items.product', 'brand model price images')
+      .select('-__v')
+      .exec();
+  }
+
+  async getAllOrders() {
+    return this.orderModel
+      .find({})
+      .populate('userId', 'name email')
+      .populate('items.product', 'brand model price')
+      .sort({ createdAt: -1 })
+      .select('-__v')
+      .exec();
+  }
+
+  async updateOrderStatus(orderId: string, status: string) {
+    const allowedStatuses = [
+      'placed',
+      'processing',
+      'shipped',
+      'delivered',
+      'cancelled',
+    ];
+    if (!allowedStatuses.includes(status)) {
+      throw new BadRequestException('Invalid status');
+    }
+
+    const order = await this.orderModel.findById(orderId);
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    order.status = status;
+    order.statusHistory.push({ status, updatedAt: new Date() });
+    await order.save();
+
+    return {
+      message: 'Order status updated',
+      orderId: order._id,
+      status: order.status,
+    };
   }
 }

@@ -315,6 +315,7 @@ export class CartService {
         .findOne({ user: userId })
         .session(session)
         .exec();
+
       if (!cart) throw new NotFoundException('Cart not found');
 
       cart.items = cart.items.filter(
@@ -381,6 +382,7 @@ export class CartService {
       cart.finalTotal = 0;
       cart.gstPercentage = 0;
       cart.gstAmount = 0;
+      cart.address = null;
 
       await cart.save({ session });
 
@@ -390,7 +392,6 @@ export class CartService {
 
       return this.getUserCart(userId);
     } catch (error) {
-      // Rollback the transaction if any error occurs
       await session.abortTransaction();
       session.endSession();
       throw error;
@@ -403,8 +404,7 @@ export class CartService {
     if (!cart) {
       throw new NotFoundException('Cart not found');
     }
-    console.log('addressId :>> ', addressId);
-    // Set selected address
+
     cart.address = new Types.ObjectId(addressId);
 
     await cart.save();

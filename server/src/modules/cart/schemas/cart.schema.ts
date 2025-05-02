@@ -69,7 +69,7 @@ export class Cart {
     ref: 'Address',
     default: null,
   })
-  address: Types.ObjectId;
+  address: Types.ObjectId | null;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);

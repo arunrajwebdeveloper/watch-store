@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import api from "@/lib/axios";
 import { CartInput, CartState } from "@/types";
 import { logoutUser } from "./authSlice";
+import { placeOrder } from "./paymentSlice";
 
 const initialState: CartState = {
   cartItems: [],
@@ -123,6 +124,20 @@ const setState = (state: any, response: any) => {
   }
 };
 
+const resetState = (state: any) => {
+  state.cartItems = [];
+  state.cartItemCount = 0;
+  state.cartTotalAmount = 0;
+  state.cartFinalTotalAmount = 0;
+  state.cartDiscountAmount = 0;
+  state.appliedCoupon = null;
+  state.isCartEmpty = true;
+  state.gstPercentage = 0;
+  state.gstAmount = 0;
+  state.shippingFee = 0;
+  state.address = null;
+};
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -190,7 +205,6 @@ const cartSlice = createSlice({
         state.isApplyingCoupon = false;
         state.couponError = action.payload;
       })
-
       .addCase(removeAppliedCoupon.pending, (state, action) => {
         setState(state, action.payload);
         state.isApplyingCoupon = true;
@@ -218,11 +232,11 @@ const cartSlice = createSlice({
         state.isUpdatingDeliveryAddress = false;
         state.UpdateDeliveryAddressError = action.payload;
       })
-
-      // ✅ Clear cart when user logs out
       .addCase(logoutUser.fulfilled, (state) => {
-        state.cartItems = [];
-        state.cartItemCount = 0;
+        resetState(state);
+      })
+      .addCase(placeOrder.fulfilled, (state) => {
+        resetState(state);
       });
   },
 });

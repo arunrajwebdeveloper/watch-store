@@ -1,0 +1,81 @@
+.status-banner {
+  height: 350px;
+  background-color: #eee;
+}
+.status-banner .container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.status-banner.success h3.status-page-title {
+  color: #fff;
+  font-size: 30px;
+  margin: 0;
+}
+
+.status-banner .status-content {
+  text-align: center;
+}
+.status-banner .status-content svg {
+  margin-bottom: 16px;
+}
+.status-banner .status-content .infos {
+  margin-top: 20px;
+}
+.status-banner .status-content .infos p {
+  color: #ffffff;
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+.order-details-block {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+.status-banner.success {
+  background-color: #21854c;
+}
+.status-banner.failed {
+  background-color: #852621;
+}
+.status-banner.cancelled {
+  background-color: #a79316;
+}
+.status-banner.invalid {
+  background-color: #272830;
+}
+.order-details-block h2.sub-heading {
+  font-size: 1.4rem;
+  color: #000;
+  margin-bottom: 24px;
+}
+table.ordered-product-list {
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+table.ordered-product-list th,
+table.ordered-product-list td {
+  text-align: left;
+  font-size: 1rem;
+  padding: 10px;
+  border-right: 1px solid #ccc;
+}
+table.ordered-product-list td {
+  border-top: 1px solid #ccc;
+}
+.status-banner .status-content .infos p.lg {
+  font-size: 1.6rem;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.back-link {
+  margin-top: 30px;
+  text-align: center;
+}
+.back-link a {
+  color: black;
+  text-decoration: underline;
+}

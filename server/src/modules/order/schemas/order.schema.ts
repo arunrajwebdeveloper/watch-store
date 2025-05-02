@@ -21,8 +21,19 @@ export class Order {
   @Prop({ type: Types.ObjectId, ref: 'User' })
   userId: Types.ObjectId;
 
-  @Prop([{ productId: Types.ObjectId, quantity: Number }])
-  items: Array<{ productId: Types.ObjectId; quantity: number }>;
+  // @Prop([{ product: Types.ObjectId, quantity: Number }])
+  // items: Array<{ product: Types.ObjectId; quantity: number }>;
+
+  @Prop([
+    {
+      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+      quantity: Number,
+    },
+  ])
+  items: Array<{
+    product: Types.ObjectId;
+    quantity: number;
+  }>;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
@@ -49,6 +60,9 @@ export class Order {
 
   @Prop({ default: 'pending' })
   status: string;
+
+  @Prop([{ status: String, updatedAt: Date }])
+  statusHistory: Array<{ status: string; updatedAt: Date }>;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
