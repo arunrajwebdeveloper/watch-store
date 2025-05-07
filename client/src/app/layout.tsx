@@ -12,6 +12,12 @@ export const lexendDeca = Lexend_Deca({
 export const metadata: Metadata = {
   title: "Watch store",
   description: "Watch store App with Next.js",
+  openGraph: {
+    title: "WatchStore",
+    description: `Buy  branded watches online with discounts.`,
+    images: [""],
+  },
+  robots: "index, follow",
 };
 
 export default function RootLayout({

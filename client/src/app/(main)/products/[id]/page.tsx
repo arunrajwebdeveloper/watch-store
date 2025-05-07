@@ -6,6 +6,7 @@ import "@/styles/products/product-details.styles.css";
 import { currencyFormat } from "@/utils/currencyFormat";
 import AddToCartButton from "@/components/products/AddToCartButton";
 import AddToWishlistButton from "@/components/products/AddToWishlistButton";
+import { getProductMetadata } from "@/utils/getProductMetadata";
 
 type Props = {
   params: {
@@ -18,19 +19,9 @@ const fetchProduct = async (id: string) => {
   return res.data;
 };
 
-export async function generateMetadata({ params }: Props) {
-  const { product } = await fetchProduct(params?.id);
-
-  return {
-    title: `${product.brand} - Buy Now`,
-    description: `Purchase ${product.brand} ${product.model} at the best price.`,
-    openGraph: {
-      title: product.brand,
-      description: `Buy ${product.brand} ${product.model} online with discounts.`,
-      images: [product?.images[0]],
-    },
-    robots: "index, follow",
-  };
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const { product } = await fetchProduct(params.id);
+  return getProductMetadata(product, params.id);
 }
 
 const ProductByIdPage = async ({ params }: Props) => {
