@@ -13,19 +13,35 @@ type Props = {
   };
 };
 
+const fetchProduct = async (id: string) => {
+  const res = await api.get(`/products/${id}`);
+  return res.data;
+};
+
+export async function generateMetadata({ params }: Props) {
+  const { product } = await fetchProduct(params?.id);
+
+  return {
+    title: `${product.brand} - Buy Now`,
+    description: `Purchase ${product.brand} ${product.model} at the best price.`,
+    openGraph: {
+      title: product.brand,
+      description: `Buy ${product.brand} ${product.model} online with discounts.`,
+      images: [product?.images[0]],
+    },
+    robots: "index, follow",
+  };
+}
+
 const ProductByIdPage = async ({ params }: Props) => {
   const { id } = await params;
-
-  const res = await api.get(`/products/${id}`);
-  const { product, variants } = res.data;
+  const { product, variants } = await fetchProduct(id);
 
   const isLimitedStock = product.inventory <= 10 && product.inventory > 0;
   const isStockEmpty = product.inventory === 0;
 
   return (
     <div className="container">
-      {/* <Link href="/products">Go to products</Link> */}
-
       <div className="product-details-page">
         <div className="product-showcase-images">
           {product.images.map((img: string, i: number) => {
