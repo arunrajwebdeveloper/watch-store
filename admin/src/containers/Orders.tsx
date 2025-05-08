@@ -6,8 +6,8 @@ function Orders() {
       <h2>Orders</h2>
       <div className="tab-btns">
         <NavLink
-          to=""
-          end // to prevent always highlighting
+          to="."
+          end // to prevent always highlighting | orders/placed - will not highlight this path link, exact orders link only highlighted
           className={({ isActive }: { isActive: boolean }) =>
             isActive ? "active-link" : ""
           }
