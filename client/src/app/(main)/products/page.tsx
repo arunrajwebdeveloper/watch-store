@@ -76,9 +76,8 @@ const ProductListPage = (): React.ReactNode => {
             )}
           </div>
           <div className="layout-content">
-            <div className="search-bar-wrap">
-              <ProductSearchBar />
-            </div>
+            <ProductSearchBar />
+
             <div className="listing-page__header">
               <ProductPagination page={page} lastPage={lastPage} />
               <div className="sort-dropdown">

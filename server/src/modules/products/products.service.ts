@@ -93,14 +93,6 @@ export class ProductsService {
       }
     }
 
-    if (filter.search) {
-      query.$or = [
-        { name: { $regex: filter.search, $options: 'i' } },
-        { brand: { $regex: filter.search, $options: 'i' } },
-        { description: { $regex: filter.search, $options: 'i' } },
-      ];
-    }
-
     if (filter.gender)
       query['gender'] = { $regex: new RegExp(`^${filter.gender}$`, 'i') };
     if (filter.minPrice || filter.maxPrice) {
@@ -130,6 +122,28 @@ export class ProductsService {
       limit,
       lastPage: Math.ceil(total / limit),
     };
+  }
+
+  async searchProducts(query: string) {
+    try {
+      if (!query) return [];
+
+      const searchRegex = new RegExp(`^${query}`, 'i');
+
+      return await this.productModel
+        .find({
+          $or: [
+            { brand: { $regex: searchRegex } },
+            { model: { $regex: searchRegex } },
+          ],
+        })
+        .limit(10)
+        .select('brand model _id')
+        .lean();
+    } catch (error) {
+      console.error('Search error:', error);
+      throw new InternalServerErrorException('Search failed');
+    }
   }
 
   async findById(id: string) {

@@ -9,6 +9,7 @@ import {
   Query,
   UseGuards,
   Patch,
+  BadRequestException,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -25,6 +26,15 @@ export class ProductsController {
   @Get()
   getAll(@Query() filter: FilterProductDto) {
     return this.productService.findAll(filter);
+  }
+
+  @Get('search')
+  async searchProducts(@Query('query') query: string) {
+    if (!query || typeof query !== 'string') {
+      throw new BadRequestException('Query parameter is required.');
+    }
+
+    return this.productService.searchProducts(query);
   }
 
   @Get('recent-products')
