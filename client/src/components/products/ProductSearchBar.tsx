@@ -42,28 +42,25 @@ function ProductSearchBar() {
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto">
+    <div className="search-bar-component">
       <input
         type="text"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search for products..."
-        className="w-full p-2 border border-gray-300 rounded"
+        className="input-element"
       />
-      {loading && <div className="absolute bg-white px-4 py-2">Loading...</div>}
+      {loading && <div className="search-loading">Loading...</div>}
       {!loading && suggestions.length > 0 && (
-        <ul className="absolute z-10 w-full bg-white border border-gray-200 mt-1 rounded shadow-lg max-h-60 overflow-y-auto">
-          {suggestions.map((item) => (
-            <li
-              key={item._id}
-              className="p-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => handleSelect(item._id)}
-            >
-              {item.brand}
-              {item.model}
-            </li>
-          ))}
-        </ul>
+        <div className="search-dropdown">
+          <ul className="search-result-drop">
+            {suggestions.map((item) => (
+              <li key={item._id} onClick={() => handleSelect(item._id)}>
+                {item.brand} {item.model}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

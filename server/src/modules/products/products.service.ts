@@ -124,22 +124,51 @@ export class ProductsService {
     };
   }
 
+  escapeRegex(str: string) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
   async searchProducts(query: string) {
     try {
       if (!query) return [];
 
-      const searchRegex = new RegExp(`^${query}`, 'i');
+      const searchRegex = new RegExp(`${this.escapeRegex(query)}`, 'i');
 
-      return await this.productModel
+      // return await this.productModel
+      //   .find({
+      //     $or: [
+      //       { brand: { $regex: searchRegex } },
+      //       { model: { $regex: searchRegex } },
+      //     ],
+      //   })
+      //   .limit(10)
+      //   .select('brand model _id')
+      //   .lean();
+
+      const startsWith = await this.productModel
         .find({
           $or: [
-            { brand: { $regex: searchRegex } },
-            { model: { $regex: searchRegex } },
+            { brand: { $regex: `^${this.escapeRegex(query)}`, $options: 'i' } },
+            { model: { $regex: `^${this.escapeRegex(query)}`, $options: 'i' } },
           ],
         })
-        .limit(10)
+        .limit(5)
         .select('brand model _id')
         .lean();
+
+      const contains = await this.productModel
+        .find({
+          $or: [
+            { brand: { $regex: this.escapeRegex(query), $options: 'i' } },
+            { model: { $regex: this.escapeRegex(query), $options: 'i' } },
+          ],
+          _id: { $nin: startsWith.map((p) => p._id) }, // avoid duplicates
+        })
+        .limit(5)
+        .select('brand model _id')
+        .lean();
+
+      return [...startsWith, ...contains];
     } catch (error) {
       console.error('Search error:', error);
       throw new InternalServerErrorException('Search failed');
