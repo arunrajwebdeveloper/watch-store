@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { addAddress } from "@/store/slices/authSlice";
 import { AddressInput } from "@/types";
 import { getOrders } from "@/store/slices/ordersSlice";
+import { dateFormat } from "@/utils/dateFormat";
 
 function Profile() {
   const [address, setAddress] = useState<AddressInput>({
@@ -170,6 +171,9 @@ function Profile() {
                               <p>Qty: {item?.quantity}</p>
                               <p>Status: {order?.status}</p>
                               <p>OrderId: {order?._id}</p>
+                              <p>
+                                Date: {dateFormat(order?.createdAt).toString()}
+                              </p>
                             </div>
                           </div>
                         );
