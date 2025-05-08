@@ -49,4 +49,8 @@ export class FilterProductDto {
   @IsOptional()
   @IsString()
   variantGroupId?: string;
+
+  @IsOptional()
+  @IsString()
+  search?: string;
 }

@@ -87,6 +87,7 @@ export default function ProductFilters({
     Record<string, string[]>
   >((acc, [key, value]) => {
     if (
+      key === "search" ||
       key === "sortBy" ||
       key === "sortOrder" ||
       key === "limit" ||

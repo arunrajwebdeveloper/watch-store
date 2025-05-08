@@ -26,65 +26,6 @@ export class ProductsService {
     return this.productModel.find().sort({ createdAt: -1 }).limit(limit).exec();
   }
 
-  // async getProductByBrand(brand: string) {
-  //   return this.productModel
-  //     .aggregate([
-  //       { $match: { brand: { $regex: brand, $options: 'i' } } }, // Case-Insensitive Matching
-  //     ])
-  //     .exec();
-  // }
-
-  // async getFilterOptions() {
-  //   try {
-  //     const filterFields = [
-  //       { title: 'Brands', field: 'brand' },
-  //       { title: 'Colors', field: 'color' },
-  //       { title: 'Size', field: 'size' },
-  //       { title: 'Movement Type', field: 'movementType' },
-  //       { title: 'Gender', field: 'gender' },
-  //     ];
-
-  //     const results = await Promise.all([
-  //       this.productModel
-  //         .findOne()
-  //         .sort({ currentPrice: 1 })
-  //         .select('currentPrice')
-  //         .lean(),
-  //       this.productModel
-  //         .findOne()
-  //         .sort({ currentPrice: -1 })
-  //         .select('currentPrice')
-  //         .lean(),
-  //       ...filterFields.map((f) => this.productModel.distinct(f.field)),
-  //     ]);
-
-  //     const minPriceDoc = results[0] as { currentPrice?: number } | null;
-  //     const maxPriceDoc = results[1] as { currentPrice?: number } | null;
-  //     const distinctResults = results.slice(2) as unknown[][];
-
-  //     const filters = [
-  //       {
-  //         title: 'Price',
-  //         items: [
-  //           minPriceDoc?.currentPrice ?? 0,
-  //           maxPriceDoc?.currentPrice ?? 0,
-  //         ],
-  //         field: 'price',
-  //       },
-  //       ...filterFields.map((f, idx) => ({
-  //         title: f.title,
-  //         items: distinctResults[idx],
-  //         field: f.field,
-  //       })),
-  //     ];
-
-  //     return { filters };
-  //   } catch (error) {
-  //     console.error('Error getting filter options:', error);
-  //     throw new InternalServerErrorException('Failed to load filter options');
-  //   }
-  // }
-
   async getFilterOptions() {
     try {
       const filterFields = [
@@ -150,6 +91,14 @@ export class ProductsService {
       if (values.length) {
         query[field] = { $in: regexArray(values) };
       }
+    }
+
+    if (filter.search) {
+      query.$or = [
+        { name: { $regex: filter.search, $options: 'i' } },
+        { brand: { $regex: filter.search, $options: 'i' } },
+        { description: { $regex: filter.search, $options: 'i' } },
+      ];
     }
 
     if (filter.gender)

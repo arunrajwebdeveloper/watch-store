@@ -10,6 +10,7 @@ import ProductFilters from "@/components/products/ProductFilters";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createProductQueryUrl } from "@/utils/createProductQueryUrl";
 import { searchParamsToObject } from "@/utils/searchParamsToObject";
+import ProductSearchBar from "@/components/products/ProductSearchBar";
 
 const pageCounts = [
   { value: 10, label: "10" },
@@ -75,6 +76,9 @@ const ProductListPage = (): React.ReactNode => {
             )}
           </div>
           <div className="layout-content">
+            <div className="search-bar-wrap">
+              <ProductSearchBar />
+            </div>
             <div className="listing-page__header">
               <ProductPagination page={page} lastPage={lastPage} />
               <div className="sort-dropdown">
