@@ -631,13 +631,20 @@ a.btn.secondary {
   width: 100%;
   padding: 15px 0;
   border-radius: 8px;
-  overflow: hidden;
+  /* overflow: hidden; */
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 ul.search-result-drop li,
 .search-loading {
   padding: 10px 15px;
   font-size: 16px;
   color: #333;
+}
+
+ul.search-result-drop li:hover {
+  color: #000;
+  cursor: pointer;
+  background-color: #eee;
 }
 
 @media screen and (min-width: 1023px) {
