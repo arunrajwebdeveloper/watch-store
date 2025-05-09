@@ -1,6 +1,8 @@
-import { Routes, Route, NavLink } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Orders from "./containers/Orders";
 import Users from "./containers/Users";
+import Dashboard from "./containers/Dashboard";
+import Sidebar from "./components/Sidebar";
 
 const grops = [
   <Route index element={<h4>All orders</h4>} />,
@@ -11,35 +13,10 @@ const grops = [
 function App() {
   return (
     <div className="main-wrap">
-      <div className="sidebar">
-        <NavLink
-          to="/"
-          className={({ isActive }: { isActive: boolean }) =>
-            isActive ? "active-link" : ""
-          }
-        >
-          Home
-        </NavLink>
-        <NavLink
-          to="/orders"
-          className={({ isActive }: { isActive: boolean }) =>
-            isActive ? "active-link" : ""
-          }
-        >
-          Tabs
-        </NavLink>
-        <NavLink
-          to="/user"
-          className={({ isActive }: { isActive: boolean }) =>
-            isActive ? "active-link" : ""
-          }
-        >
-          User
-        </NavLink>
-      </div>
+      <Sidebar />
       <div className="content">
         <Routes>
-          <Route path="/" element={<h4>Dashboard</h4>} />
+          <Route path="/" element={<Dashboard />} />
           <Route path="/orders" element={<Orders />}>
             {/* <Route index element={<h4>All orders</h4>} />
             <Route path="placed" element={<h4>Placed</h4>} />
