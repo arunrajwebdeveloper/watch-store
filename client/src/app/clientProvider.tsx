@@ -5,7 +5,6 @@ import { useAppDispatch } from "@/store";
 import { refreshUser } from "@/store/slices/authSlice";
 import { usePathname } from "next/navigation";
 import { getCart } from "@/store/slices/cartSlice";
-// import GlobalSpinner from "@/components/common/GlobalSpinner";
 import { getWishlist } from "@/store/slices/wishlistSlice";
 
 const ClientProvider = ({ children }: { children: React.ReactNode }) => {
@@ -22,12 +21,7 @@ const ClientProvider = ({ children }: { children: React.ReactNode }) => {
     dispatch(getWishlist());
   }, [dispatch]);
 
-  return (
-    <>
-      {/* <GlobalSpinner /> */}
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 export default ClientProvider;

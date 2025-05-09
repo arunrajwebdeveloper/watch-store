@@ -21,7 +21,7 @@ const pageCounts = [
 ];
 
 type Product = {
-  // Define based on backend response
+  // ...
 };
 
 export type FilterOptionItem = {
@@ -48,7 +48,6 @@ const ProductListPage = (): React.ReactNode => {
   useEffect(() => {
     const fetchData = async () => {
       const productRes = await api.get("/products", {
-        // params: searchParams,
         params: searchParamsToObject(searchParams),
       });
       const { data, page, lastPage, total } = productRes.data;
