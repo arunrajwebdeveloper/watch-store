@@ -9,6 +9,7 @@ import { CouponModule } from './modules/coupon/coupon.module';
 import { PaymentModule } from './modules/payment/payment.module';
 import { OrderModule } from './modules/order/order.module';
 import * as dotenv from 'dotenv';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ if (!mongoUri) {
     CouponModule,
     PaymentModule,
     OrderModule,
+    DashboardModule,
   ],
 })
 export class AppModule {}
