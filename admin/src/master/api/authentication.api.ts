@@ -10,8 +10,8 @@ export const createAccounts = async (payload: any) => {
   return res.data;
 };
 
-export const getRefreshToken = async (payload: any) => {
-  const res = await Axios.post("/auth/refresh-token", payload);
+export const getRefreshToken = async () => {
+  const res = await Axios.post("/auth/refresh");
   return res.data;
 };
 
