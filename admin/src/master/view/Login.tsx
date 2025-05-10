@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthenticate, useAuthenticateScopeContext } from "..";
-import { LandingPageLayout } from "../../layouts";
+import { AuthPageLayout } from "../../layouts";
 import { useImmer } from "use-immer";
 
 type PasswordField = "password";
@@ -36,7 +36,7 @@ export const Login = () => {
   };
 
   return (
-    <LandingPageLayout>
+    <AuthPageLayout>
       <div className="auth-form-holder">
         <h1 className="mb-5 form-title">Login to your account</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -123,6 +123,6 @@ export const Login = () => {
           </span>
         </div>
       </div>
-    </LandingPageLayout>
+    </AuthPageLayout>
   );
 };

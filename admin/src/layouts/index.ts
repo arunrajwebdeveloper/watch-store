@@ -1,2 +1,2 @@
 export * from "./PageLayout";
-export * from "./LandingPageLayout";
+export * from "./AuthPageLayout";

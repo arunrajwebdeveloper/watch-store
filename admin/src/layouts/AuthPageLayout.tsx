@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import "./styles/layouts.styles.css";
-export const LandingPageLayout = ({ children }: { children: ReactNode }) => {
+export const AuthPageLayout = ({ children }: { children: ReactNode }) => {
   return (
     <section className="auth-wrapper">
       <div className="auth-row d-flex">
