@@ -28,12 +28,6 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     const tokens = await this.authService.login(dto);
-    // res.cookie('refresh_token', tokens.refresh_token, {
-    //   httpOnly: true,
-    //   sameSite: 'strict',
-    //   secure: true, // 👉 Only send over HTTPS
-    //   maxAge: 7 * 24 * 60 * 60 * 1000, // 👉 7 days in milliseconds
-    // });
 
     res.cookie('accessToken', tokens.accessToken, {
       httpOnly: true,
@@ -84,8 +78,19 @@ export class AuthController {
 
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('refreshToken');
-    res.clearCookie('accessToken');
+    res.clearCookie('accessToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+    });
+
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/api/auth/refresh',
+    });
     return { message: 'Logged out' };
   }
 
