@@ -1,5 +1,5 @@
 import { Link, Route, Routes } from "react-router-dom";
-import User from "./User";
+import User from "../../components/User";
 
 function Users() {
   return (

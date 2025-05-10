@@ -1,0 +1,23 @@
+.auth-form-holder {
+  width: 100%;
+  padding: 20px;
+  margin-top: 15vh;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px;
+  max-width: 380px;
+}
+
+.auth-form-holder .form-title {
+  color: #000;
+  font-size: 28px;
+}
+
+.auth-form-holder label {
+  user-select: none;
+}
+
+.form-footer-text {
+  color: #000;
+  font-size: 16px;
+}

@@ -1,0 +1,34 @@
+.auth-wrapper .auth-row {
+  height: 100vh;
+}
+
+.auth-wrapper .landing-banner {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url("assets/images/auth-bg.jpg");
+  position: relative;
+  z-index: 1;
+}
+.auth-wrapper .landing-banner:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #000;
+  opacity: 0.2;
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
+.banner-content {
+  max-width: 600px;
+  padding: 20px;
+  margin-left: 120px;
+}
+.banner-content .banner-xl-text {
+  color: #fff;
+  font-weight: 900;
+  font-size: 80px;
+  line-height: 86px;
+}

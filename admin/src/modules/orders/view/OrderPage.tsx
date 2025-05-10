@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
 
-function Orders() {
+export const OrderPage = () => {
   return (
     <div>
       <h2>Orders</h2>
@@ -36,6 +36,4 @@ function Orders() {
       </div>
     </div>
   );
-}
-
-export default Orders;
+};

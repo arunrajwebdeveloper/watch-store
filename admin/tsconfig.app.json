@@ -21,7 +21,18 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    // **
+
+    "baseUrl": "src",
+    "paths": {
+      // "utils/*": ["utils/*"],
+      // "shared/*": ["shared/*"],
+      // "master/*": ["master/*"],
+      // "modules/*": ["modules/*"],
+      // "layouts/*": ["layouts/*"]
+    }
   },
   "include": ["src"]
 }
