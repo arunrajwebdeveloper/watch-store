@@ -21,8 +21,8 @@ const ClientProvider = ({ children }: { children: React.ReactNode }) => {
     if (isAuthenticated) {
       dispatch(getWishlist());
       dispatch(getCart());
-      dispatch(refreshUser());
     }
+    dispatch(refreshUser());
   }, [dispatch]);
 
   return <>{children}</>;
