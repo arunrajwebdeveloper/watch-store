@@ -15,10 +15,10 @@ export const Header = () => {
 
   return (
     <header className="w-100 border-bottom py-2">
-      <div className="container">
+      <div className="header-container">
         <div className="row">
           <div className="d-flex justify-content-between align-items-center col-12">
-            <h2>Dashboard</h2>
+            <h2>WatchStore</h2>
             <div className="d-flex justify-content-between align-items-center">
               <div>
                 <strong className="d-flex align-items-center">

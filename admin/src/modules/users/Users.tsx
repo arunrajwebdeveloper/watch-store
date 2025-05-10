@@ -1,7 +1,7 @@
 import { Link, Route, Routes } from "react-router-dom";
 import User from "../../components/User";
 
-function Users() {
+export function Users() {
   return (
     <div>
       <Routes>
@@ -19,5 +19,3 @@ function Users() {
     </div>
   );
 }
-
-export default Users;

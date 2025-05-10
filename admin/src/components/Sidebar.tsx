@@ -1,10 +1,9 @@
 import { NavLink } from "react-router-dom";
-
-function Sidebar() {
+export function Sidebar() {
   return (
     <div className="sidebar">
       <NavLink
-        to="/"
+        to="/dashboard"
         className={({ isActive }: { isActive: boolean }) =>
           isActive ? "active-link" : ""
         }
@@ -20,7 +19,7 @@ function Sidebar() {
         Orders
       </NavLink>
       <NavLink
-        to="/user"
+        to="/users"
         className={({ isActive }: { isActive: boolean }) =>
           isActive ? "active-link" : ""
         }
@@ -30,5 +29,3 @@ function Sidebar() {
     </div>
   );
 }
-
-export default Sidebar;
