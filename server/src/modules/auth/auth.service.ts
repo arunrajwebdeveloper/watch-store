@@ -12,6 +12,26 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  private readonly JWT_SECRET = process.env.JWT_SECRET;
+  private readonly REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
+  private readonly JWT_ACCESS_EXPIRES_IN = process.env.JWT_ACCESS_EXPIRES_IN;
+  private readonly JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN;
+
+  async generateTokens(payload: any) {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload, {
+        secret: this.JWT_SECRET,
+        expiresIn: this.JWT_ACCESS_EXPIRES_IN,
+      }),
+      this.jwtService.signAsync(payload, {
+        secret: this.REFRESH_TOKEN_SECRET,
+        expiresIn: this.JWT_REFRESH_EXPIRES_IN,
+      }),
+    ]);
+
+    return { accessToken, refreshToken };
+  }
+
   async signup(dto: SignupDto) {
     const hash = await bcrypt.hash(dto.password, 10);
     return this.userService.createUser({ ...dto, password: hash });
@@ -24,14 +44,7 @@ export class AuthService {
     }
 
     const payload = { sub: user._id, role: user.role };
-    const accessToken = await this.jwtService.signAsync(payload, {
-      secret: process.env.JWT_SECRET,
-      expiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
-    });
-    const refreshToken = await this.jwtService.signAsync(payload, {
-      secret: process.env.REFRESH_TOKEN_SECRET,
-      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
-    });
+    const { accessToken, refreshToken } = await this.generateTokens(payload);
 
     return { accessToken, refreshToken, user };
   }
@@ -39,24 +52,13 @@ export class AuthService {
   async refreshAccessToken(token: string) {
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.REFRESH_TOKEN_SECRET,
+        secret: this.REFRESH_TOKEN_SECRET,
       });
 
-      const accessToken = await this.jwtService.signAsync(
-        { sub: payload.sub, role: payload.role },
-        {
-          secret: process.env.JWT_SECRET,
-          expiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
-        },
-      );
+      const refreshPayload = { sub: payload.sub, role: payload.role };
 
-      const refreshToken = await this.jwtService.signAsync(
-        { sub: payload.sub, role: payload.role },
-        {
-          secret: process.env.REFRESH_TOKEN_SECRET,
-          expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
-        },
-      );
+      const { accessToken, refreshToken } =
+        await this.generateTokens(refreshPayload);
 
       const user = await this.userService.findById(payload.sub);
 
