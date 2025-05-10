@@ -17,7 +17,7 @@ export const Master = () => {
           <Route
             path="/*"
             element={
-              <ProtectedRoute redirectUrl={"account/login"}>
+              <ProtectedRoute redirectUrl={"/account/login"}>
                 <Main />
               </ProtectedRoute>
             }
