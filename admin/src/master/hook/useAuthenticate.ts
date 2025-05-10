@@ -27,7 +27,7 @@ export const useAuthenticate = () => {
   const loginMutation = useMutation({
     mutationFn: (data) => authenticate(data),
     onSuccess: (data) => {
-      if (data.accessToken) {
+      if (data?.accessToken && data?.user?.role === "admin") {
         setAuthenticateState(data);
 
         if (isRemember) {
@@ -40,6 +40,11 @@ export const useAuthenticate = () => {
           setCookie("watchstore__dashboard_user", JSON.stringify(data));
         }
         navigate("/dashboard", { replace: true });
+      } else {
+        alert("Only Admin user allowed here");
+        removeCookie("watchstore__dashboard_user");
+        setIsRemember(false);
+        window.location.href = "/account/login";
       }
     },
     onError: (e) => {
