@@ -6,7 +6,7 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  background-image: url("assets/images/auth-bg.jpg");
+  background-image: url("/auth-banner.avif");
   position: relative;
   z-index: 1;
 }

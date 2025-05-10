@@ -8,7 +8,7 @@ export const LandingPageLayout = ({ children }: { children: ReactNode }) => {
           <div className="h-100 landing-banner d-flex align-items-center justify-content-start">
             <div className="banner-content">
               <h1 className="banner-xl-text mb-0">
-                Connect your soulmates here for free.
+                Welcome back. Let’s make every second count.
               </h1>
             </div>
           </div>
