@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
 import { refreshUser } from "@/store/slices/authSlice";
 import { usePathname } from "next/navigation";
 import { getCart } from "@/store/slices/cartSlice";
@@ -11,14 +11,18 @@ const ClientProvider = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
   const pathname = usePathname();
 
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   useEffect(() => {
-    dispatch(refreshUser());
-    dispatch(getCart());
-    dispatch(getWishlist());
+    if (isAuthenticated) {
+      dispatch(getWishlist());
+      dispatch(getCart());
+      dispatch(refreshUser());
+    }
   }, [dispatch]);
 
   return <>{children}</>;
