@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { Statistics } from "./view";
 
-export function Dashboard() {
+export default function Dashboard() {
   return (
     <Routes>
       <Route path="/" element={<Statistics />} />

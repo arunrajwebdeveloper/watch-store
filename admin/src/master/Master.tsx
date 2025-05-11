@@ -11,6 +11,7 @@ export const Master = () => {
     <QueryClientProvider client={queryClient}>
       <AuthenticateScope>
         <Routes>
+          <Route path="/" element={<Login />} />
           <Route path="account/login" element={<Login />} />
           <Route path="account/signup" element={<SignUp />} />
           <Route

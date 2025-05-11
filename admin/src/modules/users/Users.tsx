@@ -1,7 +1,7 @@
 import { Link, Route, Routes } from "react-router-dom";
 import User from "../../components/User";
 
-export function Users() {
+export default function Users() {
   return (
     <div>
       <Routes>

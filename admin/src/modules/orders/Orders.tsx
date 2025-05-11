@@ -7,7 +7,7 @@ import { OrderPage } from "./view/OrderPage";
 //   <Route path="delivered" element={<h4>Delivered</h4>} />,
 // ];
 
-export function Orders() {
+export default function Orders() {
   return (
     <Routes>
       <Route path="/" element={<OrderPage />}>

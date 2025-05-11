@@ -2,10 +2,9 @@ import { useDashboard } from "../hook";
 
 export const Statistics = () => {
   const { fetchStatistics } = useDashboard({ load: true });
-  const { data, isLoading, isError } = fetchStatistics;
+  const { data, isError } = fetchStatistics;
 
   if (isError) return <span>An error occured.</span>;
-  if (isLoading) return <span>Loading...</span>;
 
   return (
     <div>
