@@ -91,9 +91,9 @@ const retryQueuedRequests = () => {
 // Function to handle session timeout: clears cookies and redirects to the login page
 const sessionTimeOutEvent = () => {
   // Clear cookies for accessToken and refreshToken (even though cookies will be cleared automatically by the server)
-  document.cookie = "accessToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-  document.cookie =
-    "refreshToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+  // document.cookie = "accessToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+  // document.cookie =
+  //   "refreshToken=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
 
   // Redirect the user to the login page
   window.location.href = "/account/login";
