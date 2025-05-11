@@ -19,6 +19,7 @@ export function Sidebar() {
         Orders
       </NavLink>
       <NavLink
+        // end
         to="/users"
         className={({ isActive }: { isActive: boolean }) =>
           isActive ? "active-link" : ""
