@@ -41,6 +41,7 @@ body {
   align-items: flex-end;
   justify-content: flex-start;
   padding: 34px;
+  cursor: pointer;
 }
 .stat-boxes .stat-card p {
   margin: 0;
