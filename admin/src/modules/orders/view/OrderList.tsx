@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useOrders } from "../hook";
 import moment from "moment";
 
@@ -27,6 +28,7 @@ export const OrderList = ({
               <th>Order Date</th>
               <th>Total</th>
               <th>Status</th>
+              <th>Action</th>
             </tr>
             {data?.length > 0 ? (
               data?.map((order: any, idx: number) => {
@@ -41,6 +43,10 @@ export const OrderList = ({
                     </td>
                     <td>INR {order?.totalAmount}</td>
                     <td>{order?.status}</td>
+                    <td>
+                      <Link to=".">Edit</Link> &nbsp;
+                      <Link to=".">Delete</Link>
+                    </td>
                   </tr>
                 );
               })
