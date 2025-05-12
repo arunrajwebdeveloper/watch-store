@@ -23,12 +23,36 @@ export const OrderPage = () => {
           Placed
         </NavLink>
         <NavLink
+          to="processing"
+          className={({ isActive }: { isActive: boolean }) =>
+            isActive ? "active-link" : ""
+          }
+        >
+          Processing
+        </NavLink>
+        <NavLink
+          to="shipped"
+          className={({ isActive }: { isActive: boolean }) =>
+            isActive ? "active-link" : ""
+          }
+        >
+          Shipped
+        </NavLink>
+        <NavLink
           to="delivered"
           className={({ isActive }: { isActive: boolean }) =>
             isActive ? "active-link" : ""
           }
         >
           Delivered
+        </NavLink>
+        <NavLink
+          to="cancelled"
+          className={({ isActive }: { isActive: boolean }) =>
+            isActive ? "active-link" : ""
+          }
+        >
+          Cancelled
         </NavLink>
       </div>
       <div className="tab-wrap">

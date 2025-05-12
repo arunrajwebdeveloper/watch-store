@@ -119,9 +119,10 @@ export class OrderService {
       .exec();
   }
 
-  async getAllOrders() {
+  async getAllOrders(status: string) {
+    const filter = status === 'all' ? {} : { status };
     return this.orderModel
-      .find({})
+      .find(filter)
       .populate('userId', 'name email')
       .populate('items.product', 'brand model price')
       .sort({ createdAt: -1 })

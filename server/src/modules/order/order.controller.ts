@@ -49,9 +49,9 @@ export class OrderController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  @Get('all')
-  async getAllOrdersForAdmin() {
-    return this.orderService.getAllOrders();
+  @Get('all/:status')
+  async getAllOrdersForAdmin(@Param('status') status: string) {
+    return this.orderService.getAllOrders(status);
   }
 
   @Patch('status/:orderId')
