@@ -1,20 +1,13 @@
-import { Link, Route, Routes } from "react-router-dom";
-import User from "./components/User";
+import { Route, Routes } from "react-router-dom";
+import User from "./view/User";
+import { UserList } from "./view/UserList";
 
 export default function Users() {
   return (
     <div>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              <h4>User list</h4>
-              <Link to="12">User 12</Link>
-            </div>
-          }
-        />
-        <Route path="/:id" element={<User />} />
+        <Route path="/" element={<UserList title="Users" />} />
+        <Route path="/:id" element={<User title="User Details" />} />
       </Routes>
     </div>
   );

@@ -25,7 +25,7 @@ export function Sidebar() {
           isActive ? "active-link" : ""
         }
       >
-        User
+        Users
       </NavLink>
     </div>
   );
