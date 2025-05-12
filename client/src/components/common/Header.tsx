@@ -172,7 +172,7 @@ function Header() {
             </Link>
             <div className="header-menu">
               <nav className="header-nav">
-                <Link href="/products">Products</Link>
+                <Link href="/products">Shop</Link>
               </nav>
             </div>
             <div className="header-actions-block">
