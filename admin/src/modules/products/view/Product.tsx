@@ -5,7 +5,7 @@ import moment from "moment";
 function Product({ title }: { title: string }) {
   const { id: productId } = useParams();
 
-  const { fetchProductsById } = useProducts({ load: true, productId });
+  const { fetchProductsById } = useProducts({ productId });
 
   const { data, isError } = fetchProductsById;
 
@@ -21,35 +21,56 @@ function Product({ title }: { title: string }) {
           <tbody>
             <tr>
               <td colSpan={2}>
-                <img
-                  src={data?.avatar}
-                  alt={data?.name.toString()}
-                  style={{ width: "100px" }}
-                  loading="lazy"
-                />
+                <div className="image-group">
+                  {data?.product?.images?.map((img: string, i: number) => {
+                    return (
+                      <img
+                        key={`${data?.product?.model}-${i}`}
+                        src={img}
+                        alt={data?.product?.model?.toString()}
+                        loading="lazy"
+                        style={{ width: "100px", height: "100px" }}
+                      />
+                    );
+                  })}
+                </div>
               </td>
             </tr>
             <tr>
-              <td>Name:</td>
-              <td>{data?.name}</td>
+              <td>Brand:</td>
+              <td>{data?.product?.brand}</td>
             </tr>
             <tr>
-              <td>Email:</td>
-              <td>{data?.email}</td>
+              <td>Model:</td>
+              <td>{data?.product?.model}</td>
             </tr>
             <tr>
-              <td>Role:</td>
-              <td>{data?.role}</td>
+              <td>Original Price:</td>
+              <td>INR {data?.product?.originalPrice}</td>
+            </tr>
+            <tr>
+              <td>Current Price:</td>
+              <td>INR {data?.product?.currentPrice}</td>
+            </tr>
+            <tr>
+              <td>Movement Type:</td>
+              <td>{data?.product?.movementType}</td>
+            </tr>
+            <tr>
+              <td>Inventory:</td>
+              <td>{data?.product?.inventory}</td>
             </tr>
             <tr>
               <td>Created At:</td>
               <td>
-                {moment(data?.createdAt).format("DD MMM YYYY [at] hh:mm A")}
+                {moment(data?.product?.createdAt).format(
+                  "DD MMM YYYY [at] hh:mm A"
+                )}
               </td>
             </tr>
             <tr>
               <td colSpan={2}>
-                <Link to=".">Edit user</Link>
+                <Link to=".">Edit Product</Link>
               </td>
             </tr>
           </tbody>

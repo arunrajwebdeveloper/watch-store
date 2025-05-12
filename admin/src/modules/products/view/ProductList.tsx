@@ -68,7 +68,6 @@ export const ProductList = ({ title }: { title: string }) => {
                   return (
                     <tr key={product._id}>
                       <td>{++idx}</td>
-
                       <td>{product?.brand}</td>
                       <td>{product?.model}</td>
                       <td>INR {product?.originalPrice}</td>
@@ -92,7 +91,7 @@ export const ProductList = ({ title }: { title: string }) => {
                               <img
                                 key={`${product?.model}-${i}`}
                                 src={img}
-                                alt={product?.model.toString()}
+                                alt={product?.model?.toString()}
                                 loading="lazy"
                               />
                             );

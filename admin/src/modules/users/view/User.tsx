@@ -5,7 +5,7 @@ import moment from "moment";
 function User({ title }: { title: string }) {
   const { id: userId } = useParams();
 
-  const { fetchUsersById } = useUsers({ load: true, userId });
+  const { fetchUsersById } = useUsers({ userId });
 
   const { data, isError } = fetchUsersById;
 

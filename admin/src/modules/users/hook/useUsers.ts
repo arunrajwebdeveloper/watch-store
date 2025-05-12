@@ -14,7 +14,7 @@ export const useUsers = ({ load = false, userId = "" }) => {
   const fetchUsersById = useQuery({
     queryKey: ["USERS", userId],
     queryFn: () => getUserById(userId),
-    enabled: load && !!userId,
+    enabled: !!userId,
   });
 
   return { fetchUsers, fetchUsersById };

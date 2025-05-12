@@ -23,7 +23,7 @@ export const useProducts = ({ load = false, productId = "" }) => {
   const fetchProductsById = useQuery({
     queryKey: ["PRODUCTS", productId],
     queryFn: () => getProductById(productId),
-    enabled: load && !!productId,
+    enabled: !!productId,
   });
 
   return { fetchProducts, fetchProductsById, page, setPage };
