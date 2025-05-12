@@ -16,8 +16,39 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 .active-link {
   color: orange !important;
+}
+
+.page-header {
+  padding: 20px 0;
+  border-bottom: 1px solid #eee;
+}
+.stat-boxes {
+  display: flex;
+  gap: 20px;
+}
+.stat-boxes .stat-card {
+  flex: 1;
+  aspect-ratio: 1;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 34px;
+}
+.stat-boxes .stat-card p {
+  margin: 0;
+  font-size: 60px;
+  font-weight: 800;
+}
+.stat-boxes .stat-card h3 {
+  font-size: 22px;
+  color: #000;
+  margin-bottom: 10px;
+  font-weight: 600;
 }

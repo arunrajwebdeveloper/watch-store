@@ -39,13 +39,30 @@ body,
 html {
   height: 100%;
 }
+main.main-wrapper {
+  padding-right: 30px;
+}
+.header-container {
+  padding-right: 30px;
+}
 .master-wrapper {
   display: flex;
   height: 100%;
 }
 .content-section {
   width: calc(100% - 300px);
+  border-left: 1px solid #ccc;
+  padding-left: 30px;
 }
 .sidebar {
   width: 300px;
+}
+.sidebar a {
+  display: block;
+  padding: 25px 20px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #000;
+  text-decoration: none;
+  border-bottom: 1px solid #eee;
 }
