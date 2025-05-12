@@ -27,6 +27,14 @@ export function Sidebar() {
       >
         Users
       </NavLink>
+      <NavLink
+        to="/products"
+        className={({ isActive }: { isActive: boolean }) =>
+          isActive ? "active-link" : ""
+        }
+      >
+        Products
+      </NavLink>
     </div>
   );
 }
