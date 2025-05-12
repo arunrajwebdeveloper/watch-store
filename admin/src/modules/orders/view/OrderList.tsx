@@ -1,4 +1,5 @@
 import { useOrders } from "../hook";
+import moment from "moment";
 
 export const OrderList = ({
   title,
@@ -33,8 +34,12 @@ export const OrderList = ({
                   <tr key={order._id}>
                     <td>{++idx}</td>
                     <td>{order._id}</td>
-                    <td>{order?.createdAt}</td>
-                    <td>{order?.totalAmount}</td>
+                    <td>
+                      {moment(order?.createdAt).format(
+                        "DD MMM YYYY [at] hh:mm A"
+                      )}
+                    </td>
+                    <td>INR {order?.totalAmount}</td>
                     <td>{order?.status}</td>
                   </tr>
                 );
