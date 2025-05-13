@@ -16,3 +16,7 @@ export const createProducts = async (payload: any) => {
   const res = await Axios.post("/products", payload);
   return res.data;
 };
+export const updateProducts = async (payload: any, productId: string) => {
+  const res = await Axios.put(`/products/edit/${productId}`, payload);
+  return res.data;
+};

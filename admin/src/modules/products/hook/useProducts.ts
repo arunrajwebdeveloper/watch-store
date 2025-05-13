@@ -1,6 +1,11 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
-// import { useNavigate } from "react-router-dom";
-import { getProducts, getProductById, createProducts } from "../api";
+import { useNavigate } from "react-router-dom";
+import {
+  getProducts,
+  getProductById,
+  createProducts,
+  updateProducts,
+} from "../api";
 import { useImmer } from "use-immer";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useEffect } from "react";
@@ -35,8 +40,8 @@ const defaultValues = {
 };
 
 export const useProducts = ({ load = false, productId = "" }) => {
-  // const navigate = useNavigate();
-  const [product, setProduct] = useImmer<CreateState>(defaultValues);
+  const navigate = useNavigate();
+
   const { register, watch, handleSubmit, formState, control, reset } =
     useForm<CreateState>({
       defaultValues,
@@ -64,6 +69,17 @@ export const useProducts = ({ load = false, productId = "" }) => {
     onSettled: () => {},
   });
 
+  const updateProduct = useMutation({
+    mutationFn: (data) => updateProducts(data, productId),
+    onSuccess: () => {
+      navigate("/products");
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+    onSettled: () => {},
+  });
+
   const fetchProducts = useQuery({
     queryKey: ["PRODUCTS", page],
     queryFn: () => getProducts(page),
@@ -79,14 +95,24 @@ export const useProducts = ({ load = false, productId = "" }) => {
   useEffect(() => {
     if (fetchProductsById?.data) {
       const { product } = fetchProductsById?.data;
-      const formatted = {
-        ...product,
-        images: product?.images?.map((img: any) => {
-          return { url: img };
-        }),
-      };
 
-      setProduct(formatted);
+      const images = product?.images?.map((img: any) => {
+        return { url: img };
+      });
+
+      reset({
+        brand: product?.brand,
+        model: product?.model,
+        originalPrice: product?.originalPrice,
+        currentPrice: product?.currentPrice,
+        weight: product?.weight,
+        color: product?.color,
+        size: product?.size,
+        movementType: product?.movementType,
+        gender: product?.gender,
+        images,
+        inventory: product?.inventory,
+      });
     }
   }, [fetchProductsById?.data]);
 
@@ -101,7 +127,6 @@ export const useProducts = ({ load = false, productId = "" }) => {
     register,
     watch,
     handleSubmit,
-    product,
-    setProduct,
+    updateProduct,
   };
 };

@@ -102,7 +102,8 @@ export const ProductList = ({ title }: { title: string }) => {
                         </div>
                       </td>
                       <td>
-                        <Link to={product._id}>View</Link>
+                        <Link to={product._id}>View</Link> &nbsp;
+                        <Link to={`edit/${product._id}`}>Edit</Link>
                       </td>
                     </tr>
                   );
