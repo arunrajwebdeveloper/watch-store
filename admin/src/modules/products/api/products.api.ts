@@ -11,3 +11,8 @@ export const getProductById = async (productId: string | undefined) => {
   const res = await Axios.get(`/products/${productId}`);
   return res.data;
 };
+
+export const createProducts = async (payload: any) => {
+  const res = await Axios.post("/products", payload);
+  return res.data;
+};

@@ -137,3 +137,9 @@ th {
 .pagination-wrapper select {
   padding: 5px 10px;
 }
+span.form-error-message {
+  color: #c91c1c;
+  font-size: 14px;
+  margin-top: 5px;
+  display: inline-block;
+}

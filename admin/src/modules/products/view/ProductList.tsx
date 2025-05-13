@@ -27,6 +27,9 @@ export const ProductList = ({ title }: { title: string }) => {
         <h4>{title}</h4>
       </div>
       <div>
+        <Link to="create">Create new product</Link>
+      </div>
+      <div>
         <PaginationControls
           currentPage={page.pageNumber}
           lastPage={page.lastPage}
