@@ -49,7 +49,7 @@ export class OrderController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
-  @Get('all/:status')
+  @Get('get/:status')
   async getAllOrdersForAdmin(@Param('status') status: string) {
     return this.orderService.getAllOrders(status);
   }
