@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { getProducts, getProductById, createProducts } from "../api";
 import { useImmer } from "use-immer";
 import { useForm, useFieldArray } from "react-hook-form";
+import { useEffect } from "react";
 
 type CreateState = {
   brand: string;
@@ -16,6 +17,7 @@ type CreateState = {
   gender: string;
   images: { url: string }[];
   inventory: number | null;
+  createdAt?: "";
 };
 
 const defaultValues = {
@@ -34,8 +36,8 @@ const defaultValues = {
 
 export const useProducts = ({ load = false, productId = "" }) => {
   // const navigate = useNavigate();
-
-  const { register, watch, handleSubmit, formState, control } =
+  const [product, setProduct] = useImmer<CreateState>(defaultValues);
+  const { register, watch, handleSubmit, formState, control, reset } =
     useForm<CreateState>({
       defaultValues,
     });
@@ -53,7 +55,9 @@ export const useProducts = ({ load = false, productId = "" }) => {
 
   const createProduct = useMutation({
     mutationFn: (data) => createProducts(data),
-    onSuccess: () => {},
+    onSuccess: () => {
+      reset();
+    },
     onError: (e) => {
       console.log(e);
     },
@@ -72,6 +76,20 @@ export const useProducts = ({ load = false, productId = "" }) => {
     enabled: !!productId,
   });
 
+  useEffect(() => {
+    if (fetchProductsById?.data) {
+      const { product } = fetchProductsById?.data;
+      const formatted = {
+        ...product,
+        images: product?.images?.map((img: any) => {
+          return { url: img };
+        }),
+      };
+
+      setProduct(formatted);
+    }
+  }, [fetchProductsById?.data]);
+
   return {
     createProduct,
     fetchProducts,
@@ -83,5 +101,7 @@ export const useProducts = ({ load = false, productId = "" }) => {
     register,
     watch,
     handleSubmit,
+    product,
+    setProduct,
   };
 };
