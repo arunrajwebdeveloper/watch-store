@@ -8,7 +8,9 @@ const Products = lazy(() => import("../../modules/products/Products"));
 
 export const Main = () => {
   return (
-    <Suspense fallback={<div>Loading, Please wait...</div>}>
+    <Suspense
+      fallback={<div className="main-loading">Loading, Please wait...</div>}
+    >
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/orders/*" element={<Orders />} />
