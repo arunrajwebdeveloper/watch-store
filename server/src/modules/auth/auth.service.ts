@@ -4,6 +4,7 @@ import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -37,7 +38,7 @@ export class AuthService {
     return this.userService.createUser({ ...dto, password: hash });
   }
 
-  async login(dto: LoginDto) {
+  async login(dto: LoginDto, res: Response) {
     const user = await this.userService.findByEmail(dto.email);
     if (!user || !(await bcrypt.compare(dto.password, user.password))) {
       throw new UnauthorizedException('Invalid credentials');
@@ -46,10 +47,26 @@ export class AuthService {
     const payload = { sub: user._id, role: user.role };
     const { accessToken, refreshToken } = await this.generateTokens(payload);
 
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // use true in production (HTTPS)
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 15, // 15 mins - use this
+      path: '/',
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      path: '/api/auth/refresh',
+    });
+
     return { accessToken, refreshToken, user };
   }
 
-  async refreshAccessToken(token: string) {
+  async refreshAccessToken(token: string, res: Response) {
     try {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.REFRESH_TOKEN_SECRET,
@@ -61,6 +78,22 @@ export class AuthService {
         await this.generateTokens(refreshPayload);
 
       const user = await this.userService.findById(payload.sub);
+
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // use true in production (HTTPS)
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 15, // 15 mins - use this
+        path: '/',
+      });
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+        path: '/api/auth/refresh',
+      });
 
       return { accessToken, refreshToken, user };
     } catch {
