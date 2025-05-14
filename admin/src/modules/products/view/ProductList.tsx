@@ -3,8 +3,9 @@ import { useProducts } from "../hook";
 import moment from "moment";
 import PaginationControls from "../../../shared/components/PaginationControls";
 import { useEffect } from "react";
+import { PageLayout } from "../../../layouts";
 
-export const ProductList = ({ title }: { title: string }) => {
+export const ProductList = () => {
   const { fetchProducts, page, setPage } = useProducts({ load: true });
   const { data, isError, isLoading } = fetchProducts;
 
@@ -22,10 +23,7 @@ export const ProductList = ({ title }: { title: string }) => {
   }, [data]);
 
   return (
-    <div>
-      <div>
-        <h4>{title}</h4>
-      </div>
+    <PageLayout title="Product List">
       <div>
         <Link to="create">Create new product</Link>
       </div>
@@ -138,6 +136,6 @@ export const ProductList = ({ title }: { title: string }) => {
           }}
         />
       </div>
-    </div>
+    </PageLayout>
   );
 };

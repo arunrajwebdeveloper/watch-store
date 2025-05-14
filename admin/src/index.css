@@ -20,27 +20,41 @@ body {
 }
 
 .active-link {
-  color: orange !important;
+  color: blue !important;
 }
 
 .page-header {
-  padding: 20px 0;
-  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.page-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+h4.sub-heading {
+  margin-bottom: 20px;
+  font-size: 18px;
+  margin-top: 24px;
+}
+.page-content {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 .stat-boxes {
   display: flex;
   gap: 20px;
 }
 .stat-boxes .stat-card {
-  /* flex: 1; */
-  width: 280px;
+  width: 260px;
   aspect-ratio: 1;
   border: 1px solid #eee;
   border-radius: 10px;
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
-  padding: 34px;
+  padding: 24px;
   cursor: pointer;
 }
 .stat-boxes .stat-card p {
@@ -71,6 +85,15 @@ th {
   padding: 10px 15px;
 }
 
+a.main-logo {
+  color: #000;
+  text-decoration: none;
+}
+a.main-logo h2 {
+  font-size: 18px;
+  margin: 0;
+  font-weight: 800;
+}
 .tab-btns {
   display: flex;
   /* gap: 10px; */

@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useProducts } from "../hook";
+import { PageLayout } from "../../../layouts";
 
-export const Edit = ({ title }: { title: string }) => {
+export const Edit = () => {
   const { id: productId } = useParams();
 
   const {
@@ -27,8 +28,7 @@ export const Edit = ({ title }: { title: string }) => {
   const { fields, append, remove } = fieldArray;
 
   return (
-    <div>
-      <h4>{title}</h4>
+    <PageLayout title="Edit Product">
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
@@ -301,6 +301,6 @@ export const Edit = ({ title }: { title: string }) => {
           </button>
         </form>
       </div>
-    </div>
+    </PageLayout>
   );
 };

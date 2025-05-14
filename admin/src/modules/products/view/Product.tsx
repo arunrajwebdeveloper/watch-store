@@ -1,8 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 import { useProducts } from "../hook";
 import moment from "moment";
+import { PageLayout } from "../../../layouts";
 
-function Product({ title }: { title: string }) {
+function Product() {
   const { id: productId } = useParams();
 
   const { fetchProductsById } = useProducts({ productId });
@@ -12,10 +13,7 @@ function Product({ title }: { title: string }) {
   if (isError) return <span>Error Occured</span>;
 
   return (
-    <div>
-      <div>
-        <h4>{title}</h4>
-      </div>
+    <PageLayout title="Product List">
       <div>
         <table>
           <tbody>
@@ -76,7 +74,7 @@ function Product({ title }: { title: string }) {
           </tbody>
         </table>
       </div>
-    </div>
+    </PageLayout>
   );
 }
 

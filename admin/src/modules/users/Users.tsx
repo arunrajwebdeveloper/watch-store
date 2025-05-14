@@ -6,8 +6,8 @@ export default function Users() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<UserList title="Users" />} />
-        <Route path="/:id" element={<User title="User Details" />} />
+        <Route path="/" element={<UserList />} />
+        <Route path="/:id" element={<User />} />
       </Routes>
     </div>
   );

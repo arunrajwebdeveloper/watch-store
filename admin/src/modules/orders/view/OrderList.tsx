@@ -16,9 +16,7 @@ export const OrderList = ({
 
   return (
     <div>
-      <div>
-        <h4>{title}</h4>
-      </div>
+      <h4 className="sub-heading">{title}</h4>
       <div>
         <table>
           <tbody>

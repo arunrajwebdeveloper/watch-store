@@ -8,10 +8,10 @@ export default function Products() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<ProductList title="Products" />} />
-        <Route path="/:id" element={<Product title="Product Details" />} />
-        <Route path="/create" element={<Create title="Create Product" />} />
-        <Route path="/edit/:id" element={<Edit title="Edit Product" />} />
+        <Route path="/" element={<ProductList />} />
+        <Route path="/:id" element={<Product />} />
+        <Route path="/create" element={<Create />} />
+        <Route path="/edit/:id" element={<Edit />} />
       </Routes>
     </div>
   );

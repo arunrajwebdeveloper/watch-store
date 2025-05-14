@@ -1,18 +1,16 @@
 import { Link } from "react-router-dom";
 import { useUsers } from "../hook";
 import moment from "moment";
+import { PageLayout } from "../../../layouts";
 
-export const UserList = ({ title }: { title: string }) => {
+export const UserList = () => {
   const { fetchUsers } = useUsers({ load: true });
   const { data, isError } = fetchUsers;
 
   if (isError) return <span>Error occured</span>;
 
   return (
-    <div>
-      <div>
-        <h4>{title}</h4>
-      </div>
+    <PageLayout title="Users List">
       <div>
         <table>
           <tbody>
@@ -62,6 +60,6 @@ export const UserList = ({ title }: { title: string }) => {
           </tbody>
         </table>
       </div>
-    </div>
+    </PageLayout>
   );
 };

@@ -1,6 +1,7 @@
+import { PageLayout } from "../../../layouts";
 import { useProducts } from "../hook";
 
-export const Create = ({ title }: { title: string }) => {
+export const Create = () => {
   const {
     fieldArray,
     createProduct,
@@ -23,8 +24,7 @@ export const Create = ({ title }: { title: string }) => {
   const { fields, append, remove } = fieldArray;
 
   return (
-    <div>
-      <h4>{title}</h4>
+    <PageLayout title="Create Product">
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
@@ -297,6 +297,6 @@ export const Create = ({ title }: { title: string }) => {
           </button>
         </form>
       </div>
-    </div>
+    </PageLayout>
   );
 };
