@@ -100,10 +100,4 @@ export class AuthController {
     });
     return { message: 'Logged out' };
   }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('me')
-  getProfile(@Req() req: Request) {
-    return req['user'];
-  }
 }

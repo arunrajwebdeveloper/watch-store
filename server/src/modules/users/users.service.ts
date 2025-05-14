@@ -34,6 +34,10 @@ export class UsersService {
     return this.userModel.find().lean().exec();
   }
 
+  async findMe(id: string): Promise<User[]> {
+    return this.userModel.find({ _id: id }).select('-password').lean().exec();
+  }
+
   async findById(id: string): Promise<User | null> {
     const user = await this.userModel
       .findById(id)

@@ -18,6 +18,15 @@ import { RequestWithUser } from '../common/types/express-request.interface';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  // getProfile(@Req() req: Request) {
+  //   return req['user'];
+  // }
+  getProfile(@Req() req: RequestWithUser) {
+    return this.usersService.findMe(req.user.userId);
+  }
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Get()
