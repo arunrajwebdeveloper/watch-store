@@ -15,7 +15,12 @@ export const getRefreshToken = async () => {
   return res.data;
 };
 
-export const userLogout = async (payload: any) => {
-  const res = await Axios.post("/auth/logout", payload);
+export const userLogout = async () => {
+  const res = await Axios.post("/auth/logout");
+  return res.data;
+};
+
+export const getCurrentUser = async () => {
+  const res = await Axios.get("/users/me");
   return res.data;
 };

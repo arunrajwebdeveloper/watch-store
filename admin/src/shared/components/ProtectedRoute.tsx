@@ -11,9 +11,5 @@ export const ProtectedRoute = ({
 }) => {
   const { authenticateState } = useAuthenticateScopeContext();
 
-  return authenticateState?.accessToken ? (
-    children
-  ) : (
-    <Navigate to={redirectUrl} />
-  );
+  return authenticateState?.user ? children : <Navigate to={redirectUrl} />;
 };

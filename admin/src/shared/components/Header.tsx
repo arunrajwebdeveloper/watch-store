@@ -3,16 +3,16 @@ import { useAuthenticateScopeContext, useAuthenticate } from "../../master";
 
 export const Header = () => {
   const { authenticateState } = useAuthenticateScopeContext();
-  const { firstname, lastname, email, isAdmin } = authenticateState;
+  const {
+    user: { name, email, role },
+  } = authenticateState;
   const { signoutAccount } = useAuthenticate();
 
-  const payload = {
-    refreshToken: authenticateState?.refreshToken,
+  const userSignOut = () => {
+    signoutAccount.mutate();
   };
 
-  const userSignOut = () => {
-    signoutAccount.mutate(payload);
-  };
+  const isAdmin = role === "admin";
 
   return (
     <header className="w-100 border-bottom py-2">
@@ -25,9 +25,7 @@ export const Header = () => {
             <div className="d-flex justify-content-between align-items-center">
               <div>
                 <strong className="d-flex align-items-center">
-                  <span>
-                    {firstname} {lastname ? lastname : ""}
-                  </span>
+                  <span>{name || "Unknown"}</span>
                   {isAdmin && (
                     <svg
                       width="16"

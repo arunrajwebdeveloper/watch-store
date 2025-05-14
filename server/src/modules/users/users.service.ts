@@ -34,8 +34,13 @@ export class UsersService {
     return this.userModel.find().lean().exec();
   }
 
-  async findMe(id: string): Promise<User[]> {
-    return this.userModel.find({ _id: id }).select('-password').lean().exec();
+  async findMe(id: string): Promise<User | null> {
+    const user = this.userModel.findById(id).select('-password').lean().exec();
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   async findById(id: string): Promise<User | null> {

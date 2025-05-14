@@ -23,10 +23,10 @@ export const Login = () => {
     useAuthenticateScopeContext();
 
   useEffect(() => {
-    if (authenticateState?.accessToken) {
+    if (authenticateState?.user) {
       navigate("/dashboard", { replace: true });
     }
-  }, [navigate, authenticateState?.accessToken]);
+  }, [navigate, authenticateState?.user]);
 
   const showHidePassword = (field: PasswordField) => {
     setShowPass((draft) => {

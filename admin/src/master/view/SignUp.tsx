@@ -28,10 +28,10 @@ export const SignUp = () => {
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
 
   useEffect(() => {
-    if (authenticateState?.accessToken) {
+    if (authenticateState?.user) {
       navigate("/dashboard", { replace: true });
     }
-  }, [authenticateState?.accessToken]);
+  }, [authenticateState?.user]);
 
   const showHidePassword = (field: PasswordField) => {
     setShowPass((draft) => {

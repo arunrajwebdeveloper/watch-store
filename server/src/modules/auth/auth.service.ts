@@ -63,7 +63,10 @@ export class AuthService {
       path: '/api/auth/refresh',
     });
 
-    return { accessToken, refreshToken, user };
+    return {
+      // accessToken, refreshToken, user
+      message: 'Logged In successfully',
+    };
   }
 
   async refreshAccessToken(token: string, res: Response) {
@@ -95,7 +98,10 @@ export class AuthService {
         path: '/api/auth/refresh',
       });
 
-      return { accessToken, refreshToken, user };
+      return {
+        // accessToken, refreshToken, user
+        message: 'Tokens generated successfully',
+      };
     } catch {
       throw new UnauthorizedException('Invalid refresh token');
     }
