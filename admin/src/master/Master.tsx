@@ -12,6 +12,7 @@ export const Master = () => {
       <AuthenticateScope>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/u" element={<Login />} />
           <Route path="account/login" element={<Login />} />
           <Route path="account/signup" element={<SignUp />} />
           <Route
