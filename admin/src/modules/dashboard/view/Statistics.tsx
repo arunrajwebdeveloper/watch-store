@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useDashboard } from "../hook";
 import { PageLayout } from "../../../layouts";
+import StatisticsCard from "../components/StatisticsCard";
 
 export const Statistics = () => {
   const { fetchStatistics } = useDashboard({ load: true });
@@ -16,24 +17,21 @@ export const Statistics = () => {
   return (
     <PageLayout title="Dashboard">
       <div className="stat-boxes">
-        <div className="stat-card" onClick={() => handleNavigate("/products")}>
-          <div>
-            <h3>Products</h3>
-            <p>{data?.productCount}</p>
-          </div>
-        </div>
-        <div className="stat-card" onClick={() => handleNavigate("/users")}>
-          <div>
-            <h3>Users</h3>
-            <p>{data?.userCount}</p>
-          </div>
-        </div>
-        <div className="stat-card" onClick={() => handleNavigate("/orders")}>
-          <div>
-            <h3>Orders</h3>
-            <p>{data?.orderCount}</p>
-          </div>
-        </div>
+        <StatisticsCard
+          title="Products"
+          value={data?.productCount}
+          onClick={() => handleNavigate("/u/products")}
+        />
+        <StatisticsCard
+          title="Users"
+          value={data?.userCount}
+          onClick={() => handleNavigate("/u/users")}
+        />
+        <StatisticsCard
+          title="Orders"
+          value={data?.orderCount}
+          onClick={() => handleNavigate("/u/orders")}
+        />
       </div>
     </PageLayout>
   );

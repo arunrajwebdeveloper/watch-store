@@ -3,7 +3,7 @@ export function Sidebar() {
   return (
     <div className="sidebar">
       <NavLink
-        to="/dashboard"
+        to="/u/dashboard"
         className={({ isActive }: { isActive: boolean }) =>
           isActive ? "active-link" : ""
         }
@@ -11,7 +11,7 @@ export function Sidebar() {
         Dashboard
       </NavLink>
       <NavLink
-        to="/orders"
+        to="/u/orders"
         className={({ isActive }: { isActive: boolean }) =>
           isActive ? "active-link" : ""
         }
@@ -20,7 +20,7 @@ export function Sidebar() {
       </NavLink>
       <NavLink
         // end
-        to="/users"
+        to="/u/users"
         className={({ isActive }: { isActive: boolean }) =>
           isActive ? "active-link" : ""
         }
@@ -28,7 +28,7 @@ export function Sidebar() {
         Users
       </NavLink>
       <NavLink
-        to="/products"
+        to="/u/products"
         className={({ isActive }: { isActive: boolean }) =>
           isActive ? "active-link" : ""
         }

@@ -29,7 +29,7 @@ export const SignUp = () => {
 
   useEffect(() => {
     if (authenticateState?.user) {
-      navigate("/dashboard", { replace: true });
+      navigate("/u/dashboard", { replace: true });
     }
   }, [authenticateState?.user]);
 

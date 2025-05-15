@@ -24,18 +24,34 @@ export const useAuthenticate = () => {
     },
   });
 
-  const { setAuthenticateState, authenticateState } =
-    useAuthenticateScopeContext();
+  const { setAuthenticateState } = useAuthenticateScopeContext();
+
+  type UserState = {
+    name: string;
+    email: string;
+    role: string;
+    avatar: string;
+  };
+
+  const ROLE = {
+    ADMIN: "admin",
+  };
+
+  const setUserDataToLocalStorage = (user: UserState) => {
+    const { name, email, role, avatar } = user;
+    localStorage.setItem(
+      "x__watch_dashboard_user",
+      JSON.stringify({ user: { name, email, role, avatar } })
+    );
+  };
 
   useEffect(() => {
     const fetchAndSetUser = async () => {
       try {
-        if (!authenticateState?.user) {
-          const user = await getCurrentUser();
-          if (user) {
-            setAuthenticateState({ user });
-            navigate("/dashboard", { replace: true });
-          }
+        const user = await getCurrentUser();
+        if (user) {
+          setAuthenticateState({ user });
+          setUserDataToLocalStorage(user);
         }
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -51,9 +67,10 @@ export const useAuthenticate = () => {
     onSuccess: async (data) => {
       if (data) {
         const user = await getCurrentUser();
-        if (user && user?.role === "admin") {
+        if (user && user?.role === ROLE.ADMIN) {
           setAuthenticateState({ user });
-          navigate("/dashboard", { replace: true });
+          setUserDataToLocalStorage(user);
+          navigate("/u/dashboard", { replace: true });
         } else {
           alert("Only Admin user allowed here");
           window.location.href = "/account/login";
@@ -71,12 +88,13 @@ export const useAuthenticate = () => {
   };
 
   const signoutAccount = useMutation({
-    mutationFn: () => userLogout(),
+    mutationFn: userLogout,
     onSuccess: () => {
+      localStorage.removeItem("x__watch_dashboard_user");
       window.location.href = "/account/login";
     },
     onError: (e) => {
-      console.log("error :>> ", e);
+      console.error("Error: ", e);
     },
   });
 

@@ -8,9 +8,11 @@ export interface AuthenticateState {
 export const AuthenticateContext = createContext<any | null>(null);
 
 export const AuthenticateScope = ({ children }: { children: ReactNode }) => {
-  const [authenticateState, setAuthenticateState] = useImmer<AuthenticateState>(
-    { user: null }
-  );
+  const localUser = localStorage.getItem("x__watch_dashboard_user");
+  const localUserState = localUser ? JSON.parse(localUser) : { user: null };
+
+  const [authenticateState, setAuthenticateState] =
+    useImmer<AuthenticateState>(localUserState);
 
   return (
     <AuthenticateContext.Provider

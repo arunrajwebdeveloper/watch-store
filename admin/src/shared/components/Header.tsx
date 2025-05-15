@@ -19,7 +19,7 @@ export const Header = () => {
       <div className="header-container">
         <div className="row">
           <div className="d-flex justify-content-between align-items-center col-12">
-            <Link to="/" className="main-logo">
+            <Link to="/u" className="main-logo">
               <h2>WatchStore</h2>
             </Link>
             <div className="d-flex justify-content-between align-items-center">

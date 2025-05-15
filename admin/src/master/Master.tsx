@@ -15,7 +15,7 @@ export const Master = () => {
           <Route path="account/login" element={<Login />} />
           <Route path="account/signup" element={<SignUp />} />
           <Route
-            path="/*"
+            path="/u/*"
             element={
               <ProtectedRoute redirectUrl={"/account/login"}>
                 <Main />

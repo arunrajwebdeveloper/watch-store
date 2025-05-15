@@ -24,7 +24,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (authenticateState?.user) {
-      navigate("/dashboard", { replace: true });
+      navigate("/u/dashboard", { replace: true });
     }
   }, [navigate, authenticateState?.user]);
 
