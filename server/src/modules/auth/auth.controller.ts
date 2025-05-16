@@ -7,6 +7,7 @@ import {
   UseGuards,
   Get,
   HttpStatus,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
@@ -40,10 +41,14 @@ export class AuthController {
   ) {
     const refreshToken = req.cookies?.refreshToken;
 
+    // if (!refreshToken) {
+    //   return res
+    //     .status(HttpStatus.UNAUTHORIZED)
+    //     .json({ message: 'Refresh token missing' });
+    // }
+
     if (!refreshToken) {
-      return res
-        .status(HttpStatus.UNAUTHORIZED)
-        .json({ message: 'Refresh token missing' });
+      throw new UnauthorizedException('Refresh token missing');
     }
 
     const tokens = await this.authService.refreshAccessToken(refreshToken, res);

@@ -41,7 +41,10 @@ Axios.interceptors.response.use(
 
         try {
           const response = await getRefreshToken(); // Call refresh endpoint
-          if (!response) throw new Error("Refresh token failed");
+
+          if (!response) {
+            throw new Error("Refresh token failed");
+          }
 
           processQueue(); // Retry all queued requests
           return Axios(originalRequest); // Retry original
