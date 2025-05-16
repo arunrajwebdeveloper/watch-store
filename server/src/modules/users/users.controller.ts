@@ -18,12 +18,14 @@ import { RequestWithUser } from '../common/types/express-request.interface';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  // FOR CUSTOMERS ONLY
   @UseGuards(JwtAuthGuard)
   @Get('me')
   getUserProfile(@Req() req: RequestWithUser) {
     return this.usersService.findById(req.user.userId);
   }
 
+  // FOR ADMIN USER ONLY
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('admin/me')
   @Roles('admin')
