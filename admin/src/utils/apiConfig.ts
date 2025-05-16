@@ -65,5 +65,6 @@ Axios.interceptors.response.use(
 );
 
 const sessionTimeOutEvent = () => {
+  localStorage.removeItem("x__watch_dashboard_user");
   window.location.href = "/account/login";
 };
