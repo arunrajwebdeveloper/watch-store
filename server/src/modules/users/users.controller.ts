@@ -20,6 +20,13 @@ export class UsersController {
 
   @UseGuards(JwtAuthGuard)
   @Get('me')
+  getUserProfile(@Req() req: RequestWithUser) {
+    return this.usersService.findById(req.user.userId);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('admin/me')
+  @Roles('admin')
   // getProfile(@Req() req: Request) {
   //   return req['user'];
   // }

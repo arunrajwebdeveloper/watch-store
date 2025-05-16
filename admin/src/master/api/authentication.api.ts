@@ -21,6 +21,6 @@ export const userLogout = async () => {
 };
 
 export const getCurrentUser = async () => {
-  const res = await Axios.get("/users/me");
+  const res = await Axios.get("/users/admin/me");
   return res.data;
 };
