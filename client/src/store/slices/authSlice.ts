@@ -16,16 +16,35 @@ const initialState: AuthState = {
   loading: false,
 };
 
+export const getUser = createAsyncThunk(
+  "users/me",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get("/users/me");
+      return res.data;
+    } catch (error: any) {
+      return rejectWithValue({ message: "Something went wrong" });
+    }
+  }
+);
+
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async (data: LoginInput, { dispatch }) => {
-    const res = await api.post("/auth/login", data); // sets cookies server-side
+  async (data: LoginInput, { dispatch, rejectWithValue }) => {
+    try {
+      const res = await api.post("/auth/login", data);
 
-    // ✅ Trigger cart / wishlist sync after login
-    await dispatch(getCart());
-    await dispatch(getWishlist());
+      await dispatch(getUser());
+      await dispatch(getCart());
+      await dispatch(getWishlist());
 
-    return res.data; // { user }
+      return res.data;
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      }
+      return rejectWithValue({ message: "Something went wrong" });
+    }
   }
 );
 
@@ -45,16 +64,19 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
-export const refreshUser = createAsyncThunk(
+export const refreshToken = createAsyncThunk(
   "auth/refresh",
-  async (_, { dispatch }) => {
-    const res = await api.post("/auth/refresh"); // re-issues token in cookie
-
-    //  Trigger cart / wishlist sync on refresh too
-    await dispatch(getCart());
-    await dispatch(getWishlist());
-
-    return res.data;
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const res = await api.post("/auth/refresh");
+      await dispatch(getUser());
+      await dispatch(getCart());
+      await dispatch(getWishlist());
+      return res.data;
+    } catch (error) {
+      await dispatch(logoutUser());
+      return rejectWithValue({ message: "Refresh failed" });
+    }
   }
 );
 
@@ -77,24 +99,21 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.user = action.payload.user;
         state.isAuthenticated = true;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.isAuthenticated = true;
-      })
-      .addCase(refreshUser.fulfilled, (state, action) => {
-        state.user = action.payload.user;
         state.isAuthenticated = true;
       })
       .addCase(resetPassword.fulfilled, (state, action) => {
-        state.user = action.payload.user;
         state.isAuthenticated = false;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isAuthenticated = true;
       })
       .addCase(addAddress.fulfilled, (state, action) => {
         state.user = action.payload.user;

@@ -20,7 +20,6 @@ function Header() {
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
-    // window.location.href = "/login";
   };
 
   const handleClickOutside = (event: MouseEvent) => {

@@ -60,7 +60,7 @@ export class AuthService {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-      path: '/api/auth/refresh',
+      path: '/',
     });
 
     return {
@@ -95,7 +95,7 @@ export class AuthService {
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-        path: '/api/auth/refresh',
+        path: '/',
       });
 
       return {
