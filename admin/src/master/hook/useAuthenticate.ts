@@ -7,7 +7,6 @@ import {
   userLogout,
   getCurrentUser,
 } from "..";
-import { useEffect } from "react";
 
 type AuthState = {
   email: string;
@@ -45,31 +44,19 @@ export const useAuthenticate = () => {
     );
   };
 
-  useEffect(() => {
-    const fetchAndSetUser = async () => {
-      try {
-        const user = await getCurrentUser();
-        if (user) {
-          setAuthenticateState({ user });
-          setUserDataToLocalStorage(user);
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-        window.location.href = "/account/login";
-      }
-    };
-
-    fetchAndSetUser();
-  }, []);
+  const setAccessTokenToLocalStorage = (token: string) => {
+    localStorage.setItem("x__watch_dashboard_token", token);
+  };
 
   const loginMutation = useMutation({
     mutationFn: (data) => authenticate(data),
     onSuccess: async (data) => {
-      if (data) {
-        const user = await getCurrentUser();
+      if (data.accessToken) {
+        const user = await getCurrentUser(data.accessToken);
         if (user && user?.role === ROLE.ADMIN) {
-          setAuthenticateState({ user });
+          setAccessTokenToLocalStorage(data.accessToken);
           setUserDataToLocalStorage(user);
+          setAuthenticateState({ user });
           navigate("/u/dashboard", { replace: true });
         } else {
           alert("Only Admin user allowed here");
@@ -91,6 +78,7 @@ export const useAuthenticate = () => {
     mutationFn: userLogout,
     onSuccess: () => {
       localStorage.removeItem("x__watch_dashboard_user");
+      localStorage.removeItem("x__watch_dashboard_token");
       window.location.href = "/account/login";
     },
     onError: (e) => {

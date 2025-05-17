@@ -7,6 +7,8 @@ import {
   UseGuards,
   Get,
   UnauthorizedException,
+  BadRequestException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
@@ -34,7 +36,7 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
-      path: '/auth/refresh',
+      path: '/api/auth/refresh',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
@@ -48,19 +50,19 @@ export class AuthController {
   ) {
     const token = req.cookies?.refreshToken;
 
-    if (!token) {
-      throw new UnauthorizedException('Refresh token missing');
-    }
+    if (!token) throw new ForbiddenException('Refresh token missing');
 
     const { accessToken, refreshToken } =
       await this.authService.refreshAccessToken(token);
+
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: 'strict',
-      path: '/auth/refresh',
+      path: '/api/auth/refresh',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
+
     return { accessToken };
   }
 
@@ -71,7 +73,7 @@ export class AuthController {
       await this.authService.logout();
     }
 
-    res.clearCookie('refreshToken', { path: '/auth/refresh' });
+    res.clearCookie('refreshToken', { path: '/api/auth/refresh' });
     return { message: 'Logged out' };
   }
 }

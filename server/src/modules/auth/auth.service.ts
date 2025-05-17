@@ -51,6 +51,8 @@ export class AuthService {
     const payload = { sub: user._id, role: user.role };
     const tokens = await this.generateTokens(payload);
 
+    await this.saveRefreshToken(user._id.toString(), tokens.refreshToken);
+
     return tokens;
   }
 
@@ -59,6 +61,7 @@ export class AuthService {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.REFRESH_TOKEN_SECRET,
       });
+
       const user = await this.userService.findById(payload.sub);
 
       if (!user || !user.refreshToken)
@@ -72,6 +75,7 @@ export class AuthService {
       const tokens = await this.generateTokens(refreshPayload);
 
       await this.saveRefreshToken(user._id.toString(), tokens.refreshToken);
+
       return tokens;
     } catch {
       throw new UnauthorizedException('Invalid refresh token');

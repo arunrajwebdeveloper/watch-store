@@ -20,7 +20,11 @@ export const userLogout = async () => {
   return res.data;
 };
 
-export const getCurrentUser = async () => {
-  const res = await Axios.get("/users/admin/me");
+export const getCurrentUser = async (accessToken: string) => {
+  const res = await Axios.get("/users/admin/me", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
   return res.data;
 };

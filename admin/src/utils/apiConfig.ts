@@ -1,7 +1,6 @@
-// lib/axios.ts
 import axios from "axios";
 
-const api = axios.create({
+export const Axios = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL + "/api/",
   withCredentials: true, // send cookies (refresh token)
 });
@@ -17,14 +16,29 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
-api.interceptors.response.use(
+Axios.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("x__watch_dashboard_token");
+
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+Axios.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url.includes("/auth/refresh")
+      !originalRequest.url.includes("/api/auth/refresh")
     ) {
       originalRequest._retry = true;
 
@@ -34,7 +48,7 @@ api.interceptors.response.use(
         })
           .then((token) => {
             originalRequest.headers["Authorization"] = `Bearer ${token}`;
-            return api(originalRequest);
+            return Axios(originalRequest);
           })
           .catch((err) => Promise.reject(err));
       }
@@ -42,17 +56,28 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await api.get("/auth/refresh");
+        const response = await Axios.get("/auth/refresh");
+
+        if (response.status === 400) {
+          localStorage.removeItem("x__watch_dashboard_token");
+          localStorage.removeItem("x__watch_dashboard_user");
+          window.location.href = "/account/login";
+        }
+
         const newAccessToken = response.data.accessToken;
 
-        api.defaults.headers.common[
+        localStorage.setItem("x__watch_dashboard_token", newAccessToken);
+
+        Axios.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${newAccessToken}`;
         processQueue(null, newAccessToken);
 
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-        return api(originalRequest);
+        return Axios(originalRequest);
       } catch (err) {
+        console.log("err :>> ", err);
+
         processQueue(err, null);
         return Promise.reject(err);
       } finally {
@@ -63,5 +88,3 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export default api;
