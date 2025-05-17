@@ -43,6 +43,17 @@ export class UsersService {
     return user;
   }
 
+  async userLogout() {
+    await this.userModel.updateOne(
+      { refreshToken: { $exists: true } },
+      { $unset: { refreshToken: '' } },
+    );
+  }
+
+  async findByIdAndUpdate(userId: string, token: string) {
+    await this.userModel.findByIdAndUpdate(userId, { refreshToken: token });
+  }
+
   async findById(id: string): Promise<User | null> {
     const user = await this.userModel
       .findById(id)

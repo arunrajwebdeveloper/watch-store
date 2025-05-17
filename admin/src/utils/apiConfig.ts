@@ -1,73 +1,67 @@
+// lib/axios.ts
 import axios from "axios";
-import { getRefreshToken } from "../master";
 
-export const Axios = axios.create({
+const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL + "/api/",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true,
+  withCredentials: true, // send cookies (refresh token)
 });
 
 let isRefreshing = false;
-let requestsQueue: {
-  resolve: (value?: unknown) => void;
-  reject: (reason?: any) => void;
-  originalRequest: any;
-}[] = [];
+let failedQueue: any[] = [];
 
-const processQueue = (error: any = null) => {
-  requestsQueue.forEach(({ resolve, reject, originalRequest }) => {
-    if (error) {
-      reject(error);
-    } else {
-      Axios(originalRequest).then(resolve).catch(reject);
-    }
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) prom.reject(error);
+    else prom.resolve(token);
   });
-  requestsQueue = [];
+  failedQueue = [];
 };
 
-Axios.interceptors.response.use(
-  (response) => response,
+api.interceptors.response.use(
+  (res) => res,
   async (error) => {
     const originalRequest = error.config;
-
-    // Only handle 401 and avoid infinite loops
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/auth/refresh")
+    ) {
       originalRequest._retry = true;
 
-      if (!isRefreshing) {
-        isRefreshing = true;
-
-        try {
-          const response = await getRefreshToken(); // Call refresh endpoint
-
-          if (!response) {
-            throw new Error("Refresh token failed");
-          }
-
-          processQueue(); // Retry all queued requests
-          return Axios(originalRequest); // Retry original
-        } catch (err) {
-          processQueue(err); // Reject all queued requests
-          sessionTimeOutEvent();
-          return Promise.reject(err);
-        } finally {
-          isRefreshing = false;
-        }
+      if (isRefreshing) {
+        return new Promise(function (resolve, reject) {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers["Authorization"] = `Bearer ${token}`;
+            return api(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
       }
 
-      // Wait until the token refresh is done
-      return new Promise((resolve, reject) => {
-        requestsQueue.push({ resolve, reject, originalRequest });
-      });
+      isRefreshing = true;
+
+      try {
+        const response = await api.get("/auth/refresh");
+        const newAccessToken = response.data.accessToken;
+
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${newAccessToken}`;
+        processQueue(null, newAccessToken);
+
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+        return api(originalRequest);
+      } catch (err) {
+        processQueue(err, null);
+        return Promise.reject(err);
+      } finally {
+        isRefreshing = false;
+      }
     }
 
     return Promise.reject(error);
   }
 );
 
-const sessionTimeOutEvent = () => {
-  localStorage.removeItem("x__watch_dashboard_user");
-  window.location.href = "/account/login";
-};
+export default api;

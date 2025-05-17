@@ -20,10 +20,12 @@ export class RefreshTokenStrategy extends PassportStrategy(
         },
       ]),
       secretOrKey: process.env.REFRESH_TOKEN_SECRET!,
+      passReqToCallback: true,
     });
   }
 
-  validate(payload: JwtPayload) {
-    return payload;
+  validate(req: Request, payload: JwtPayload) {
+    const refreshToken = req.cookies['refreshToken'];
+    return { ...payload, refreshToken };
   }
 }

@@ -6,7 +6,6 @@ import {
   Req,
   UseGuards,
   Get,
-  HttpStatus,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -29,48 +28,50 @@ export class AuthController {
     @Body() dto: LoginDto,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const tokens = await this.authService.login(dto, res);
+    const { accessToken, refreshToken } = await this.authService.login(dto);
 
-    return tokens;
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      path: '/auth/refresh',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    return { accessToken };
   }
 
-  @Post('refresh')
+  @Get('refresh')
   async refresh(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response,
   ) {
-    const refreshToken = req.cookies?.refreshToken;
+    const token = req.cookies?.refreshToken;
 
-    // if (!refreshToken) {
-    //   return res
-    //     .status(HttpStatus.UNAUTHORIZED)
-    //     .json({ message: 'Refresh token missing' });
-    // }
-
-    if (!refreshToken) {
+    if (!token) {
       throw new UnauthorizedException('Refresh token missing');
     }
 
-    const tokens = await this.authService.refreshAccessToken(refreshToken, res);
-
-    return tokens;
+    const { accessToken, refreshToken } =
+      await this.authService.refreshAccessToken(token);
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+      path: '/auth/refresh',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    return { accessToken };
   }
 
   @Post('logout')
-  logout(@Res({ passthrough: true }) res: Response) {
-    res.clearCookie('accessToken', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-    });
+  async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    const token = req.cookies?.refreshToken;
+    if (token) {
+      await this.authService.logout();
+    }
 
-    res.clearCookie('refreshToken', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-    });
+    res.clearCookie('refreshToken', { path: '/auth/refresh' });
     return { message: 'Logged out' };
   }
 }

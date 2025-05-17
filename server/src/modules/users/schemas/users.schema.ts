@@ -34,6 +34,9 @@ export class User {
 
   @Prop({ default: null })
   avatar?: string;
+
+  @Prop()
+  refreshToken?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

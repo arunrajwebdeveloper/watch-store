@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import api from "@/lib/axios";
 import {
   AddressInput,
@@ -9,6 +9,7 @@ import {
 } from "@/types";
 import { getCart } from "./cartSlice";
 import { getWishlist } from "./wishlistSlice";
+import { tokenService } from "../../utils/tokenService";
 
 const initialState: AuthState = {
   user: null,
@@ -68,7 +69,7 @@ export const refreshToken = createAsyncThunk(
   "auth/refresh",
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const res = await api.post("/auth/refresh");
+      const res = await api.get("/auth/refresh");
       await dispatch(getUser());
       await dispatch(getCart());
       await dispatch(getWishlist());
@@ -95,7 +96,16 @@ export const addAddress = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    setAccessToken: (state, action: PayloadAction<string>) => {
+      tokenService.setAccessToken(action.payload);
+      state.isAuthenticated = true;
+    },
+    logout: (state) => {
+      tokenService.clear();
+      state.isAuthenticated = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.fulfilled, (state, action) => {
@@ -121,5 +131,5 @@ const authSlice = createSlice({
       });
   },
 });
-
+export const { setAccessToken, logout } = authSlice.actions;
 export default authSlice.reducer;
