@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "@/styles/products/range-slider.styles.css";
 
 interface PriceRangeSliderProps {
@@ -15,23 +15,24 @@ interface PriceRangeSliderProps {
 
 const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
   min = 0,
-  max = 100000,
+  max = 0,
   step = 100,
   defaultMin = 0,
-  defaultMax = 100000,
+  defaultMax = 0,
   gap = 1000,
   onChange,
 }) => {
+  const progress = useRef<HTMLDivElement | null>(null);
+
   const [minVal, setMinVal] = useState<number>(defaultMin);
   const [maxVal, setMaxVal] = useState<number>(defaultMax);
 
   useEffect(() => {
     const left = (minVal / max) * 100;
     const right = 100 - (maxVal / max) * 100;
-    const progress = document.querySelector<HTMLElement>(".slider .progress");
-    if (progress) {
-      progress.style.left = `${left}%`;
-      progress.style.right = `${right}%`;
+    if (progress.current) {
+      progress.current.style.left = `${left}%`;
+      progress.current.style.right = `${right}%`;
     }
 
     if (onChange) onChange(minVal, maxVal);
@@ -52,7 +53,7 @@ const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
   return (
     <div className="range-slider">
       <div className="slider">
-        <div className="progress"></div>
+        <div className="progress" ref={progress}></div>
       </div>
       <div className="range-input">
         <input

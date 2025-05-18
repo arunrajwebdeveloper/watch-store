@@ -66,9 +66,9 @@ export default function ProductFilters({
   };
 
   const clearAllFilters = () => {
-    handlePriceChange(defaultPriceMin, defaultPriceMax);
     setDefaultPriceMin(price?.items[0]);
     setDefaultPriceMax(price?.items[1]);
+
     router.push("/products");
   };
 
