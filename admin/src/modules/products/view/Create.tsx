@@ -68,6 +68,24 @@ export const Create = () => {
             )}
           </div>
           <div className="mb-3">
+            <label htmlFor="variantGroupId" className="form-label">
+              Variant Group Id
+            </label>
+            <input
+              type="text"
+              className={`form-control ${
+                errors.variantGroupId ? "is-invalid" : ""
+              }`}
+              id="variantGroupId"
+              {...register("variantGroupId")}
+            />
+            {errors.variantGroupId && (
+              <span className="form-error-message">
+                {errors.variantGroupId.message}
+              </span>
+            )}
+          </div>
+          <div className="mb-3">
             <label htmlFor="originalPrice" className="form-label">
               Original Price<em>*</em>
             </label>

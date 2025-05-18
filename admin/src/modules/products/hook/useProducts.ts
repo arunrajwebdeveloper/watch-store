@@ -23,6 +23,7 @@ type CreateState = {
   images: { url: string }[];
   inventory: number | null;
   createdAt?: "";
+  variantGroupId?: string;
 };
 
 const defaultValues = {
@@ -37,6 +38,7 @@ const defaultValues = {
   gender: "",
   images: [{ url: "" }],
   inventory: null,
+  variantGroupId: "",
 };
 
 export const useProducts = ({ load = false, productId = "" }) => {
@@ -112,6 +114,7 @@ export const useProducts = ({ load = false, productId = "" }) => {
         gender: product?.gender,
         images,
         inventory: product?.inventory,
+        variantGroupId: product?.variantGroupId,
       });
     }
   }, [fetchProductsById?.data]);
