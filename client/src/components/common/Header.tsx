@@ -171,7 +171,9 @@ function Header() {
             </Link>
             <div className="header-menu">
               <nav className="header-nav">
-                <Link href="/products">Shop</Link>
+                <Link href="/products">Shop All </Link>
+                <Link href="/products?gender=male">Men</Link>
+                <Link href="/products?gender=female">Women</Link>
               </nav>
             </div>
             <div className="header-actions-block">

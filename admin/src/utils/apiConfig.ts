@@ -58,7 +58,7 @@ Axios.interceptors.response.use(
       try {
         const response = await Axios.get("/auth/refresh");
 
-        if (response.status === 400) {
+        if (response.status === 400 || response.status === 403) {
           localStorage.removeItem("x__watch_dashboard_token");
           localStorage.removeItem("x__watch_dashboard_user");
           window.location.href = "/account/login";

@@ -1,4 +1,3 @@
-// lib/axios.ts
 import axios from "axios";
 
 const api = axios.create({
@@ -17,14 +16,34 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
+api.interceptors.request.use(
+  (config) => {
+    let accessToken: string | null = null;
+
+    if (typeof window !== "undefined") {
+      accessToken = localStorage.getItem("x__watch_user_token");
+    }
+
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
+
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url.includes("/auth/refresh")
+      !originalRequest?.url?.includes("/auth/refresh")
     ) {
       originalRequest._retry = true;
 
@@ -43,7 +62,19 @@ api.interceptors.response.use(
 
       try {
         const response = await api.get("/auth/refresh");
+
+        if (response.status === 400 || response.status === 403) {
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("x__watch_user_token");
+          }
+          window.location.href = "/login";
+        }
+
         const newAccessToken = response.data.accessToken;
+
+        if (typeof window !== "undefined") {
+          localStorage.setItem("x__watch_user_token", newAccessToken);
+        }
 
         api.defaults.headers.common[
           "Authorization"
@@ -53,6 +84,8 @@ api.interceptors.response.use(
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return api(originalRequest);
       } catch (err) {
+        console.log("err :>> ", err);
+
         processQueue(err, null);
         return Promise.reject(err);
       } finally {

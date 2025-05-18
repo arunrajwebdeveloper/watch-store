@@ -82,7 +82,7 @@ export const refreshToken = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk("auth/logout", async () => {
-  await api.post("/auth/logout"); // clears cookie
+  await api.post("/auth/logout");
 });
 
 export const addAddress = createAsyncThunk(
