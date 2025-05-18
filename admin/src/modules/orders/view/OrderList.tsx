@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useOrders } from "../hook";
 import moment from "moment";
+import { currencyFormatter } from "../../../utils";
 
 export const OrderList = ({
   title,
@@ -39,7 +40,7 @@ export const OrderList = ({
                         "DD MMM YYYY [at] hh:mm A"
                       )}
                     </td>
-                    <td>INR {order?.totalAmount}</td>
+                    <td>{currencyFormatter(+order?.totalAmount)}</td>
                     <td>{order?.status}</td>
                     <td>
                       <Link to=".">Edit</Link> &nbsp;

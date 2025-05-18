@@ -4,6 +4,7 @@ import moment from "moment";
 import PaginationControls from "../../../shared/components/PaginationControls";
 import { useEffect } from "react";
 import { PageLayout } from "../../../layouts";
+import { currencyFormatter } from "../../../utils";
 
 export const ProductList = () => {
   const { fetchProducts, page, setPage } = useProducts({ load: true });
@@ -71,8 +72,8 @@ export const ProductList = () => {
                       <td>{++idx}</td>
                       <td>{product?.brand}</td>
                       <td>{product?.model}</td>
-                      <td>INR {product?.originalPrice}</td>
-                      <td>INR {product?.currentPrice}</td>
+                      <td>{currencyFormatter(+product?.originalPrice)}</td>
+                      <td>{currencyFormatter(+product?.currentPrice)}</td>
                       <td>{product?.movementType}</td>
                       <td>
                         {moment(product?.createdAt).format(

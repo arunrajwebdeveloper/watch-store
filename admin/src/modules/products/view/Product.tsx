@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useProducts } from "../hook";
 import moment from "moment";
 import { PageLayout } from "../../../layouts";
+import { currencyFormatter } from "../../../utils";
 
 function Product() {
   const { id: productId } = useParams();
@@ -44,11 +45,11 @@ function Product() {
             </tr>
             <tr>
               <td>Original Price:</td>
-              <td>INR {data?.product?.originalPrice}</td>
+              <td>{currencyFormatter(+data?.product?.originalPrice)}</td>
             </tr>
             <tr>
               <td>Current Price:</td>
-              <td>INR {data?.product?.currentPrice}</td>
+              <td>{currencyFormatter(+data?.product?.currentPrice)}</td>
             </tr>
             <tr>
               <td>Movement Type:</td>
