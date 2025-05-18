@@ -42,8 +42,9 @@ export const Create = () => {
                   message: "First name limited to 50 characters",
                 },
                 pattern: {
-                  value: /^[a-zA-Z]+$/,
-                  message: "Only alphabetic characters allowed",
+                  value: /^[a-zA-Z&\-_ ]+$/,
+                  message:
+                    "Only alphabetic characters, &, -, _ and space are allowed",
                 },
               })}
             />
