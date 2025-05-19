@@ -16,6 +16,8 @@ export const Create = () => {
   const onSubmit = (data: any) => {
     const payload = {
       ...data,
+      brand: data.brand.trim(),
+      model: data.model.trim(),
       images: data.images.map((img: any) => img.url),
     };
     createProduct.mutate(payload);
