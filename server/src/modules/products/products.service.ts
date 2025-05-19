@@ -132,7 +132,7 @@ export class ProductsService {
     try {
       if (!query) return [];
 
-      const searchRegex = new RegExp(`${this.escapeRegex(query)}`, 'i');
+      // const searchRegex = new RegExp(`${this.escapeRegex(query)}`, 'i');
 
       // return await this.productModel
       //   .find({
