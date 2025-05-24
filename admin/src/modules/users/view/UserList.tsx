@@ -30,12 +30,12 @@ export const UserList = () => {
                   <td>
                     <img
                       src={user?.avatar}
-                      alt={user?.name.toString()}
+                      alt={user?.firstName.toString()}
                       style={{ width: "100px" }}
                       loading="lazy"
                     />
                   </td>
-                  <td>{user?.name}</td>
+                  <td>{user?.firstName}</td>
                   <td>{user?.email}</td>
                   <td>
                     {moment(user?.createdAt).format("DD MMM YYYY [at] hh:mm A")}

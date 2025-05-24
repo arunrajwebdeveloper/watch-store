@@ -20,7 +20,7 @@ function User() {
             <td colSpan={2}>
               <img
                 src={data?.avatar}
-                alt={data?.name.toString()}
+                alt={data?.firstName.toString()}
                 style={{ width: "100px" }}
                 loading="lazy"
               />
@@ -28,7 +28,7 @@ function User() {
           </tr>
           <tr>
             <td>Name:</td>
-            <td>{data?.name}</td>
+            <td>{data?.firstName}</td>
           </tr>
           <tr>
             <td>Email:</td>

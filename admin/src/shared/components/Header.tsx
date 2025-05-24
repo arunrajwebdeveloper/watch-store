@@ -4,7 +4,7 @@ import { useAuthenticateScopeContext, useAuthenticate } from "../../master";
 export const Header = () => {
   const { authenticateState } = useAuthenticateScopeContext();
   const {
-    user: { name, email, role },
+    user: { firstName, email, role },
   } = authenticateState;
   const { signoutAccount } = useAuthenticate();
 
@@ -25,7 +25,7 @@ export const Header = () => {
             <div className="d-flex justify-content-between align-items-center">
               <div>
                 <strong className="d-flex align-items-center">
-                  <span>{name || "Unknown"}</span>
+                  <span>{firstName || "Unknown"}</span>
                   {isAdmin && (
                     <svg
                       width="16"

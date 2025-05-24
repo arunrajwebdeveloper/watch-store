@@ -34,8 +34,25 @@ export class UsersService {
     return this.userModel.find().lean().exec();
   }
 
-  async findMe(id: string): Promise<User | null> {
-    const user = this.userModel.findById(id).select('-password').lean().exec();
+  async findAdminUser(id: string): Promise<User | null> {
+    const user = await this.userModel.findById(id).select('-password').exec();
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  async findClientUser(id: string): Promise<User | null> {
+    const user = await this.userModel
+      .findById(id)
+      .populate({
+        path: 'addressList',
+        // options: { lean: true }, // ensure addresses are returned as plain objects
+      })
+      .select('-password')
+      .exec();
 
     if (!user) {
       throw new NotFoundException('User not found');

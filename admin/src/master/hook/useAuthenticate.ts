@@ -26,7 +26,7 @@ export const useAuthenticate = () => {
   const { setAuthenticateState } = useAuthenticateScopeContext();
 
   type UserState = {
-    name: string;
+    firstName: string;
     email: string;
     role: string;
     avatar: string;
@@ -37,10 +37,10 @@ export const useAuthenticate = () => {
   };
 
   const setUserDataToLocalStorage = (user: UserState) => {
-    const { name, email, role, avatar } = user;
+    const { firstName, email, role, avatar } = user;
     localStorage.setItem(
       "x__watch_dashboard_user",
-      JSON.stringify({ user: { name, email, role, avatar } })
+      JSON.stringify({ user: { firstName, email, role, avatar } })
     );
   };
 

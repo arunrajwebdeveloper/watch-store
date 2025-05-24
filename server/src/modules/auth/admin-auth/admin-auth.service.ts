@@ -62,7 +62,7 @@ export class AdminAuthService {
         secret: this.REFRESH_TOKEN_SECRET,
       });
 
-      const user = await this.userService.findById(payload.sub);
+      const user = await this.userService.findAdminUser(payload.sub);
 
       if (!user || !user.refreshToken)
         throw new ForbiddenException('Access Denied');

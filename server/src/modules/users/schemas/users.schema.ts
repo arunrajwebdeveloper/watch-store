@@ -1,15 +1,22 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory, Virtual } from '@nestjs/mongoose';
 import mongoose, { Document, Types, Schema as MongooseSchema } from 'mongoose';
 
 export type UserDocument = User & Document;
 
-@Schema({ timestamps: true })
+@Schema({
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
+  timestamps: true,
+})
 export class User {
   @Prop({ type: MongooseSchema.Types.ObjectId, auto: true })
   _id: Types.ObjectId;
 
   @Prop({ required: true })
-  name: string;
+  firstName: string;
+
+  @Prop()
+  lastName: string;
 
   @Prop({
     required: true,
@@ -37,6 +44,17 @@ export class User {
 
   @Prop()
   refreshToken?: string;
+
+  @Virtual({
+    get: function (this: UserDocument) {
+      return `${this.firstName} ${this.lastName}`;
+    },
+  })
+  fullName: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.virtual('fullName').get(function (this: UserDocument) {
+  return `${this.firstName} ${this.lastName}`.trim();
+});
