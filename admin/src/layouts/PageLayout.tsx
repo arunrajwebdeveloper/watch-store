@@ -11,7 +11,7 @@ export const PageLayout = ({
   return (
     <div className="content-section">
       <Header />
-      <main className="main-wrapper">
+      <main className="main-wrapper px-4">
         {title && (
           <div className="page-header">
             <h2>{title}</h2>

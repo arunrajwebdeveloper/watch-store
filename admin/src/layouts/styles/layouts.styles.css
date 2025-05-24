@@ -50,8 +50,6 @@ body,
 }
 .content-section {
   width: calc(100% - 300px);
-  padding-right: 20px;
-  padding-left: 20px;
   overflow-y: auto;
 }
 
@@ -61,11 +59,14 @@ body,
   overflow-y: auto;
 }
 .sidebar a {
+  height: 68px;
   font-size: 18px;
   font-weight: 700;
   color: #000;
   text-decoration: none;
   display: block;
-  padding: 20px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
   border-bottom: 1px solid #ccc;
 }
