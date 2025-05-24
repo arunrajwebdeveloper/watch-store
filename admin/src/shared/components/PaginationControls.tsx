@@ -21,6 +21,7 @@ const PaginationControls: React.FC<PaginationProps> = ({
     <div className="pagination-wrapper">
       <div className="pagination">
         <button
+          className="page-item"
           onClick={() => onPageChange(+currentPage - 1)}
           disabled={+currentPage === 1}
         >
@@ -43,7 +44,7 @@ const PaginationControls: React.FC<PaginationProps> = ({
         </button>
       </div>
 
-      <div className="limit">
+      <div className="limit d-flex gap-3 align-items-center">
         <label htmlFor="limit" className="mr-2 font-medium">
           Items per page:
         </label>

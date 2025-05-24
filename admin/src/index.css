@@ -18,13 +18,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
-
+.cursor-pointer {
+  cursor: pointer;
+}
+.btn-primary {
+  background-color: blue;
+}
 .active-link {
   color: blue !important;
 }
-.sidebar a.active-link {
-  background-color: blue !important;
-  color: #fff !important;
+table th {
+  background-color: #f1f1f1 !important;
 }
 .main-loading {
   position: fixed;
@@ -40,11 +44,11 @@ body {
   font-size: 16px;
   color: #000;
 }
+
 .page-header {
-  padding: 10px 0;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  min-height: 68px;
 }
+
 .page-header h2 {
   font-size: 20px;
   font-weight: 700;
@@ -113,6 +117,8 @@ a.main-logo h2 {
 }
 .tab-btns {
   display: flex;
+  border-radius: 8px;
+  overflow: hidden;
   /* gap: 10px; */
 }
 .tab-btns a {
@@ -122,9 +128,22 @@ a.main-logo h2 {
   text-decoration: none;
   font-weight: 600;
   font-size: 18px;
-  background-color: #e9e9e9;
+  background-color: #f5f5f5;
+  border-left: 1px solid #e3e3e3;
+  margin-left: -1px;
 }
 
+.tab-btns a:first-child {
+  border-radius: 6px 0 0 6px;
+}
+.tab-btns a:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.tab-btns a.active-link {
+  color: #fff !important;
+  background-color: blue !important;
+}
 .image-group {
   display: flex;
   align-items: center;
@@ -148,38 +167,86 @@ a.main-logo h2 {
   margin-top: 30px;
   margin-bottom: 30px;
 }
-.pagination-wrapper button {
-  background-color: #000;
-  color: #fff;
-  border: 0;
-}
+
 .pagination-wrapper .pagination button {
-  background-color: #000;
+  background-color: transparent;
   color: #fff;
   border: 0;
-  padding: 5px 10px;
+  padding: 8px 16px;
+  border: 1px solid #828282;
+  color: #000;
+  font-weight: 500;
+  font-size: 16px;
+  margin-left: -1px;
+}
+
+.pagination-wrapper .pagination button:first-child {
+  border-radius: 6px 0 0 6px;
+}
+.pagination-wrapper .pagination button:last-child {
+  border-radius: 0 6px 6px 0;
 }
 
 .pagination-wrapper .pagination {
   display: flex;
-  gap: 5px;
+  align-items: center;
 }
 
-.pagination-wrapper .pagination button.active,
-.pagination-wrapper .pagination button:not(:disabled):hover {
+.pagination-wrapper .pagination button.active {
   background-color: blue;
+  border-color: blue;
+  color: #fff;
 }
 
 .pagination-wrapper .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
 .pagination-wrapper select {
   padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 16px;
 }
+
 span.form-error-message {
   color: #c91c1c;
   font-size: 14px;
   margin-top: 5px;
   display: inline-block;
+}
+
+/* USER DROPDOWN */
+.user-dropdown {
+  position: relative;
+}
+.user-dropdown-div {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + 15px);
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0px 12px 10px 0px rgba(0, 0, 0, 0.2),
+    1px 0px 7px 0px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  border-radius: 4px;
+  border: 1px solid #eee;
+  text-align: right;
+}
+
+.user-dropdown button.user-dropdown-trigger {
+  border: 0;
+  background-color: transparent;
+  outline: 0;
+  height: 100%;
+}
+
+.user-dropdown img.user-drop-avatar {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  object-fit: cover;
+  vertical-align: middle;
+  border-radius: 50%;
+  border: 1px solid #eee;
 }

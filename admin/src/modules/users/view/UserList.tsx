@@ -11,7 +11,7 @@ export const UserList = () => {
 
   return (
     <PageLayout title="Users List">
-      <table>
+      <table className="table">
         <tbody>
           <tr>
             <th>#</th>
@@ -26,8 +26,8 @@ export const UserList = () => {
             data?.map((user: any, idx: number) => {
               return (
                 <tr key={user._id}>
-                  <td>{++idx}</td>
-                  <td>
+                  <td valign="middle">{++idx}</td>
+                  <td valign="middle">
                     <img
                       src={user?.avatar}
                       alt={user?.firstName.toString()}
@@ -35,13 +35,13 @@ export const UserList = () => {
                       loading="lazy"
                     />
                   </td>
-                  <td>{user?.firstName}</td>
-                  <td>{user?.email}</td>
-                  <td>
+                  <td valign="middle">{user?.firstName}</td>
+                  <td valign="middle">{user?.email}</td>
+                  <td valign="middle">
                     {moment(user?.createdAt).format("DD MMM YYYY [at] hh:mm A")}
                   </td>
-                  <td>{user?.role}</td>
-                  <td>
+                  <td valign="middle">{user?.role}</td>
+                  <td valign="middle">
                     <Link to={user._id}>View</Link>
                   </td>
                 </tr>
@@ -49,7 +49,7 @@ export const UserList = () => {
             })
           ) : (
             <tr>
-              <td colSpan={20} style={{ textAlign: "center" }}>
+              <td colSpan={20} style={{ textAlign: "center" }} valign="middle">
                 No data available
               </td>
             </tr>
