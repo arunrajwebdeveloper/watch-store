@@ -38,7 +38,7 @@ Axios.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest.url.includes("/api/auth/refresh")
+      !originalRequest.url.includes("/api/admin-auth/refresh")
     ) {
       originalRequest._retry = true;
 
@@ -56,7 +56,7 @@ Axios.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await Axios.get("/auth/refresh");
+        const response = await Axios.get("/admin-auth/refresh");
 
         if (response.status === 400 || response.status === 403) {
           localStorage.removeItem("x__watch_dashboard_token");

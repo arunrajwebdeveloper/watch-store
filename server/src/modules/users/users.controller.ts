@@ -8,9 +8,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { JwtAuthGuard } from '../auth/jwt.guard';
-import { RolesGuard } from '../common/guards/roles.guard';
-import { Roles } from '../common/decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/common/guards/jwt.guard';
+import { RolesGuard } from '../auth/common/guards/roles.guard';
+import { Roles } from '../auth/common/decorators/roles.decorator';
 import { AddressDto } from './dto/address.dto';
 import { RequestWithUser } from '../common/types/express-request.interface';
 

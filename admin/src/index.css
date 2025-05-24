@@ -22,6 +22,10 @@ body {
 .active-link {
   color: blue !important;
 }
+.sidebar a.active-link {
+  background-color: blue !important;
+  color: #fff !important;
+}
 .main-loading {
   position: fixed;
   top: 0;

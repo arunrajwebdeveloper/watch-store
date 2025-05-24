@@ -6,12 +6,12 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
 
 @Injectable()
-export class AuthService {
+export class ClientAuthService {
   constructor(
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,

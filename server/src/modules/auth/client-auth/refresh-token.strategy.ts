@@ -16,7 +16,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
-          return req?.cookies?.['refreshToken'];
+          return req?.cookies?.['client_refresh_token'];
         },
       ]),
       secretOrKey: process.env.REFRESH_TOKEN_SECRET!,
@@ -25,7 +25,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
   }
 
   validate(req: Request, payload: JwtPayload) {
-    const refreshToken = req.cookies['refreshToken'];
+    const refreshToken = req.cookies['client_refresh_token'];
     return { ...payload, refreshToken };
   }
 }

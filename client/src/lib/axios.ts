@@ -43,7 +43,7 @@ api.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !originalRequest?.url?.includes("/auth/refresh")
+      !originalRequest?.url?.includes("/client-auth/refresh")
     ) {
       originalRequest._retry = true;
 
@@ -61,7 +61,7 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await api.get("/auth/refresh");
+        const response = await api.get("/client-auth/refresh");
 
         if (response.status === 400 || response.status === 403) {
           if (typeof window !== "undefined") {
@@ -84,7 +84,7 @@ api.interceptors.response.use(
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return api(originalRequest);
       } catch (err) {
-        console.log("err :>> ", err);
+        console.error("refresh error : ", err);
 
         processQueue(err, null);
         return Promise.reject(err);

@@ -6,13 +6,11 @@ import { Edit } from "./view/Edit";
 
 export default function Products() {
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<ProductList />} />
-        <Route path="/:id" element={<Product />} />
-        <Route path="/create" element={<Create />} />
-        <Route path="/edit/:id" element={<Edit />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<ProductList />} />
+      <Route path="/:id" element={<Product />} />
+      <Route path="/create" element={<Create />} />
+      <Route path="/edit/:id" element={<Edit />} />
+    </Routes>
   );
 }

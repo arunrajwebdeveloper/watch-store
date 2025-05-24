@@ -1,7 +1,7 @@
 import { Axios } from "../../utils";
 
 export const authenticate = async (payload: any) => {
-  const res = await Axios.post("/auth/login", payload);
+  const res = await Axios.post("/admin-auth/login", payload);
   return res.data;
 };
 
@@ -11,12 +11,12 @@ export const createAccounts = async (payload: any) => {
 };
 
 export const getRefreshToken = async () => {
-  const res = await Axios.post("/auth/refresh");
+  const res = await Axios.post("/admin-auth/refresh");
   return res.data;
 };
 
 export const userLogout = async () => {
-  const res = await Axios.post("/auth/logout");
+  const res = await Axios.post("/admin-auth/logout");
   return res.data;
 };
 

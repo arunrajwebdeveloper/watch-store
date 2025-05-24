@@ -6,7 +6,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/users.schema';
-import { SignupDto } from '../auth/dto/signup.dto';
+import { SignupDto } from '../auth/admin-auth/dto/signup.dto';
 import { AddressDto } from './dto/address.dto';
 import { Address, AddressDocument } from './schemas/address.schema';
 

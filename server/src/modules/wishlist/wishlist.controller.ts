@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { RequestWithUser } from '../common/types/express-request.interface';
-import { JwtAuthGuard } from '../auth/jwt.guard';
+import { JwtAuthGuard } from '../auth/common/guards/jwt.guard';
 import { WishlistService } from './wishlist.service';
 import { AddToWishlistDto } from './dto/add-to-wishlist.dto';
 

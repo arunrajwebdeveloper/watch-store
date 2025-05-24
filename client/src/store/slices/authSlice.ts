@@ -30,10 +30,10 @@ export const getUser = createAsyncThunk(
 );
 
 export const loginUser = createAsyncThunk(
-  "auth/login",
+  "client-auth/login",
   async (data: LoginInput, { dispatch, rejectWithValue }) => {
     try {
-      const res = await api.post("/auth/login", data);
+      const res = await api.post("/client-auth/login", data);
 
       await dispatch(getUser());
       await dispatch(getCart());
@@ -50,26 +50,26 @@ export const loginUser = createAsyncThunk(
 );
 
 export const registerUser = createAsyncThunk(
-  "auth/register",
+  "client-auth/register",
   async (data: RegisterInput) => {
-    const res = await api.post("/auth/register", data);
+    const res = await api.post("/client-auth/register", data);
     return res.data;
   }
 );
 
 export const resetPassword = createAsyncThunk(
-  "auth/reset-password",
+  "client-auth/reset-password",
   async (data: ResetInput) => {
-    const res = await api.post("/auth/reset-password", data);
+    const res = await api.post("/client-auth/reset-password", data);
     return res.data;
   }
 );
 
 export const refreshToken = createAsyncThunk(
-  "auth/refresh",
+  "client-auth/refresh",
   async (_, { dispatch, rejectWithValue }) => {
     try {
-      const res = await api.get("/auth/refresh");
+      const res = await api.get("/client-auth/refresh");
       await dispatch(getUser());
       await dispatch(getCart());
       await dispatch(getWishlist());
@@ -81,8 +81,9 @@ export const refreshToken = createAsyncThunk(
   }
 );
 
-export const logoutUser = createAsyncThunk("auth/logout", async () => {
-  await api.post("/auth/logout");
+export const logoutUser = createAsyncThunk("client-auth/logout", async () => {
+  const res = await api.post("/client-auth/logout");
+  return res.data;
 });
 
 export const addAddress = createAsyncThunk(
@@ -100,10 +101,6 @@ const authSlice = createSlice({
     setAccessToken: (state, action: PayloadAction<string>) => {
       tokenService.setAccessToken(action.payload);
       state.isAuthenticated = true;
-    },
-    logout: (state) => {
-      tokenService.clear();
-      state.isAuthenticated = false;
     },
   },
   extraReducers: (builder) => {
@@ -131,5 +128,5 @@ const authSlice = createSlice({
       });
   },
 });
-export const { setAccessToken, logout } = authSlice.actions;
+export const { setAccessToken } = authSlice.actions;
 export default authSlice.reducer;

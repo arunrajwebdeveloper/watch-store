@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Header, Sidebar } from "../shared";
+import { Header } from "../shared";
 
 export const PageLayout = ({
   children,
@@ -9,19 +9,16 @@ export const PageLayout = ({
   title: string;
 }) => {
   return (
-    <div className="master-wrapper">
-      <Sidebar />
-      <div className="content-section">
-        <Header />
-        <main className="main-wrapper">
-          {title && (
-            <div className="page-header">
-              <h2>{title}</h2>
-            </div>
-          )}
-          <div className="page-content">{children}</div>
-        </main>
-      </div>
+    <div className="content-section">
+      <Header />
+      <main className="main-wrapper">
+        {title && (
+          <div className="page-header">
+            <h2>{title}</h2>
+          </div>
+        )}
+        <div className="page-content">{children}</div>
+      </main>
     </div>
   );
 };

@@ -11,11 +11,11 @@ import {
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { PlaceOrderDto } from './dto/place-order.dto';
-import { JwtAuthGuard } from '../auth/jwt.guard';
+import { JwtAuthGuard } from '../auth/common/guards/jwt.guard';
 import { RequestWithUser } from '../common/types/express-request.interface';
 import { Types } from 'mongoose';
-import { RolesGuard } from '../common/guards/roles.guard';
-import { Roles } from '../common/decorators/roles.decorator';
+import { RolesGuard } from '../auth/common/guards/roles.guard';
+import { Roles } from '../auth/common/decorators/roles.decorator';
 
 @Controller('orders')
 @UseGuards(JwtAuthGuard)

@@ -20,6 +20,7 @@ function Header() {
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
+    localStorage.removeItem("x__watch_user_token");
   };
 
   const handleClickOutside = (event: MouseEvent) => {
