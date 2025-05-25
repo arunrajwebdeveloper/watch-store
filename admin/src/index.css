@@ -104,6 +104,7 @@ th {
 td,
 th {
   padding: 10px 15px;
+  vertical-align: middle;
 }
 
 a.main-logo {
