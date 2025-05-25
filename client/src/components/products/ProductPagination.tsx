@@ -11,57 +11,53 @@ type Props = {
 const ProductPagination = ({ page, lastPage }: Props) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const currentPage = Number(page);
-  const pageNumbers: (number | string)[] = [];
 
-  // Always show the first 3 pages or until currentPage if it's less than 3
-  for (let i = 1; i <= Math.min(3, lastPage); i++) {
-    pageNumbers.push(i);
-  }
+  const generatePageNumbers = (): (number | string)[] => {
+    const pages: (number | string)[] = [];
 
-  // Add ellipsis if needed before the last page
-  if (lastPage > 4) {
-    if (currentPage > 4 && currentPage < lastPage - 1) {
-      pageNumbers.push("...");
-      pageNumbers.push(currentPage);
-      pageNumbers.push("...");
+    if (lastPage <= 5) {
+      for (let i = 1; i <= lastPage; i++) {
+        pages.push(i);
+      }
     } else {
-      pageNumbers.push("...");
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, "...", lastPage);
+      } else if (currentPage >= lastPage - 2) {
+        pages.push(1, "...", lastPage - 2, lastPage - 1, lastPage);
+      } else {
+        pages.push(
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          "...",
+          lastPage
+        );
+      }
     }
 
-    // Always show the last page
-    pageNumbers.push(lastPage);
-  }
+    return pages;
+  };
+
+  const pageNumbers = generatePageNumbers();
+
+  const goToPage = (pageNum: number) => {
+    router.push(
+      createProductQueryUrl("/products", {
+        ...searchParamsToObject(searchParams),
+        page: pageNum,
+      })
+    );
+  };
 
   return (
     <div className="pagination-element">
       {currentPage > 1 && (
         <>
-          <a
-            onClick={() => {
-              router.push(
-                createProductQueryUrl("/products", {
-                  ...searchParamsToObject(searchParams),
-                  page: 1,
-                })
-              );
-            }}
-          >
-            First
-          </a>
-          <a
-            onClick={() => {
-              router.push(
-                createProductQueryUrl("/products", {
-                  ...searchParamsToObject(searchParams),
-                  page: currentPage - 1,
-                })
-              );
-            }}
-          >
-            Previous
-          </a>
+          <a onClick={() => goToPage(1)}>First</a>
+          <a onClick={() => goToPage(currentPage - 1)}>Previous</a>
         </>
       )}
 
@@ -74,14 +70,7 @@ const ProductPagination = ({ page, lastPage }: Props) => {
           <a
             key={num}
             className={`link-boxed ${num === currentPage ? "active" : ""}`}
-            onClick={() => {
-              router.push(
-                createProductQueryUrl("/products", {
-                  ...searchParamsToObject(searchParams),
-                  page: num,
-                })
-              );
-            }}
+            onClick={() => goToPage(Number(num))}
           >
             {num}
           </a>
@@ -90,30 +79,8 @@ const ProductPagination = ({ page, lastPage }: Props) => {
 
       {currentPage < lastPage && (
         <>
-          <a
-            onClick={() => {
-              router.push(
-                createProductQueryUrl("/products", {
-                  ...searchParamsToObject(searchParams),
-                  page: currentPage + 1,
-                })
-              );
-            }}
-          >
-            Next
-          </a>
-          <a
-            onClick={() => {
-              router.push(
-                createProductQueryUrl("/products", {
-                  ...searchParamsToObject(searchParams),
-                  page: lastPage,
-                })
-              );
-            }}
-          >
-            Last
-          </a>
+          <a onClick={() => goToPage(currentPage + 1)}>Next</a>
+          <a onClick={() => goToPage(lastPage)}>Last</a>
         </>
       )}
     </div>
