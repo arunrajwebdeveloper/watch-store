@@ -968,3 +968,69 @@ table.summary-table td:last-child {
   padding-top: 20px;
   padding-bottom: 20px;
 }
+
+/* USER DROPDOWN */
+
+.user-dropdown {
+  position: relative;
+}
+.user-dropdown-div {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + 6px);
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0px 12px 10px 0px rgba(0, 0, 0, 0.2),
+    1px 0px 7px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  border: 1px solid #eee;
+  text-align: left;
+  padding: 30px;
+}
+.user-dropdown-block {
+  display: flex;
+  gap: 20px;
+}
+.user-dropdown-div .dropdown-avatar {
+  margin-bottom: 20px;
+}
+.user-dropdown-div .drop-user-name {
+  font-size: 18px;
+}
+.user-dropdown-div .user-dropdown-email {
+  margin-bottom: 20px;
+  margin-top: 5px;
+  font-size: 16px;
+}
+.user-dropdown-div .user-dropdown-link {
+  margin-bottom: 10px;
+}
+.user-dropdown-div .user-dropdown-link a {
+  display: inline-block;
+  color: blue;
+}
+.user-dropdown-div .dropdown-logout-btn {
+  margin-top: 30px;
+  display: inline-block;
+}
+.user-dropdown-div .dropdown-logout-btn a {
+  color: red;
+  font-weight: 700;
+  cursor: pointer;
+}
+.user-dropdown button.user-dropdown-trigger {
+  border: 0;
+  background-color: transparent;
+  outline: 0;
+  height: 100%;
+}
+
+.user-dropdown img.user-drop-avatar {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  object-fit: cover;
+  vertical-align: middle;
+  border-radius: 50%;
+  border: 1px solid #eee;
+}
