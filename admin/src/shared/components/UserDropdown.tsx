@@ -41,38 +41,45 @@ function UserDropdown({ user, onLogout }: { user: any; onLogout: () => void }) {
       </button>
       {isOpen && (
         <div className="user-dropdown-div p-4" ref={componentRef}>
-          <div className="mb-3">
-            <img
-              className="user-drop-avatar"
-              src={avatar}
-              alt={fullName?.toString()}
-              loading="lazy"
-            />
-          </div>
-          <div>
-            <strong>{fullName}</strong>
-          </div>
-          <div className="mt-2">{email}</div>
-          <div className="mt-2">
-            <Link to="/u/profile" className="link-primary text-decoration-none">
-              Profile settings
-            </Link>
-          </div>
-          <div className="mt-2">
-            <Link
-              to="/u/change-password"
-              className="link-primary text-decoration-none"
-            >
-              Change password
-            </Link>
-          </div>
-          <div className="mt-5">
-            <a
-              className="link-danger cursor-pointer text-decoration-none fw-bold"
-              onClick={onLogout}
-            >
-              Logout
-            </a>
+          <div className="d-flex gap-4">
+            <div className="mb-3">
+              <img
+                className="user-drop-avatar"
+                src={avatar}
+                alt={fullName?.toString()}
+                loading="lazy"
+              />
+            </div>
+            <div>
+              <div>
+                <strong>{fullName}</strong>
+              </div>
+              <div className="mt-2">{email}</div>
+              <div className="mt-2">
+                <Link
+                  to="/u/profile"
+                  className="link-primary text-decoration-none"
+                >
+                  Profile settings
+                </Link>
+              </div>
+              <div className="mt-2">
+                <Link
+                  to="/u/change-password"
+                  className="link-primary text-decoration-none"
+                >
+                  Change password
+                </Link>
+              </div>
+              <div className="mt-5">
+                <a
+                  className="link-danger cursor-pointer text-decoration-none fw-bold"
+                  onClick={onLogout}
+                >
+                  Logout
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       )}
