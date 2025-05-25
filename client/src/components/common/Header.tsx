@@ -6,6 +6,7 @@ import { useAppSelector, useAppDispatch } from "@/store";
 import Link from "next/link";
 import CartDropdown from "../products/CartDropdown";
 import { useRouter } from "next/navigation";
+import UserDropdown from "./UserDropdown";
 
 function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -179,23 +180,7 @@ function Header() {
             </div>
             <div className="header-actions-block">
               {isAuthenticated && user && (
-                <>
-                  <div
-                    onClick={() => router.push("/profile")}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {/*<div>{user?.name}</div>
-                   <div>{user?.email}</div> */}
-                    <img
-                      className="user-avatar"
-                      src={user?.avatar}
-                      alt={user?.name}
-                    />
-                  </div>
-                  <a className="logout-btn" onClick={handleLogout}>
-                    Logout
-                  </a>
-                </>
+                <UserDropdown user={user} onLogout={handleLogout} />
               )}
             </div>
           </div>
