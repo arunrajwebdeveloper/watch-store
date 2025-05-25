@@ -48,6 +48,12 @@ export class AdminAuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    if (user?.role !== 'admin') {
+      throw new UnauthorizedException(
+        'The login credentials are invalid. Only Admin users are allowed.',
+      );
+    }
+
     const payload = { sub: user._id, role: user.role };
     const tokens = await this.generateTokens(payload);
 

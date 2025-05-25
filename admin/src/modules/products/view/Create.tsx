@@ -69,6 +69,25 @@ export const Create = () => {
             <span className="form-error-message">{errors.model.message}</span>
           )}
         </div>
+
+        <div className="mb-3">
+          <label htmlFor="description" className="form-label">
+            Description<em>*</em>
+          </label>
+          <textarea
+            className={`form-control ${errors.description ? "is-invalid" : ""}`}
+            id="description"
+            {...register("description", {
+              required: "Description is required",
+            })}
+          />
+          {errors.description && (
+            <span className="form-error-message">
+              {errors.description.message}
+            </span>
+          )}
+        </div>
+
         <div className="mb-3">
           <label htmlFor="variantGroupId" className="form-label">
             Variant Group Id

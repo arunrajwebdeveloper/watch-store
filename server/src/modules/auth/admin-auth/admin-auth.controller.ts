@@ -4,16 +4,12 @@ import {
   Body,
   Res,
   Req,
-  UseGuards,
   Get,
-  UnauthorizedException,
-  BadRequestException,
   ForbiddenException,
 } from '@nestjs/common';
 import { AdminAuthService } from './admin-auth.service';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
-import { JwtAuthGuard } from '../common/guards/jwt.guard';
 import { Request, Response } from 'express';
 
 @Controller('admin-auth')

@@ -7,6 +7,9 @@ export class CreateProductDto {
   @IsString()
   model: string;
 
+  @IsString()
+  description: string;
+
   @IsNumber()
   originalPrice: number;
 

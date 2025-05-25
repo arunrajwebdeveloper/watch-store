@@ -13,6 +13,7 @@ import { useEffect } from "react";
 type CreateState = {
   brand: string;
   model: string;
+  description: string;
   originalPrice: number | null;
   currentPrice: number | null;
   weight: number | null;
@@ -29,6 +30,7 @@ type CreateState = {
 const defaultValues = {
   brand: "",
   model: "",
+  description: "",
   originalPrice: null,
   currentPrice: null,
   weight: null,
@@ -105,6 +107,7 @@ export const useProducts = ({ load = false, productId = "" }) => {
       reset({
         brand: product?.brand,
         model: product?.model,
+        description: product?.description,
         originalPrice: product?.originalPrice,
         currentPrice: product?.currentPrice,
         weight: product?.weight,

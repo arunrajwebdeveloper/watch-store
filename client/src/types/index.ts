@@ -4,7 +4,8 @@ export interface LoginInput {
 }
 
 export interface RegisterInput extends LoginInput {
-  name: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface ResetInput {
