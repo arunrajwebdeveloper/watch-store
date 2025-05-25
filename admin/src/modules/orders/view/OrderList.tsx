@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useOrders } from "../hook";
 import moment from "moment";
 import { currencyFormatter } from "../../../utils";
+import OrderStatusPill from "../components/OrderStatusPill";
 
 export const OrderList = ({
   title,
@@ -34,7 +35,9 @@ export const OrderList = ({
                 return (
                   <tr key={order._id}>
                     <td valign="middle">{++idx}</td>
-                    <td valign="middle">{order._id}</td>
+                    <td valign="middle">
+                      <Link to=".">{order._id}</Link>
+                    </td>
                     <td valign="middle">
                       {moment(order?.createdAt).format(
                         "DD MMM YYYY [at] hh:mm A"
@@ -43,8 +46,11 @@ export const OrderList = ({
                     <td valign="middle">
                       {currencyFormatter(+order?.totalAmount)}
                     </td>
-                    <td valign="middle">{order?.status}</td>
                     <td valign="middle">
+                      <OrderStatusPill status={order?.status} />
+                    </td>
+                    <td valign="middle">
+                      <Link to=".">View</Link> &nbsp;
                       <Link to=".">Edit</Link> &nbsp;
                       <Link to=".">Delete</Link>
                     </td>
