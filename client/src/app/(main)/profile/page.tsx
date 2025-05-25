@@ -184,9 +184,11 @@ function Profile() {
               </div>
             </div>
             <div style={{ width: "50%" }}>
-              <h3 style={{ marginBottom: "30px" }}>Create Address</h3>
-              <div>
-                <label>Full Name</label>
+              <h2 style={{ marginBottom: "30px" }}>Create Address</h2>
+              <div style={{ marginBottom: "30px" }}>
+                <label style={{ marginBottom: "10px", display: "block" }}>
+                  Full Name
+                </label>
                 <input
                   type="text"
                   name="fullname"
@@ -194,8 +196,10 @@ function Profile() {
                   onChange={onHandleAddress}
                 />
               </div>
-              <div>
-                <label>Contact</label>
+              <div style={{ marginBottom: "30px" }}>
+                <label style={{ marginBottom: "10px", display: "block" }}>
+                  Contact
+                </label>
                 <input
                   type="text"
                   name="contact"
@@ -203,8 +207,10 @@ function Profile() {
                   onChange={onHandleAddress}
                 />
               </div>
-              <div>
-                <label>Address</label>
+              <div style={{ marginBottom: "30px" }}>
+                <label style={{ marginBottom: "10px", display: "block" }}>
+                  Address
+                </label>
                 <input
                   type="text"
                   name="address"
@@ -212,8 +218,10 @@ function Profile() {
                   onChange={onHandleAddress}
                 />
               </div>
-              <div>
-                <label>Street</label>
+              <div style={{ marginBottom: "30px" }}>
+                <label style={{ marginBottom: "10px", display: "block" }}>
+                  Street
+                </label>
                 <input
                   type="text"
                   name="street"
@@ -221,8 +229,10 @@ function Profile() {
                   onChange={onHandleAddress}
                 />
               </div>
-              <div>
-                <label>City</label>
+              <div style={{ marginBottom: "30px" }}>
+                <label style={{ marginBottom: "10px", display: "block" }}>
+                  City
+                </label>
                 <input
                   type="text"
                   name="city"
@@ -230,8 +240,10 @@ function Profile() {
                   onChange={onHandleAddress}
                 />
               </div>
-              <div>
-                <label>State</label>
+              <div style={{ marginBottom: "30px" }}>
+                <label style={{ marginBottom: "10px", display: "block" }}>
+                  State
+                </label>
                 <input
                   type="text"
                   name="state"
@@ -239,8 +251,10 @@ function Profile() {
                   onChange={onHandleAddress}
                 />
               </div>
-              <div>
-                <label>Postal Code</label>
+              <div style={{ marginBottom: "30px" }}>
+                <label style={{ marginBottom: "10px", display: "block" }}>
+                  Postal Code
+                </label>
                 <input
                   type="text"
                   name="postalCode"
@@ -248,8 +262,10 @@ function Profile() {
                   onChange={onHandleAddress}
                 />
               </div>
-              <div>
-                <label>Country</label>
+              <div style={{ marginBottom: "30px" }}>
+                <label style={{ marginBottom: "10px", display: "block" }}>
+                  Country
+                </label>
                 <input
                   type="text"
                   name="country"

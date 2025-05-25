@@ -9,7 +9,7 @@ type AuthState = {
   email: string;
   password: string;
   confirmPassword: string;
-  isAdmin: boolean;
+  role: string;
 };
 
 export const useCreateAccount = () => {
@@ -22,7 +22,7 @@ export const useCreateAccount = () => {
       email: "admin@gmail.com",
       password: "Admin@1234",
       confirmPassword: "Admin@1234",
-      isAdmin: false,
+      role: "admin",
     },
   });
 

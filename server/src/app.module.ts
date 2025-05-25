@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AuthModule } from './modules/auth/auth.module';
+import { AdminAuthModule } from './modules/auth/admin-auth/admin-auth.module';
+import { ClientAuthModule } from './modules/auth/client-auth/client-auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './modules/users/users.module';
 import { ProductsModule } from './modules/products/products.module';
@@ -20,7 +21,8 @@ if (!mongoUri) {
 @Module({
   imports: [
     MongooseModule.forRoot(mongoUri),
-    AuthModule,
+    AdminAuthModule,
+    ClientAuthModule,
     UsersModule,
     ProductsModule,
     CartModule,

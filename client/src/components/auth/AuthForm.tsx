@@ -14,7 +14,12 @@ type PropType = {
 };
 
 export default function AuthForm({ name }: PropType) {
-  const [form, setForm] = useState({ email: "", password: "", name: "" });
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+  });
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -47,13 +52,29 @@ export default function AuthForm({ name }: PropType) {
   return (
     <form onSubmit={handleSubmit} className="auth__main-form">
       {isRegister && (
-        <div className="form-controller">
-          <input
-            className="input-element"
-            placeholder="Name"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-          />
+        <div className="row" style={{ display: "flex", gap: "10px" }}>
+          <div className="col-6">
+            <div className="form-controller">
+              <input
+                className="input-element"
+                placeholder="First Name"
+                value={form.firstName}
+                onChange={(e) =>
+                  setForm({ ...form, firstName: e.target.value })
+                }
+              />
+            </div>
+          </div>
+          <div className="col-6">
+            <div className="form-controller">
+              <input
+                className="input-element"
+                placeholder="Last Name"
+                value={form.lastName}
+                onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+              />
+            </div>
+          </div>
         </div>
       )}
       <div className="form-controller">

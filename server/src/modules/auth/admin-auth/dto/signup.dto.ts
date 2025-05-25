@@ -4,9 +4,12 @@ export class SignupDto {
   @IsEmail()
   email: string;
 
-  @IsNotEmpty()
   @IsString()
-  name: string;
+  @IsNotEmpty()
+  firstName: string;
+
+  @IsString()
+  lastName: string;
 
   @IsString()
   @MinLength(6)

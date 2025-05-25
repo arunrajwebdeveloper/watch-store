@@ -12,6 +12,9 @@ export class Product {
   model: string;
 
   @Prop({ required: true })
+  description: string;
+
+  @Prop({ required: true })
   originalPrice: number;
 
   @Prop({ required: true })

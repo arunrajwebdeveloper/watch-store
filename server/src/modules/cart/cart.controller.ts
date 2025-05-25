@@ -12,7 +12,7 @@ import {
 import { CartService } from './cart.service';
 import { AddToCartDto } from './dto/add-to-cart.dto';
 import { RequestWithUser } from '../common/types/express-request.interface';
-import { JwtAuthGuard } from '../auth/jwt.guard';
+import { JwtAuthGuard } from '../auth/common/guards/jwt.guard';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { PromocodeDto } from './dto/promocode.dto';
 

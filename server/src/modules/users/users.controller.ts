@@ -8,9 +8,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { JwtAuthGuard } from '../auth/jwt.guard';
-import { RolesGuard } from '../common/guards/roles.guard';
-import { Roles } from '../common/decorators/roles.decorator';
+import { JwtAuthGuard } from '../auth/common/guards/jwt.guard';
+import { RolesGuard } from '../auth/common/guards/roles.guard';
+import { Roles } from '../auth/common/decorators/roles.decorator';
 import { AddressDto } from './dto/address.dto';
 import { RequestWithUser } from '../common/types/express-request.interface';
 
@@ -22,18 +22,15 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   getUserProfile(@Req() req: RequestWithUser) {
-    return this.usersService.findById(req.user.userId);
+    return this.usersService.findClientUser(req.user.userId);
   }
 
   // FOR ADMIN USER ONLY
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('admin/me')
   @Roles('admin')
-  // getProfile(@Req() req: Request) {
-  //   return req['user'];
-  // }
   getProfile(@Req() req: RequestWithUser) {
-    return this.usersService.findMe(req.user.userId);
+    return this.usersService.findAdminUser(req.user.userId);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

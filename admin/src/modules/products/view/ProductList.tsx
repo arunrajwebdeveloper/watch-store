@@ -4,6 +4,15 @@ import moment from "moment";
 import PaginationControls from "../../../shared/components/PaginationControls";
 import { useEffect } from "react";
 import { PageLayout } from "../../../layouts";
+import { currencyFormatter } from "../../../utils";
+
+const CreateProduct = () => (
+  <div>
+    <Link to="create" className="btn btn-primary px-4 py-2">
+      Create new product
+    </Link>
+  </div>
+);
 
 export const ProductList = () => {
   const { fetchProducts, page, setPage } = useProducts({ load: true });
@@ -23,10 +32,7 @@ export const ProductList = () => {
   }, [data]);
 
   return (
-    <PageLayout title="Product List">
-      <div>
-        <Link to="create">Create new product</Link>
-      </div>
+    <PageLayout title="Product List" Component={CreateProduct}>
       <div>
         <PaginationControls
           currentPage={page.pageNumber}
@@ -49,7 +55,7 @@ export const ProductList = () => {
         {isLoading ? (
           <span>Fetching...</span>
         ) : (
-          <table>
+          <table className="table">
             <tbody>
               <tr>
                 <th>#</th>
@@ -59,7 +65,6 @@ export const ProductList = () => {
                 <th>Selling Price</th>
                 <th>Movement Type</th>
                 <th>Created At</th>
-                <th>Updated At</th>
                 <th>Inventory</th>
                 <th>Images</th>
                 <th>Action</th>
@@ -68,24 +73,23 @@ export const ProductList = () => {
                 data?.data?.map((product: any, idx: number) => {
                   return (
                     <tr key={product._id}>
-                      <td>{++idx}</td>
-                      <td>{product?.brand}</td>
-                      <td>{product?.model}</td>
-                      <td>INR {product?.originalPrice}</td>
-                      <td>INR {product?.currentPrice}</td>
-                      <td>{product?.movementType}</td>
-                      <td>
+                      <td valign="middle">{++idx}</td>
+                      <td valign="middle">{product?.brand}</td>
+                      <td valign="middle">{product?.model}</td>
+                      <td valign="middle">
+                        {currencyFormatter(+product?.originalPrice)}
+                      </td>
+                      <td valign="middle">
+                        {currencyFormatter(+product?.currentPrice)}
+                      </td>
+                      <td valign="middle">{product?.movementType}</td>
+                      <td valign="middle">
                         {moment(product?.createdAt).format(
                           "DD MMM YYYY [at] hh:mm A"
                         )}
                       </td>
-                      <td>
-                        {moment(product?.updatedAt).format(
-                          "DD MMM YYYY [at] hh:mm A"
-                        )}
-                      </td>
-                      <td>{product?.inventory}</td>
-                      <td>
+                      <td valign="middle">{product?.inventory}</td>
+                      <td valign="middle">
                         <div className="image-group">
                           {product?.images?.map((img: string, i: number) => {
                             return (
@@ -99,7 +103,7 @@ export const ProductList = () => {
                           })}
                         </div>
                       </td>
-                      <td>
+                      <td valign="middle">
                         <Link to={product._id}>View</Link> &nbsp;
                         <Link to={`edit/${product._id}`}>Edit</Link>
                       </td>
@@ -108,7 +112,11 @@ export const ProductList = () => {
                 })
               ) : (
                 <tr>
-                  <td colSpan={20} style={{ textAlign: "center" }}>
+                  <td
+                    colSpan={20}
+                    style={{ textAlign: "center" }}
+                    valign="middle"
+                  >
                     No data available
                   </td>
                 </tr>

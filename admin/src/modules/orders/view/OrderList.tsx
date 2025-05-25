@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useOrders } from "../hook";
 import moment from "moment";
+import { currencyFormatter } from "../../../utils";
+import OrderStatusPill from "../components/OrderStatusPill";
 
 export const OrderList = ({
   title,
@@ -18,7 +20,7 @@ export const OrderList = ({
     <div>
       <h4 className="sub-heading">{title}</h4>
       <div>
-        <table>
+        <table className="table">
           <tbody>
             <tr>
               <th>#</th>
@@ -32,16 +34,23 @@ export const OrderList = ({
               data?.map((order: any, idx: number) => {
                 return (
                   <tr key={order._id}>
-                    <td>{++idx}</td>
-                    <td>{order._id}</td>
-                    <td>
+                    <td valign="middle">{++idx}</td>
+                    <td valign="middle">
+                      <Link to=".">{order._id}</Link>
+                    </td>
+                    <td valign="middle">
                       {moment(order?.createdAt).format(
                         "DD MMM YYYY [at] hh:mm A"
                       )}
                     </td>
-                    <td>INR {order?.totalAmount}</td>
-                    <td>{order?.status}</td>
-                    <td>
+                    <td valign="middle">
+                      {currencyFormatter(+order?.totalAmount)}
+                    </td>
+                    <td valign="middle">
+                      <OrderStatusPill status={order?.status} />
+                    </td>
+                    <td valign="middle">
+                      <Link to=".">View</Link> &nbsp;
                       <Link to=".">Edit</Link> &nbsp;
                       <Link to=".">Delete</Link>
                     </td>
@@ -50,7 +59,11 @@ export const OrderList = ({
               })
             ) : (
               <tr>
-                <td colSpan={20} style={{ textAlign: "center" }}>
+                <td
+                  colSpan={20}
+                  style={{ textAlign: "center" }}
+                  valign="middle"
+                >
                   No data available
                 </td>
               </tr>

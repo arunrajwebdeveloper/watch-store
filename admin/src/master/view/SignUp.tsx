@@ -56,7 +56,6 @@ export const SignUp = () => {
                   errors.firstname ? "is-invalid" : ""
                 }`}
                 id="firstName"
-                // name="firstname"
                 {...register("firstname", {
                   required: "First name is required",
                   minLength: {
@@ -89,7 +88,6 @@ export const SignUp = () => {
                   errors.lastname ? "is-invalid" : ""
                 }`}
                 id="lastName"
-                // name="lastname"
                 {...register("lastname", {
                   maxLength: {
                     value: 20,
@@ -116,7 +114,6 @@ export const SignUp = () => {
               type="email"
               className={`form-control ${errors.email ? "is-invalid" : ""}`}
               id="exampleInputEmail1"
-              // name="email"
               {...register("email", {
                 required: "Email address is required",
                 pattern: {
@@ -143,7 +140,6 @@ export const SignUp = () => {
                   errors.password ? "is-invalid" : ""
                 }`}
                 id="exampleInputPassword1"
-                // name="password"
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
@@ -189,7 +185,6 @@ export const SignUp = () => {
                   errors.confirmPassword ? "is-invalid" : ""
                 }`}
                 id="exampleInputPassword2"
-                // name="confirmPassword"
                 {...register("confirmPassword", {
                   required: "Confirm Password is required",
                   validate: (value) =>

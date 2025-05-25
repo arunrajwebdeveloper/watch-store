@@ -13,6 +13,7 @@ import { useEffect } from "react";
 type CreateState = {
   brand: string;
   model: string;
+  description: string;
   originalPrice: number | null;
   currentPrice: number | null;
   weight: number | null;
@@ -23,11 +24,13 @@ type CreateState = {
   images: { url: string }[];
   inventory: number | null;
   createdAt?: "";
+  variantGroupId?: string;
 };
 
 const defaultValues = {
   brand: "",
   model: "",
+  description: "",
   originalPrice: null,
   currentPrice: null,
   weight: null,
@@ -37,6 +40,7 @@ const defaultValues = {
   gender: "",
   images: [{ url: "" }],
   inventory: null,
+  variantGroupId: "",
 };
 
 export const useProducts = ({ load = false, productId = "" }) => {
@@ -103,6 +107,7 @@ export const useProducts = ({ load = false, productId = "" }) => {
       reset({
         brand: product?.brand,
         model: product?.model,
+        description: product?.description,
         originalPrice: product?.originalPrice,
         currentPrice: product?.currentPrice,
         weight: product?.weight,
@@ -112,6 +117,7 @@ export const useProducts = ({ load = false, productId = "" }) => {
         gender: product?.gender,
         images,
         inventory: product?.inventory,
+        variantGroupId: product?.variantGroupId,
       });
     }
   }, [fetchProductsById?.data]);

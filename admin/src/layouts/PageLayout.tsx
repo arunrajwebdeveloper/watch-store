@@ -1,27 +1,31 @@
-import type { ReactNode } from "react";
-import { Header, Sidebar } from "../shared";
+import type { ReactNode, ComponentType } from "react";
+import { Header } from "../shared";
 
 export const PageLayout = ({
   children,
   title,
+  Component,
 }: {
   children: ReactNode;
-  title: string;
+  title?: string;
+  Component?: ComponentType<any>;
 }) => {
   return (
-    <div className="master-wrapper">
-      <Sidebar />
-      <div className="content-section">
-        <Header />
-        <main className="main-wrapper">
-          {title && (
-            <div className="page-header">
-              <h2>{title}</h2>
-            </div>
-          )}
-          <div className="page-content">{children}</div>
-        </main>
-      </div>
+    <div className="content-section">
+      <Header />
+      <main className="main-wrapper px-4">
+        {title && (
+          <div className="page-header d-flex align-items-center justify-content-between">
+            <h2>{title}</h2>
+            {Component && (
+              <div className="page-header-right ">
+                <Component />
+              </div>
+            )}
+          </div>
+        )}
+        <div className="page-content">{children}</div>
+      </main>
     </div>
   );
 };

@@ -1,73 +1,90 @@
 import axios from "axios";
-import { getRefreshToken } from "../master";
 
 export const Axios = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL + "/api/",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: true,
+  withCredentials: true, // send cookies (refresh token)
 });
 
 let isRefreshing = false;
-let requestsQueue: {
-  resolve: (value?: unknown) => void;
-  reject: (reason?: any) => void;
-  originalRequest: any;
-}[] = [];
+let failedQueue: any[] = [];
 
-const processQueue = (error: any = null) => {
-  requestsQueue.forEach(({ resolve, reject, originalRequest }) => {
-    if (error) {
-      reject(error);
-    } else {
-      Axios(originalRequest).then(resolve).catch(reject);
-    }
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) prom.reject(error);
+    else prom.resolve(token);
   });
-  requestsQueue = [];
+  failedQueue = [];
 };
 
+Axios.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("x__watch_dashboard_token");
+
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 Axios.interceptors.response.use(
-  (response) => response,
+  (res) => res,
   async (error) => {
     const originalRequest = error.config;
-
-    // Only handle 401 and avoid infinite loops
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/api/admin-auth/refresh")
+    ) {
       originalRequest._retry = true;
 
-      if (!isRefreshing) {
-        isRefreshing = true;
-
-        try {
-          const response = await getRefreshToken(); // Call refresh endpoint
-
-          if (!response) {
-            throw new Error("Refresh token failed");
-          }
-
-          processQueue(); // Retry all queued requests
-          return Axios(originalRequest); // Retry original
-        } catch (err) {
-          processQueue(err); // Reject all queued requests
-          sessionTimeOutEvent();
-          return Promise.reject(err);
-        } finally {
-          isRefreshing = false;
-        }
+      if (isRefreshing) {
+        return new Promise(function (resolve, reject) {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers["Authorization"] = `Bearer ${token}`;
+            return Axios(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
       }
 
-      // Wait until the token refresh is done
-      return new Promise((resolve, reject) => {
-        requestsQueue.push({ resolve, reject, originalRequest });
-      });
+      isRefreshing = true;
+
+      try {
+        const response = await Axios.get("/admin-auth/refresh");
+
+        if (response.status === 400 || response.status === 403) {
+          localStorage.removeItem("x__watch_dashboard_token");
+          localStorage.removeItem("x__watch_dashboard_user");
+          window.location.href = "/account/login";
+        }
+
+        const newAccessToken = response.data.accessToken;
+
+        localStorage.setItem("x__watch_dashboard_token", newAccessToken);
+
+        Axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${newAccessToken}`;
+        processQueue(null, newAccessToken);
+
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+        return Axios(originalRequest);
+      } catch (err) {
+        console.log("err :>> ", err);
+
+        processQueue(err, null);
+        return Promise.reject(err);
+      } finally {
+        isRefreshing = false;
+      }
     }
 
     return Promise.reject(error);
   }
 );
-
-const sessionTimeOutEvent = () => {
-  localStorage.removeItem("x__watch_dashboard_user");
-  window.location.href = "/account/login";
-};

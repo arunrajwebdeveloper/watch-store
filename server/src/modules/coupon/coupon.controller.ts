@@ -7,11 +7,11 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt.guard';
+import { JwtAuthGuard } from '../auth/common/guards/jwt.guard';
 import { CouponService } from './coupon.service';
 import { CreateCouponDto } from './dto/create-coupon.dto';
-import { Roles } from '../common/decorators/roles.decorator';
-import { RolesGuard } from '../common/guards/roles.guard';
+import { Roles } from '../auth/common/decorators/roles.decorator';
+import { RolesGuard } from '../auth/common/guards/roles.guard';
 
 @Controller('coupon')
 @UseGuards(JwtAuthGuard)

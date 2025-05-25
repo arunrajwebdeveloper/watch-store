@@ -6,7 +6,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './schemas/users.schema';
-import { SignupDto } from '../auth/dto/signup.dto';
+import { SignupDto } from '../auth/admin-auth/dto/signup.dto';
 import { AddressDto } from './dto/address.dto';
 import { Address, AddressDocument } from './schemas/address.schema';
 
@@ -34,13 +34,41 @@ export class UsersService {
     return this.userModel.find().lean().exec();
   }
 
-  async findMe(id: string): Promise<User | null> {
-    const user = this.userModel.findById(id).select('-password').lean().exec();
+  async findAdminUser(id: string): Promise<User | null> {
+    const user = await this.userModel.findById(id).select('-password').exec();
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user;
+  }
+
+  async findClientUser(id: string): Promise<User | null> {
+    const user = await this.userModel
+      .findById(id)
+      .populate({
+        path: 'addressList',
+        // options: { lean: true }, // ensure addresses are returned as plain objects
+      })
+      .select('-password')
+      .exec();
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
     return user;
+  }
+
+  async userLogout() {
+    await this.userModel.updateOne(
+      { refreshToken: { $exists: true } },
+      { $unset: { refreshToken: '' } },
+    );
+  }
+
+  async findByIdAndUpdate(userId: string, token: string) {
+    await this.userModel.findByIdAndUpdate(userId, { refreshToken: token });
   }
 
   async findById(id: string): Promise<User | null> {
