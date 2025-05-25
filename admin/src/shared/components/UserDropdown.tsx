@@ -54,13 +54,13 @@ function UserDropdown({ user, onLogout }: { user: any; onLogout: () => void }) {
           </div>
           <div className="mt-2">{email}</div>
           <div className="mt-2">
-            <Link to="profile" className="link-primary text-decoration-none">
+            <Link to="/u/profile" className="link-primary text-decoration-none">
               Profile settings
             </Link>
           </div>
           <div className="mt-2">
             <Link
-              to="change-password"
+              to="/u/change-password"
               className="link-primary text-decoration-none"
             >
               Change password
