@@ -250,3 +250,11 @@ span.form-error-message {
   border-radius: 50%;
   border: 1px solid #eee;
 }
+.page-not-found-content {
+  margin-top: 50px;
+}
+.page-not-found-content img {
+  position: relative;
+  height: 290px;
+  vertical-align: middle;
+}

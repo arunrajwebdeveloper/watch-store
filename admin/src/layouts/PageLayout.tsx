@@ -7,7 +7,7 @@ export const PageLayout = ({
   Component,
 }: {
   children: ReactNode;
-  title: string;
+  title?: string;
   Component?: ComponentType<any>;
 }) => {
   return (

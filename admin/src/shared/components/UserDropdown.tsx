@@ -58,9 +58,17 @@ function UserDropdown({ user, onLogout }: { user: any; onLogout: () => void }) {
               Profile settings
             </Link>
           </div>
+          <div className="mt-2">
+            <Link
+              to="change-password"
+              className="link-primary text-decoration-none"
+            >
+              Change password
+            </Link>
+          </div>
           <div className="mt-5">
             <a
-              className="link-danger cursor-pointer text-decoration-none"
+              className="link-danger cursor-pointer text-decoration-none fw-bold"
               onClick={onLogout}
             >
               Logout
