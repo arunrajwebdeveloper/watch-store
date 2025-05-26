@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import {
@@ -8,7 +9,7 @@ import {
 } from "../api";
 import { useImmer } from "use-immer";
 import { useForm, useFieldArray } from "react-hook-form";
-import { useEffect } from "react";
+import { useToast } from "../../../master/context/ToastScope";
 
 type CreateState = {
   brand: string;
@@ -46,6 +47,8 @@ const defaultValues = {
 export const useProducts = ({ load = false, productId = "" }) => {
   const navigate = useNavigate();
 
+  const { showSuccess, showError } = useToast();
+
   const { register, watch, handleSubmit, formState, control, reset } =
     useForm<CreateState>({
       defaultValues,
@@ -66,10 +69,11 @@ export const useProducts = ({ load = false, productId = "" }) => {
   const createProduct = useMutation({
     mutationFn: (data) => createProducts(data),
     onSuccess: () => {
+      showSuccess("Product added successfully!");
       reset();
     },
-    onError: (e) => {
-      console.log(e);
+    onError: (error: any) => {
+      showError(`Something went wrong: ${error?.message}`);
     },
     onSettled: () => {},
   });
@@ -77,10 +81,11 @@ export const useProducts = ({ load = false, productId = "" }) => {
   const updateProduct = useMutation({
     mutationFn: (data) => updateProducts(data, productId),
     onSuccess: () => {
-      navigate("/products");
+      showSuccess("Product updated successfully!");
+      navigate("..");
     },
-    onError: (e) => {
-      console.log(e);
+    onError: (error: any) => {
+      showError(`Something went wrong: ${error?.message}`);
     },
     onSettled: () => {},
   });

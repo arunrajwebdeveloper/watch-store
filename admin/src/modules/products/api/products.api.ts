@@ -17,6 +17,6 @@ export const createProducts = async (payload: any) => {
   return res.data;
 };
 export const updateProducts = async (payload: any, productId: string) => {
-  const res = await Axios.put(`/products/edit/${productId}`, payload);
+  const res = await Axios.patch(`/products/edit/${productId}`, payload);
   return res.data;
 };
