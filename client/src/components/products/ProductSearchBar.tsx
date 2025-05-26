@@ -70,17 +70,28 @@ function ProductSearchBar() {
 
   return (
     <div className="search-bar-component">
-      <input
-        ref={inputRef}
-        type="text"
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setShowDropdown(true); // Show dropdown when typing
-        }}
-        placeholder="Search for products..."
-        className="input-element"
-      />
+      <div className="search-input-field">
+        <input
+          ref={inputRef}
+          type="text"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setShowDropdown(true); // Show dropdown when typing
+          }}
+          placeholder="Search for products..."
+          className="input-element"
+        />
+        <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M20 20L15.8033 15.8033M18 10.5C18 6.35786 14.6421 3 10.5 3C6.35786 3 3 6.35786 3 10.5C3 14.6421 6.35786 18 10.5 18C14.6421 18 18 14.6421 18 10.5Z"
+            stroke="#787d91"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
       {loading && <div className="search-loading">Loading...</div>}
       {!loading && showDropdown && suggestions.length > 0 && (
         <div ref={dropdownRef} className="search-dropdown">
