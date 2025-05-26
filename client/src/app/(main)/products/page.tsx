@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { createProductQueryUrl } from "@/utils/createProductQueryUrl";
 import { searchParamsToObject } from "@/utils/searchParamsToObject";
 import ProductSearchBar from "@/components/products/ProductSearchBar";
+import PaginationInfo from "@/components/products/PaginationInfo";
 
 const pageCounts = [
   { value: 10, label: "10" },
@@ -44,17 +45,19 @@ const ProductListPage = (): React.ReactNode => {
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [pageLimit, sePagetLimit] = useState(10);
 
   useEffect(() => {
     const fetchData = async () => {
       const productRes = await api.get("/products", {
         params: searchParamsToObject(searchParams),
       });
-      const { data, page, lastPage, total } = productRes.data;
+      const { data, page, lastPage, total, limit } = productRes.data;
       setProducts(data);
       setPage(page);
       setLastPage(lastPage);
       setTotal(total);
+      sePagetLimit(limit);
 
       const filterRes = await api.get("/products/filter-options");
       setFiltersItems(filterRes.data || {});
@@ -79,26 +82,32 @@ const ProductListPage = (): React.ReactNode => {
 
             <div className="listing-page__header">
               <ProductPagination page={page} lastPage={lastPage} />
-              <div className="sort-dropdown">
-                <span>Sort By:</span>
-                <SortDropdown />
-              </div>
-              <div className="sort-dropdown page-count">
-                <span>Page</span>
-                <Dropdown
-                  selected={Number(searchParams.get("limit")) || 10}
-                  data={pageCounts}
-                  placeholder="Count"
-                  onChange={(e) => {
-                    router.push(
-                      createProductQueryUrl("/products", {
-                        ...searchParamsToObject(searchParams),
-                        limit: e.value,
-                      })
-                    );
-                  }}
+              <div className="page-info-block">
+                <div className="sort-dropdown">
+                  <span>Sort By:</span>
+                  <SortDropdown />
+                </div>
+                <div className="sort-dropdown page-count">
+                  <span>Items per page</span>
+                  <Dropdown
+                    selected={Number(searchParams.get("limit")) || 10}
+                    data={pageCounts}
+                    placeholder="Count"
+                    onChange={(e) => {
+                      router.push(
+                        createProductQueryUrl("/products", {
+                          ...searchParamsToObject(searchParams),
+                          limit: e.value,
+                        })
+                      );
+                    }}
+                  />
+                </div>
+                <PaginationInfo
+                  currentPage={page}
+                  limit={pageLimit}
+                  totalItems={total}
                 />
-                <span>of {total}</span>
               </div>
             </div>
 
@@ -117,22 +126,28 @@ const ProductListPage = (): React.ReactNode => {
             )}
             <div className="products-footer">
               <ProductPagination page={page} lastPage={lastPage} />
-              <div className="sort-dropdown page-count">
-                <span>Page</span>
-                <Dropdown
-                  selected={Number(searchParams.get("limit")) || 10}
-                  data={pageCounts}
-                  placeholder="Count"
-                  onChange={(e) => {
-                    router.push(
-                      createProductQueryUrl("/products", {
-                        ...searchParamsToObject(searchParams),
-                        limit: e.value,
-                      })
-                    );
-                  }}
+              <div className="page-info-block">
+                <div className="sort-dropdown page-count">
+                  <span>Items per page</span>
+                  <Dropdown
+                    selected={Number(searchParams.get("limit")) || 10}
+                    data={pageCounts}
+                    placeholder="Count"
+                    onChange={(e) => {
+                      router.push(
+                        createProductQueryUrl("/products", {
+                          ...searchParamsToObject(searchParams),
+                          limit: e.value,
+                        })
+                      );
+                    }}
+                  />
+                </div>
+                <PaginationInfo
+                  currentPage={page}
+                  limit={pageLimit}
+                  totalItems={total}
                 />
-                <span>of {total}</span>
               </div>
             </div>
           </div>

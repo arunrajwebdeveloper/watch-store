@@ -569,12 +569,17 @@ a.btn.secondary {
 .listing-page__header {
   height: 62px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   gap: 50px;
   margin-bottom: 40px;
   border-bottom: 1px solid #eee;
   border-top: 1px solid #eee;
+}
+.page-info-block {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 .listing-page-layout {
   display: flex;
