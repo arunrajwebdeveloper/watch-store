@@ -636,6 +636,8 @@ a.btn.secondary {
   width: 26px;
   height: 26px;
   z-index: 5;
+  user-select: none;
+  pointer-events: none;
 }
 .search-input-field input.input-element {
   padding-left: 50px;
