@@ -60,6 +60,7 @@ export const useProducts = ({ load = false, productId = "" }) => {
     limit: 10,
     pageNumber: 1,
     lastPage: 1,
+    total: 0,
   });
 
   const createProduct = useMutation({

@@ -26,6 +26,7 @@ export const ProductList = () => {
         draft.lastPage = data?.lastPage;
         draft.limit = data?.limit;
         draft.pageNumber = data?.page;
+        draft.total = data?.total;
         return draft;
       });
     }
@@ -38,6 +39,7 @@ export const ProductList = () => {
           currentPage={page.pageNumber}
           lastPage={page.lastPage}
           limit={page.limit}
+          total={page.total}
           onPageChange={(newPage) =>
             setPage((draft) => {
               draft.pageNumber = newPage;
@@ -129,6 +131,7 @@ export const ProductList = () => {
           currentPage={page.pageNumber}
           lastPage={page.lastPage}
           limit={page.limit}
+          total={page.total}
           onPageChange={(newPage) =>
             setPage((draft) => {
               draft.pageNumber = newPage;

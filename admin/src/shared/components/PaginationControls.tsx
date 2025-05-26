@@ -1,9 +1,11 @@
 import React from "react";
+import PaginationInfo from "./PaginationInfo";
 
 interface PaginationProps {
   currentPage: number;
   lastPage: number;
   limit: number;
+  total: number;
   onPageChange: (page: number) => void;
   onLimitChange: (limit: number) => void;
 }
@@ -12,6 +14,7 @@ const PaginationControls: React.FC<PaginationProps> = ({
   currentPage,
   lastPage,
   limit,
+  total,
   onPageChange,
   onLimitChange,
 }) => {
@@ -44,21 +47,14 @@ const PaginationControls: React.FC<PaginationProps> = ({
       <div className="pagination">
         {currentPage > 1 && (
           <>
-            <button className="page-item" onClick={() => onPageChange(1)}>
-              First
-            </button>
-            <button
-              className="page-item"
-              onClick={() => onPageChange(currentPage - 1)}
-            >
-              Prev
-            </button>
+            <button onClick={() => onPageChange(1)}>First</button>
+            <button onClick={() => onPageChange(currentPage - 1)}>Prev</button>
           </>
         )}
 
         {pages.map((p, index) =>
           p === "..." ? (
-            <span key={`ellipsis-${index}`} className="page-item">
+            <span key={`ellipsis-${index}`} className="ellipsis-item">
               ...
             </span>
           ) : (
@@ -74,37 +70,32 @@ const PaginationControls: React.FC<PaginationProps> = ({
 
         {currentPage < lastPage && (
           <>
-            <button
-              className="page-item"
-              onClick={() => onPageChange(currentPage + 1)}
-            >
-              Next
-            </button>
-            <button
-              className="page-item"
-              onClick={() => onPageChange(lastPage)}
-            >
-              Last
-            </button>
+            <button onClick={() => onPageChange(currentPage + 1)}>Next</button>
+            <button onClick={() => onPageChange(lastPage)}>Last</button>
           </>
         )}
       </div>
 
-      <div className="limit d-flex gap-3 align-items-center">
-        <label htmlFor="limit" className="mr-2 font-medium">
-          Items per page:
-        </label>
-        <select
-          id="limit"
-          value={limit}
-          onChange={(e) => onLimitChange(Number(e.target.value))}
-        >
-          {limits.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
+      <div className="d-flex align-items-center gap-4">
+        <div className="limit d-flex gap-3 align-items-center">
+          <label className="mr-2 font-medium">Items per page</label>
+          <select
+            id="limit"
+            value={limit}
+            onChange={(e) => onLimitChange(Number(e.target.value))}
+          >
+            {limits.map((opt) => (
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
+            ))}
+          </select>
+        </div>
+        <PaginationInfo
+          currentPage={currentPage}
+          limit={limit}
+          totalItems={total}
+        />
       </div>
     </div>
   );

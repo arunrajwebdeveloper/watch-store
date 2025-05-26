@@ -179,6 +179,7 @@ a.main-logo h2 {
   font-weight: 500;
   font-size: 16px;
   margin-left: -1px;
+  user-select: none;
 }
 
 .pagination-wrapper .pagination button:first-child {
@@ -202,6 +203,13 @@ a.main-logo h2 {
 .pagination-wrapper .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.pagination-wrapper .pagination span.ellipsis-item {
+  padding: 8px 16px;
+  border: 1px solid #828282;
+  margin-left: -1px;
+  user-select: none;
 }
 
 .pagination-wrapper select {
