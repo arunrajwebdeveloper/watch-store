@@ -44,6 +44,16 @@ function Product() {
       .join(", ");
   }
 
+  const statusColors = (status: string) => {
+    return {
+      placed: "bg-primary text-light",
+      processing: "bg-info text-dark",
+      shipped: "bg-warning text-dark",
+      delivered: "bg-success text-light",
+      cancelled: "bg-danger text-light",
+    }[status];
+  };
+
   const orderStatusList: { label: string; value: string }[] = [
     {
       label: "Placed",
@@ -114,7 +124,10 @@ function Product() {
                     setOrderStatus(e?.target?.value);
                   }}
                   value={orderStatus}
-                  className="p-1 bordered rounded"
+                  className={`p-1 border-0 rounded ${statusColors(
+                    orderStatus
+                  )}`}
+                  style={{ outline: 0 }}
                 >
                   {orderStatusList?.map((status) => {
                     return (
