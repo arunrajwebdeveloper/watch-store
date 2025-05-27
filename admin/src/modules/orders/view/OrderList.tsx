@@ -51,8 +51,6 @@ export const OrderList = ({
                     </td>
                     <td valign="middle">
                       <Link to={`../${order._id}`}>View</Link> &nbsp;
-                      <Link to=".">Edit</Link> &nbsp;
-                      <Link to=".">Delete</Link>
                     </td>
                   </tr>
                 );
