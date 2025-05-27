@@ -36,7 +36,7 @@ export const OrderList = ({
                   <tr key={order._id}>
                     <td valign="middle">{++idx}</td>
                     <td valign="middle">
-                      <Link to=".">{order._id}</Link>
+                      <Link to={`../${order._id}`}>{order._id}</Link>
                     </td>
                     <td valign="middle">
                       {moment(order?.createdAt).format(
@@ -50,7 +50,7 @@ export const OrderList = ({
                       <OrderStatusPill status={order?.status} />
                     </td>
                     <td valign="middle">
-                      <Link to=".">View</Link> &nbsp;
+                      <Link to={`../${order._id}`}>View</Link> &nbsp;
                       <Link to=".">Edit</Link> &nbsp;
                       <Link to=".">Delete</Link>
                     </td>

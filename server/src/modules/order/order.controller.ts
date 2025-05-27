@@ -32,6 +32,7 @@ export class OrderController {
     return this.orderService.getOrdersByUser(req.user.userId);
   }
 
+  // Client
   @Get(':id')
   async getOrderById(@Req() req: RequestWithUser, @Param('id') id: string) {
     if (!Types.ObjectId.isValid(id)) {
@@ -47,6 +48,7 @@ export class OrderController {
     return order;
   }
 
+  // Admin
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Get('get/:status')
@@ -62,5 +64,10 @@ export class OrderController {
     @Body('status') status: string,
   ) {
     return this.orderService.updateOrderStatus(orderId, status);
+  }
+
+  @Get('order-details/:orderId')
+  async getOrderDetails(@Param('orderId') orderId: string, r) {
+    return this.orderService.getOrderDetails(orderId);
   }
 }

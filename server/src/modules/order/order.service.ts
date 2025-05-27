@@ -119,6 +119,19 @@ export class OrderService {
       .exec();
   }
 
+  async getOrderDetails(orderId: string) {
+    return this.orderModel
+      .findOne({
+        _id: orderId,
+      })
+      .populate('items.product', 'brand model price images')
+      .populate('address')
+      .populate('userId', 'avatar email firstName lastName')
+      .select('-__v')
+      .lean()
+      .exec();
+  }
+
   async getAllOrders(status: string) {
     const filter = status === 'all' ? {} : { status };
     return this.orderModel

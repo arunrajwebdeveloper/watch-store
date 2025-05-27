@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { OrderPage } from "./view/OrderPage";
 import { OrderList } from "./view/OrderList";
+import Product from "./view/Order";
 
 // const orderTabs = [
 //   <Route index element={<h4>All orders</h4>} />,
@@ -35,6 +36,7 @@ export default function Orders() {
           element={<OrderList title="Shipped" status="shipped" />}
         />
       </Route>
+      <Route path=":orderId" element={<Product />} />
     </Routes>
   );
 }

@@ -1,15 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
-// import { useNavigate } from "react-router-dom";
-import { getOrders } from "../api";
+import { getOrders, getOrderDetails } from "../api";
 
-export const useOrders = ({ load = false, status = "all" }) => {
-  // const navigate = useNavigate();
-
+export const useOrders = ({ load = false, status = "all", orderId = "" }) => {
   const fetchOrders = useQuery({
     queryKey: ["ORDERS", status],
     queryFn: () => getOrders(status),
     enabled: load,
   });
 
-  return { fetchOrders };
+  const fetchOrderDetails = useQuery({
+    queryKey: ["ORDER_DETAILS", orderId],
+    queryFn: () => getOrderDetails(orderId),
+    enabled: !!orderId,
+  });
+
+  return { fetchOrders, fetchOrderDetails };
 };
