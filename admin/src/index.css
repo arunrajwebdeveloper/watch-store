@@ -45,6 +45,13 @@ table th {
   color: #000;
 }
 
+.main-header,
+.stat-card {
+  background-color: #fff;
+}
+.main-header {
+  height: 50px;
+}
 .page-header {
   min-height: 68px;
 }
@@ -81,24 +88,32 @@ h4.sub-heading {
 .stat-boxes .stat-card p {
   margin: 0;
   font-size: 60px;
-  font-weight: 800;
+  font-weight: 400;
 }
 .stat-boxes .stat-card h3 {
-  font-size: 22px;
+  font-size: 18px;
   color: #000;
   margin-bottom: 10px;
-  font-weight: 600;
+  font-weight: 400;
+}
+
+.stat-boxes .stat-card svg {
+  height: 40px;
+  width: 40px;
+  vertical-align: middle;
 }
 
 table {
   border-collapse: collapse;
   width: 100%;
+  font-size: 14px;
+  background-color: #fff;
 }
 
 table,
 td,
 th {
-  border: 1px solid #ccc;
+  border: 1px solid #e5e5e5;
 }
 
 td,
@@ -170,14 +185,14 @@ a.main-logo h2 {
 }
 
 .pagination-wrapper .pagination button {
-  background-color: transparent;
+  background-color: #fff;
   color: #fff;
   border: 0;
-  padding: 8px 16px;
+  padding: 5px 10px;
   border: 1px solid #828282;
   color: #000;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   margin-left: -1px;
   user-select: none;
 }

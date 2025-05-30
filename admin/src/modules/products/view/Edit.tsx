@@ -32,45 +32,48 @@ export const Edit = () => {
   return (
     <PageLayout title="Edit Product">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-3">
-          <label htmlFor="brand" className="form-label">
-            Brand<em>*</em>
-          </label>
-          <input
-            type="text"
-            className={`form-control ${errors.brand ? "is-invalid" : ""}`}
-            id="brand"
-            {...register("brand", {
-              required: "Brand is required",
-              maxLength: {
-                value: 50,
-                message: "First name limited to 50 characters",
-              },
-              pattern: {
-                value: /^[a-zA-Z]+$/,
-                message: "Only alphabetic characters allowed",
-              },
-            })}
-          />
-          {errors.brand && (
-            <span className="form-error-message">{errors.brand.message}</span>
-          )}
-        </div>
-        <div className="mb-3">
-          <label htmlFor="model" className="form-label">
-            Model<em>*</em>
-          </label>
-          <input
-            type="text"
-            className={`form-control ${errors.model ? "is-invalid" : ""}`}
-            id="model"
-            {...register("model", {
-              required: "Model is required",
-            })}
-          />
-          {errors.model && (
-            <span className="form-error-message">{errors.model.message}</span>
-          )}
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label htmlFor="brand" className="form-label">
+              Brand<em>*</em>
+            </label>
+            <input
+              type="text"
+              className={`form-control ${errors.brand ? "is-invalid" : ""}`}
+              id="brand"
+              {...register("brand", {
+                required: "Brand is required",
+                maxLength: {
+                  value: 50,
+                  message: "First name limited to 50 characters",
+                },
+                pattern: {
+                  value: /^[a-zA-Z&\-_ ]+$/,
+                  message:
+                    "Only alphabetic characters, &, -, _ and space are allowed",
+                },
+              })}
+            />
+            {errors.brand && (
+              <span className="form-error-message">{errors.brand.message}</span>
+            )}
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="model" className="form-label">
+              Model<em>*</em>
+            </label>
+            <input
+              type="text"
+              className={`form-control ${errors.model ? "is-invalid" : ""}`}
+              id="model"
+              {...register("model", {
+                required: "Model is required",
+              })}
+            />
+            {errors.model && (
+              <span className="form-error-message">{errors.model.message}</span>
+            )}
+          </div>
         </div>
 
         <div className="mb-3">
@@ -91,53 +94,55 @@ export const Edit = () => {
           )}
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="originalPrice" className="form-label">
-            Original Price<em>*</em>
-          </label>
-          <input
-            type="number"
-            className={`form-control ${
-              errors.originalPrice ? "is-invalid" : ""
-            }`}
-            id="originalPrice"
-            {...register("originalPrice", {
-              required: "Original Price is required",
-              pattern: {
-                value: /^[0-9]+$/,
-                message: "Only numbers allowed",
-              },
-            })}
-          />
-          {errors.originalPrice && (
-            <span className="form-error-message">
-              {errors.originalPrice.message}
-            </span>
-          )}
-        </div>
-        <div className="mb-3">
-          <label htmlFor="currentPrice" className="form-label">
-            Current Price<em>*</em>
-          </label>
-          <input
-            type="number"
-            className={`form-control ${
-              errors.originalPrice ? "is-invalid" : ""
-            }`}
-            id="currentPrice"
-            {...register("currentPrice", {
-              required: "Current Price is required",
-              pattern: {
-                value: /^[0-9]+$/,
-                message: "Only numbers allowed",
-              },
-            })}
-          />
-          {errors.currentPrice && (
-            <span className="form-error-message">
-              {errors.currentPrice.message}
-            </span>
-          )}
+        <div className="row mb-3">
+          <div className="col-md-6">
+            <label htmlFor="originalPrice" className="form-label">
+              Original Price<em>*</em>
+            </label>
+            <input
+              type="number"
+              className={`form-control ${
+                errors.originalPrice ? "is-invalid" : ""
+              }`}
+              id="originalPrice"
+              {...register("originalPrice", {
+                required: "Original Price is required",
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "Only numbers allowed",
+                },
+              })}
+            />
+            {errors.originalPrice && (
+              <span className="form-error-message">
+                {errors.originalPrice.message}
+              </span>
+            )}
+          </div>
+          <div className="col-md-6">
+            <label htmlFor="currentPrice" className="form-label">
+              Current Price<em>*</em>
+            </label>
+            <input
+              type="number"
+              className={`form-control ${
+                errors.originalPrice ? "is-invalid" : ""
+              }`}
+              id="currentPrice"
+              {...register("currentPrice", {
+                required: "Current Price is required",
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "Only numbers allowed",
+                },
+              })}
+            />
+            {errors.currentPrice && (
+              <span className="form-error-message">
+                {errors.currentPrice.message}
+              </span>
+            )}
+          </div>
         </div>
         <div className="mb-3">
           <label htmlFor="weight" className="form-label">

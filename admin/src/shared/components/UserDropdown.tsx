@@ -28,8 +28,8 @@ function UserDropdown({ user, onLogout }: { user: any; onLogout: () => void }) {
       >
         <img
           style={{
-            width: "40px",
-            height: "40px",
+            width: "30px",
+            height: "30px",
             overflow: "hidden",
             borderRadius: "50%",
             border: "1px solid #eee",

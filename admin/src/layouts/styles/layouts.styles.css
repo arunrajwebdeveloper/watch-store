@@ -51,6 +51,7 @@ body,
 .content-section {
   width: calc(100% - 300px);
   overflow-y: auto;
+  background-color: #f6f7fb;
 }
 
 .sidebar {
@@ -61,33 +62,32 @@ body,
 }
 
 .sidebar.sm {
-  width: 68px;
+  width: 50px;
 }
 .sidebar a {
-  height: 68px;
-  font-size: 18px;
-  font-weight: 700;
+  height: 50px;
+  font-size: 14px;
+  font-weight: 600;
   color: #000;
   text-decoration: none;
   padding-right: 20px;
   display: flex;
   align-items: center;
   justify-content: start;
-  gap: 15px;
+  gap: 2px;
   border-bottom: 1px solid #ccc;
 }
-
 .sidebar a .sidebar-icon {
-  width: 67px;
-  height: 67px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex: none;
 }
 .sidebar a svg {
-  height: 34px;
-  width: 34px;
+  height: 24px;
+  width: 24px;
   vertical-align: middle;
 }
 .sidebar a.active-link {

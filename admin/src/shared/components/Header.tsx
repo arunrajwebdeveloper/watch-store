@@ -12,10 +12,7 @@ export const Header = () => {
   };
 
   return (
-    <header
-      className="w-100 border-bottom px-4 d-flex align-items-center"
-      style={{ height: "68px" }}
-    >
+    <header className="main-header w-100 border-bottom px-4 d-flex align-items-center">
       <div className="header-container w-100">
         <div className="row">
           <div className="d-flex justify-content-between align-items-center col-12">
