@@ -388,7 +388,7 @@ export const Edit = () => {
         </div>
         <button
           type="submit"
-          className="btn btn-primary p-3 w-100 mt-2 fw-bold"
+          className="btn btn-primary p-2 w-100 mt-4 fw-bold"
           disabled={updateProduct?.isPending}
         >
           Update Product
