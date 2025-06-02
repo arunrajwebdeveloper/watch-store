@@ -3,6 +3,7 @@ import { useOrders } from "../hook";
 import moment from "moment";
 import { currencyFormatter } from "../../../utils";
 import OrderStatusPill from "../components/OrderStatusPill";
+import TableSkeleton from "../../../shared/components/skeletons/TableSkeleton";
 
 export const OrderList = ({
   title,
@@ -12,7 +13,7 @@ export const OrderList = ({
   status: string;
 }) => {
   const { fetchOrders } = useOrders({ load: true, status });
-  const { data, isError } = fetchOrders;
+  const { data, isError, isLoading } = fetchOrders;
 
   if (isError) return <span>Error occured</span>;
 
@@ -20,54 +21,58 @@ export const OrderList = ({
     <div>
       <h4 className="sub-heading">{title}</h4>
       <div>
-        <table className="table">
-          <tbody>
-            <tr>
-              <th>#</th>
-              <th>Order Id</th>
-              <th>Order Date</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-            {data?.length > 0 ? (
-              data?.map((order: any, idx: number) => {
-                return (
-                  <tr key={order._id}>
-                    <td valign="middle">{++idx}</td>
-                    <td valign="middle">
-                      <Link to={`../${order._id}`}>{order._id}</Link>
-                    </td>
-                    <td valign="middle">
-                      {moment(order?.createdAt).format(
-                        "DD MMM YYYY [at] hh:mm A"
-                      )}
-                    </td>
-                    <td valign="middle">
-                      {currencyFormatter(+order?.totalAmount)}
-                    </td>
-                    <td valign="middle">
-                      <OrderStatusPill status={order?.status} />
-                    </td>
-                    <td valign="middle">
-                      <Link to={`../${order._id}`}>View</Link> &nbsp;
-                    </td>
-                  </tr>
-                );
-              })
-            ) : (
+        {isLoading ? (
+          <TableSkeleton />
+        ) : (
+          <table className="table">
+            <tbody>
               <tr>
-                <td
-                  colSpan={20}
-                  style={{ textAlign: "center" }}
-                  valign="middle"
-                >
-                  No data available
-                </td>
+                <th>#</th>
+                <th>Order Id</th>
+                <th>Order Date</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+              {data?.length > 0 ? (
+                data?.map((order: any, idx: number) => {
+                  return (
+                    <tr key={order._id}>
+                      <td valign="middle">{++idx}</td>
+                      <td valign="middle">
+                        <Link to={`../${order._id}`}>{order._id}</Link>
+                      </td>
+                      <td valign="middle">
+                        {moment(order?.createdAt).format(
+                          "DD MMM YYYY [at] hh:mm A"
+                        )}
+                      </td>
+                      <td valign="middle">
+                        {currencyFormatter(+order?.totalAmount)}
+                      </td>
+                      <td valign="middle">
+                        <OrderStatusPill status={order?.status} />
+                      </td>
+                      <td valign="middle">
+                        <Link to={`../${order._id}`}>View</Link> &nbsp;
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td
+                    colSpan={20}
+                    style={{ textAlign: "center" }}
+                    valign="middle"
+                  >
+                    No data available
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

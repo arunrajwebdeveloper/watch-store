@@ -5,6 +5,7 @@ import PaginationControls from "../../../shared/components/PaginationControls";
 import { useEffect } from "react";
 import { PageLayout } from "../../../layouts";
 import { currencyFormatter } from "../../../utils";
+import TableSkeleton from "../../../shared/components/skeletons/TableSkeleton";
 
 const CreateProduct = () => (
   <div>
@@ -55,7 +56,7 @@ export const ProductList = () => {
           }}
         />
         {isLoading ? (
-          <span>Fetching...</span>
+          <TableSkeleton />
         ) : (
           <table className="table">
             <tbody>

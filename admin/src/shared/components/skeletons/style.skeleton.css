@@ -1,0 +1,29 @@
+.skeleton.table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.skeleton.table .skeleton__row {
+  padding: 5px;
+  /* border: 1px solid #eee; */
+  width: 100%;
+}
+
+.skeleton.table .skeleton__column {
+  background-color: #e8e9f0;
+  border-radius: 5px;
+  height: 40px;
+  animation: skeletonPulse 1s linear infinite;
+}
+
+@keyframes skeletonPulse {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
