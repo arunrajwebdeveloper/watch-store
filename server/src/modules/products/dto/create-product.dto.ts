@@ -8,7 +8,7 @@ export class CreateProductDto {
   model: string;
 
   @IsString()
-  description: string;
+  description?: string;
 
   @IsNumber()
   originalPrice: number;
