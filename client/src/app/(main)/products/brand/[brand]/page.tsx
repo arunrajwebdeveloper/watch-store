@@ -36,6 +36,8 @@ async function ProductByBrandPage({ params }: Props) {
       </div>
     );
 
+  const title = decodeURIComponent(brand)?.toUpperCase();
+
   return (
     <div>
       <div
@@ -47,7 +49,7 @@ async function ProductByBrandPage({ params }: Props) {
           userSelect: "none",
         }}
       >
-        <h2>{brand?.toString()?.toUpperCase()}</h2>
+        <h2>{title}</h2>
       </div>
       <div className="brand-product-list">
         <ProductGrid products={products} />
