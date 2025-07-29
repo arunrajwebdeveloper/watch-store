@@ -10,16 +10,25 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { FilterProductDto } from './dto/filter-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { extractArrayFilter, regexArray } from '../../utils/query-parser.util';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectModel(Product.name)
     private productModel: Model<ProductDocument>,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async create(dto: CreateProductDto): Promise<Product> {
-    return this.productModel.create(dto);
+    const product = await this.productModel.create(dto);
+
+    this.eventEmitter.emit('product.created', {
+      brand: dto.brand,
+      model: dto.model,
+    });
+
+    return product;
   }
 
   async getLatestProducts(limit: number) {

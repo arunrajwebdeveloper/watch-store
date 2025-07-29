@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AdminAuthModule } from './modules/auth/admin-auth/admin-auth.module';
 import { ClientAuthModule } from './modules/auth/client-auth/client-auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,6 +12,8 @@ import { PaymentModule } from './modules/payment/payment.module';
 import { OrderModule } from './modules/order/order.module';
 import * as dotenv from 'dotenv';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { EmailModule } from './modules/email/email.module';
+import { EventsModule } from './modules/events/events.module';
 
 dotenv.config();
 
@@ -21,6 +24,10 @@ if (!mongoUri) {
 @Module({
   imports: [
     MongooseModule.forRoot(mongoUri),
+    EventEmitterModule.forRoot({
+      wildcard: true, // Enables * and ** pattern matching
+      delimiter: '.', // enables 'user.*' or 'order.**' , if use : 'user:*' or 'order:**'
+    }),
     AdminAuthModule,
     ClientAuthModule,
     UsersModule,
@@ -31,6 +38,8 @@ if (!mongoUri) {
     PaymentModule,
     OrderModule,
     DashboardModule,
+    EmailModule,
+    EventsModule,
   ],
 })
 export class AppModule {}
