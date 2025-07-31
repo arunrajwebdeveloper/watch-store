@@ -19,7 +19,7 @@ export class EmailService {
   async sendMail(to: string, subject: string, html: string) {
     try {
       const info = await this.transporter.sendMail({
-        from: '"Your App Name" <arunrajwebdeveloper@gmail.com>',
+        from: `"Watch store - NestJs" <${process.env.EMAIL_USER!}>`,
         to,
         subject,
         html,
